@@ -32,8 +32,6 @@ if (NOT FMI_ARCHITECTURE)
   endif ()
 endif ()
 
-set(WITH_FMUSIM OFF CACHE BOOL "Add fmusim project")
-
 if (MSVC)
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 
@@ -102,7 +100,10 @@ if (${FMI_VERSION} LESS 3)
 ")
 endif ()
 
-set (MODEL_NAME template)
+# if MODEL_NAME is not set, return an error
+if (NOT DEFINED MODEL_NAME)
+  message(FATAL_ERROR "MODEL_NAME is not set")
+endif ()
 
 set(TARGET_NAME ${MODEL_NAME})
 

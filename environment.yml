@@ -1,0 +1,12 @@
+name: onnx2fmu
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - onnx
+  - jinja2
+  - loguru
+  - typer
+  - pip:
+    - -e .

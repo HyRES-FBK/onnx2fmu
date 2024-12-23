@@ -1,0 +1,34 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "onnx2fmu"
+version = "0.0.1"
+description = "A tool for wrapping ONNX netwroks in FMUs."
+authors = [
+  { name = "Michele Urbani" },
+]
+
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+requires-python = "~=3.9"
+
+[tool.black]
+line-length = 99
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+)/
+'''
+
+[tool.ruff.lint.isort]
+known_first_party = ["onnx2fmu"]
+force_sort_within_sections = true
+
+[project.scripts]
+onnx2fmu = "onnx2fmu.app:app"

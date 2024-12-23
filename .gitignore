@@ -7,4 +7,4 @@ __pycache__
 *_out.csv
 /venv/
 tests/work/
-build/
+/build/

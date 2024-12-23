@@ -5,6 +5,7 @@
 #include <string.h>
 #include "config.h"
 #include "cosimulation.h"
+#include "ortUtils.h"
 
 #if FMI_VERSION == 3
 #include "fmi3Functions.h"
@@ -105,6 +106,12 @@ ModelInstance *createModelInstance(
 
     comp->isDirtyValues = true;
 
+    // Load the model
+    initializeOrtApi(comp);
+    createOrtEnv(comp);
+    createOrtSessionOptions(comp);
+    createOrtSession(comp->env, resourceLocation, comp->session_options, comp);
+
     return comp;
 }
 
@@ -123,6 +130,12 @@ void freeModelInstance(ModelInstance *comp) {
     if (comp->x) free(comp->x);
 
     if (comp->dx) free(comp->dx);
+
+    if (comp->env) freeOrtEnv(comp->env, comp);
+
+    if (comp->session_options) freeOrtSessionOptions(comp->session_options, comp);
+
+    if (comp->session) freeSession(comp->session, comp);
 
     free(comp);
 }

@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.17)
 
+# Configure the runtime library for Microsoft Visual Studio
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 FUNCTION(cat IN_FILE OUT_FILE)
@@ -135,6 +136,15 @@ SET(SOURCES
   src/cosimulation.c
 )
 
+# Set the path to the onnxruntime directory
+set(ONNXRUNTIME_ROOTDIR ${CMAKE_SOURCE_DIR}/lib/onnxruntime-linux-x64-1.20.0)
+
+# Include the onnxruntime directory like in https://github.com/microsoft/onnxruntime-inference-examples/blob/main/c_cxx/CMakeLists.txt
+include_directories(${ONNXRUNTIME_ROOTDIR}/include)
+
+# Link the onnxruntime library
+link_directories(${ONNXRUNTIME_ROOTDIR}/lib)
+
 add_library(${TARGET_NAME} SHARED
   ${HEADERS}
   ${SOURCES}
@@ -143,6 +153,9 @@ add_library(${TARGET_NAME} SHARED
 )
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fmus)
+
+# Link the onnxruntime library
+target_link_libraries(${TARGET_NAME} onnxruntime)
 
 target_compile_definitions(${TARGET_NAME} PRIVATE
   FMI_VERSION=${FMI_VERSION}

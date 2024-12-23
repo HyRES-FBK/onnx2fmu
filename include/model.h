@@ -11,6 +11,7 @@
 #include <stdint.h>
 
 #include "config.h"
+#include "onnxruntime_c_api.h"
 
 #if FMI_VERSION == 1
 
@@ -152,6 +153,12 @@ typedef struct {
     size_t nx;
     double* x;
     double* dx;
+
+    // ONNX Runtime
+    const OrtApi* g_ort;
+    OrtEnv* env;
+    OrtSessionOptions* session_options;
+    OrtSession* session;
 
 } ModelInstance;
 

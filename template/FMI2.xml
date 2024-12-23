@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fmiModelDescription
   fmiVersion="2.0"
-  modelName="Resource"
-  description="This model loads data from a resource file"
-  generationTool="Reference FMUs (development build)"
-  guid="{7b9c2114-2ce5-4076-a138-2cbc69e069e5}"
+  modelName="{{ model_name }}"
+  description="{{ model_description }}"
+  generationTool="ONNX2FMI"
+  guid="{{ model_guid }}"
   numberOfEventIndicators="0">
 
   <ModelExchange
-    modelIdentifier="Resource"
-    canNotUseMemoryManagementFunctions="true"
-    canGetAndSetFMUstate="true"
-    canSerializeFMUstate="true">
+    modelIdentifier="{{ model_name }}"
+    canNotUseMemoryManagementFunctions="{{ canNotUseMemoryManagementFunctions }}"
+    canGetAndSetFMUstate="{{ canGetAndSetFMUstate }}"
+    canSerializeFMUstate="{{ canSerializeFMUstate }}">
     <SourceFiles>
       <File name="all.c"/>
     </SourceFiles>
   </ModelExchange>
 
   <CoSimulation
-    modelIdentifier="Resource"
-    canHandleVariableCommunicationStepSize="true"
-    canNotUseMemoryManagementFunctions="true"
-    canGetAndSetFMUstate="true"
-    canSerializeFMUstate="true">
+    modelIdentifier="{{ model_name }}"
+    canHandleVariableCommunicationStepSize="{{ canHandleVariableCommunicationStepSize }}"
+    canNotUseMemoryManagementFunctions="{{ canNotUseMemoryManagementFunctions }}"
+    canGetAndSetFMUstate="{{ canGetAndSetFMUstate }}"
+    canSerializeFMUstate="{{ canSerializeFMUstate }}">
     <SourceFiles>
       <File name="all.c"/>
     </SourceFiles>
@@ -33,23 +33,31 @@
     <Category name="logStatusError" description="Log error messages"/>
   </LogCategories>
 
-  <DefaultExperiment startTime="0" stopTime="1"/>
+  <DefaultExperiment startTime="{{ startTime }}" stopTime="{{ stopTime }}"/>
 
   <ModelVariables>
-    <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
-      <Real/>
+    {%- for input in input_entries %}
+    <ScalarVariable name="{{ input.name }}" valueReference="{{ input.index }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{{ input.description }}">
+      <{{ input.type.FMI2 }}/>
     </ScalarVariable>
-    <ScalarVariable name="y" valueReference="1" description="Value of the first character in resources/y.txt" causality="output" variability="discrete">
-      <Integer/>
+    {%- endfor %}
+    {%- for output in output_entries %}
+    <ScalarVariable name="{{ output.name }}" valueReference="{{ output.index }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ output.description }}">
+      <{{ output.FMI2 }}/>
     </ScalarVariable>
+    {%- endfor %}
   </ModelVariables>
 
   <ModelStructure>
     <Outputs>
-      <Unknown index="2"/>
+    {%- for output in output_entries %}
+      <Unknown index="{{ output.index }}"/>
+    {%- endfor %}
     </Outputs>
     <InitialUnknowns>
-      <Unknown index="2"/>
+    {%- for output in output_entries %}
+      <Unknown index="{{ output.index }}"/>
+    {%- endfor %}
     </InitialUnknowns>
   </ModelStructure>
 

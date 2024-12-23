@@ -8,5 +8,6 @@ dependencies:
   - jinja2
   - loguru
   - typer
+  - fmpy
   - pip:
     - -e .

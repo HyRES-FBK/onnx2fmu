@@ -1,6 +1,5 @@
 cmake_minimum_required (VERSION 3.17)
 
-# Configure the runtime library for Microsoft Visual Studio
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 FUNCTION(cat IN_FILE OUT_FILE)
@@ -8,7 +7,7 @@ FUNCTION(cat IN_FILE OUT_FILE)
   file(APPEND ${OUT_FILE} "${CONTENTS}")
 ENDFUNCTION()
 
-project (onnx2fmu)
+project (Reference-FMUs)
 
 set(FMI_VERSION 2 CACHE STRING "FMI Version")
 set_property(CACHE FMI_VERSION PROPERTY STRINGS 1 2 3)
@@ -32,6 +31,8 @@ if (NOT FMI_ARCHITECTURE)
     message(FATAL_ERROR "Unknown System Architecture: ${CMAKE_SYSTEM_PROCESSOR}")
   endif ()
 endif ()
+
+set(WITH_FMUSIM OFF CACHE BOOL "Add fmusim project")
 
 if (MSVC)
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
@@ -101,9 +102,9 @@ if (${FMI_VERSION} LESS 3)
 ")
 endif ()
 
-# if MODEL_NAME is not set, return an error
-if (NOT DEFINED MODEL_NAME)
-  message(FATAL_ERROR "MODEL_NAME is not set")
+# Check if a directory with the name of the model exists
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}")
+  message(FATAL_ERROR "Model directory not found: ${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}")
 endif ()
 
 set(TARGET_NAME ${MODEL_NAME})
@@ -112,6 +113,7 @@ SET(HEADERS
     ${MODEL_NAME}/config.h
     include/cosimulation.h
     include/model.h
+    include/ortUtils.h
 )
 
 if (${FMI_VERSION} EQUAL 2)
@@ -134,6 +136,7 @@ SET(SOURCES
   ${MODEL_NAME}/model.c
   src/fmi${FMI_VERSION}Functions.c
   src/cosimulation.c
+  src/ortUtils.c
 )
 
 # Set the path to the onnxruntime directory
@@ -145,6 +148,7 @@ include_directories(${ONNXRUNTIME_ROOTDIR}/include)
 # Link the onnxruntime library
 link_directories(${ONNXRUNTIME_ROOTDIR}/lib)
 
+# Add only the library
 add_library(${TARGET_NAME} SHARED
   ${HEADERS}
   ${SOURCES}
@@ -152,10 +156,10 @@ add_library(${TARGET_NAME} SHARED
   ${MODEL_NAME}/buildDescription.xml
 )
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fmus)
-
 # Link the onnxruntime library
 target_link_libraries(${TARGET_NAME} onnxruntime)
+
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fmus)
 
 target_compile_definitions(${TARGET_NAME} PRIVATE
   FMI_VERSION=${FMI_VERSION}
@@ -275,3 +279,7 @@ add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
 )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/fmus/${MODEL_NAME}.fmu DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+if (WITH_FMUSIM)
+  add_subdirectory(fmusim)
+endif ()

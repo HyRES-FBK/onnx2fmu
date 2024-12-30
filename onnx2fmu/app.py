@@ -7,6 +7,7 @@ from onnx import load, TensorProto
 from pathlib import Path
 from loguru import logger
 from jinja2 import Environment, FileSystemLoader
+from itertools import product
 
 
 app = typer.Typer()
@@ -82,8 +83,9 @@ def FMI2generateIOEntries(model):
                     model.graph.input[0].type.tensor_type.shape.dim)
     # Print the input node name
     logger.debug(f"Input node {input_name} with shape {shape}.")
-    # A unique index is used for all model variables
-    i = 0
+    # A unique index is used for all model variables. It starts at 1 because
+    # the first index is reserved for the time variable.
+    i = 1
     # FMI2 does not support multi-dimensional inputs, so we need to flatten
     # the input tensor.
     # Initialize the input entries list
@@ -133,8 +135,9 @@ def FMI3generateIOEntries(model):
     - ``model`` (onnx.ModelProto): The ONNX model.
     - ``context`` (dict): The context dictionary for templating.
     """
-    # A unique index is used for all model variables
-    i = 0
+    # A unique index is used for all model variables. It starts at 1 because
+    # the first index is reserved for the time variable.
+    i = 1
     context = {}
     # Initialize the input entries list
     context['input_entries'] = []
@@ -162,6 +165,68 @@ def FMI3generateIOEntries(model):
             'dimensions': shape,
         })
         i += 1
+    # Initialize the output entries list
+    context['output_entries'] = []
+    for node in model.graph.output:
+        output_name = model.graph.output[0].name
+        # Retrieve output tensor shape
+        shape = tuple(dim.dim_value for dim in
+                      model.graph.output[0].type.tensor_type.shape.dim)
+        logger.debug(f"Output node: {output_name} with shape {shape}.")
+        # Iterate over all dimensions except the first one
+        context['output_entries'].append({
+            'name': f"out{output_name}",
+            'index': i,
+            'type': onnx_to_c_types[element_type],
+            'description': "Output name identifies tensor element.",
+            'causality': "output",
+            'variability': "continuous",
+            'dimensions': shape,
+        })
+        i += 1
+    return context
+
+
+def generateIOEntries(model):
+    """
+    Parse the ONNX model and generate input/output entries for the FMU.
+
+    Parameters:
+    -----------
+    - ``model`` (onnx.ModelProto): The ONNX model.
+    - ``context`` (dict): The context dictionary for templating.
+    """
+    # A unique index is used for all model variables. It starts at 1 because
+    # the first index is reserved for the time variable.
+    i = 1
+    context = {}
+    # Initialize the input entries list
+    context['input_entries'] = []
+    # Add all input nodes as multi-dimensional variables
+    for node in model.graph.input:
+        # Node names must be cleaned from C-unsupported characters
+        input_name = cleanName(model.graph.input[0].name)
+        # Retrieve input tensor shape
+        shape = tuple(dim.dim_value for dim in
+                      model.graph.input[0].type.tensor_type.shape.dim)
+        # Print the input node name
+        logger.debug(f"Input node {input_name} with shape {shape}.")
+        # FMI3 supports multi-dimensional variables.
+        # Iterate over all input nodes
+        element_type = TensorProto.DataType.Name(
+            node.type.tensor_type.elem_type
+        )
+        context['input_entries'].append({
+            'name': f"{input_name}",
+            'type': onnx_to_c_types[element_type],
+            'description': "Input name identifies tensor element.",
+            'causality': "independent",
+            'variability': "continuous",
+            'dimensions': shape,
+            'indexes': {i + j: idx for j, idx in
+                        enumerate(list(np.ndindex(shape)))},
+        })
+        i += len(list(np.ndindex(shape)))
         # Print the output node name
     for node in model.graph.output:
         output_name = model.graph.output[0].name
@@ -174,14 +239,17 @@ def FMI3generateIOEntries(model):
         # Iterate over all dimensions except the first one
         context['output_entries'].append({
             'name': f"out{output_name}",
-            'index': i,
             'type': onnx_to_c_types[element_type],
             'description': "Output name identifies tensor element.",
             'causality': "output",
             'variability': "continuous",
             'dimensions': shape,
+            'indexes': {i + j: idx for j, idx in
+                        enumerate(list(np.ndindex(shape)))},
         })
-        i += 1
+        i += len(list(np.ndindex(shape)))
+        print({i + j: idx for j, idx in
+                        enumerate(list(np.ndindex(shape)))})
     return context
 
 
@@ -225,8 +293,10 @@ def build(
     # Read the model file
     model = load(model_path)
     # Generate input entries for all dimensions except the first one
-    fmi2ModelVariables = FMI2generateIOEntries(model)
-    fmi3ModelVariables = FMI3generateIOEntries(model)
+    # context["FMI2"] = FMI2generateIOEntries(model)
+    # context["FMI3"] = FMI3generateIOEntries(model)
+
+    context.update(generateIOEntries(model))
 
     ############################
     # Populate the templates
@@ -246,11 +316,6 @@ def build(
         # Skip directories and FMI files
         if not template_name.is_file():
             continue
-        # Catch FMI2 and FMI3 templates
-        if "FMI2" in template_name.name:
-            context.update(fmi2ModelVariables)
-        elif "FMI3" in template_name.name:
-            context.update(fmi3ModelVariables)
         # Load the template
         template = env.get_template(str(template_name))
         # Render the template with the context

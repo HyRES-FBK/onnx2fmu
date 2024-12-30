@@ -4,7 +4,7 @@
   modelName="{{ model_name }}"
   description="{{ model_description }}"
   generationTool="ONNX2FMI"
-  guid="{{ model_guid }}"
+  guid="{{ model_GUID }}"
   numberOfEventIndicators="0">
 
   <ModelExchange
@@ -36,27 +36,38 @@
   <DefaultExperiment startTime="{{ startTime }}" stopTime="{{ stopTime }}"/>
 
   <ModelVariables>
+    <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
+      <Real/>
+    </ScalarVariable>
     {%- for input in input_entries %}
-    <ScalarVariable name="{{ input.name }}" valueReference="{{ input.index }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{{ input.description }}">
-      <{{ input.type.FMI2 }}/>
+    {%- for i, idx in input.indexes.items() %}
+    <ScalarVariable name="{{ input.name }}[{{ idx|join(',')}}]" valueReference="{{ i }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{{ input.description }}">
+      <Real/>
     </ScalarVariable>
     {%- endfor %}
+    {%- endfor %}
     {%- for output in output_entries %}
-    <ScalarVariable name="{{ output.name }}" valueReference="{{ output.index }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ output.description }}">
-      <{{ output.FMI2 }}/>
+    {%- for i, idx in output.indexes.items() %}
+    <ScalarVariable name="{{ output.name }}[{{ idx|join(',')}}]" valueReference="{{ i }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ output.description }}">
+      <Real/>
     </ScalarVariable>
+    {%- endfor %}
     {%- endfor %}
   </ModelVariables>
 
   <ModelStructure>
     <Outputs>
     {%- for output in output_entries %}
-      <Unknown index="{{ output.index }}"/>
+    {%- for k in output.indexes.keys() %}
+      <Unknown index="{{ k }}"/>
+    {%- endfor %}
     {%- endfor %}
     </Outputs>
     <InitialUnknowns>
     {%- for output in output_entries %}
-      <Unknown index="{{ output.index }}"/>
+    {%- for k in output.indexes.keys() %}
+      <Unknown index="{{ k }}"/>
+    {%- endfor %}
     {%- endfor %}
     </InitialUnknowns>
   </ModelStructure>

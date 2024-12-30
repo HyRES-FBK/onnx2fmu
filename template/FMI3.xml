@@ -4,7 +4,7 @@
   modelName="{{ model_name }}"
   description="{{ model_description }}"
   generationTool="ONNX2FMU"
-  instantiationToken="{{ model_guid }}">
+  instantiationToken="{{ model_GUID }}">
 
   <ModelExchange
     modelIdentifier="{{ model_name }}"
@@ -28,6 +28,7 @@
   <DefaultExperiment startTime="{{ startTime }}" stopTime="{{ stopTime }}"/>
 
   <ModelVariables>
+    <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
   {%- for input_variable in input_entries %}
     <{{ input_variable.type.FMI3 }} name="{{ input_variable.name }}" valueReference="{{ input_variable.index }}" causality="input" variability="continuous" description="{{ input_variable.description }}">
       {%- for d in input_variable.dimensions %}

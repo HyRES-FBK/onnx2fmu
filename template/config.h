@@ -13,26 +13,30 @@
 #define FIXED_SOLVER_STEP 1
 #define DEFAULT_STOP_TIME 1
 
+{% macro cleanName(name) -%}
+{{ name | replace(":", "") }}
+{%- endmacro %}
+
 typedef enum {
     // Always include time
     vr_time,
 #if FMI_VERSION < 3
     {%- for input in input_entries %}
     {%- for i, idx in input.indexes.items() %}
-    vr_{{ input.name }}_{{ idx|join('_') }},
+    vr_{{ cleanName(input.name) }}_{{ idx|join('_') }},
     {%- endfor %}
     {%- endfor %}
     {%- for output in output_entries %}
     {%- for i, idx in output.indexes.items() %}
-    vr_{{ output.name }}_{{ idx|join('_') }},
+    vr_{{ cleanName(output.name) }}_{{ idx|join('_') }},
     {%- endfor %}
     {%- endfor %}
 #else
     {%- for input in input_entries %}
-    vr_{{ input.name }},
+    vr_{{ cleanName(input.name) }},
     {%- endfor %}
     {%- for output in output_entries %}
-    vr_{{ output.name }},
+    vr_{{ cleanName(output.name) }},
     {%- endfor %}
 #endif
 } ValueReference;
@@ -41,10 +45,10 @@ typedef struct {
     // Always include time
     double time;
     {%- for input in input_entries %}
-    double {{ input.name }}{% for dim in input.dimensions %}[{{ dim }}]{% endfor %};
+    double {{ cleanName(input.name) }}{% for dim in input.dimensions %}[{{ dim }}]{% endfor %};
     {%- endfor %}
     {%- for output in output_entries %}
-    double {{ output.name }}{% for dim in output.dimensions %}[{{ dim }}]{% endfor %};
+    double {{ cleanName(output.name) }}{% for dim in output.dimensions %}[{{ dim }}]{% endfor %};
     {%- endfor %}
 } ModelData;
 

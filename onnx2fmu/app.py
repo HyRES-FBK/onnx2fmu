@@ -175,7 +175,7 @@ def FMI3generateIOEntries(model):
         logger.debug(f"Output node: {output_name} with shape {shape}.")
         # Iterate over all dimensions except the first one
         context['output_entries'].append({
-            'name': f"out{output_name}",
+            'name': f"{output_name}",
             'index': i,
             'type': onnx_to_c_types[element_type],
             'description': "Output name identifies tensor element.",
@@ -205,22 +205,22 @@ def generateIOEntries(model):
     # Add all input nodes as multi-dimensional variables
     for node in model.graph.input:
         # Node names must be cleaned from C-unsupported characters
-        input_name = cleanName(model.graph.input[0].name)
+        # input_name = cleanName(model.graph.input[0].name)
         # Retrieve input tensor shape
         shape = tuple(dim.dim_value for dim in
                       model.graph.input[0].type.tensor_type.shape.dim)
         # Print the input node name
-        logger.debug(f"Input node {input_name} with shape {shape}.")
+        logger.debug(f"Input node {node.name} with shape {shape}.")
         # FMI3 supports multi-dimensional variables.
         # Iterate over all input nodes
         element_type = TensorProto.DataType.Name(
             node.type.tensor_type.elem_type
         )
         context['input_entries'].append({
-            'name': f"{input_name}",
+            'name': node.name,
             'type': onnx_to_c_types[element_type],
             'description': "Input name identifies tensor element.",
-            'causality': "independent",
+            'causality': "input",
             'variability': "continuous",
             'dimensions': shape,
             'indexes': {i + j: idx for j, idx in
@@ -229,16 +229,15 @@ def generateIOEntries(model):
         i += len(list(np.ndindex(shape)))
         # Print the output node name
     for node in model.graph.output:
-        output_name = model.graph.output[0].name
         # Retrieve output tensor shape
         shape = tuple(dim.dim_value for dim in
                       model.graph.output[0].type.tensor_type.shape.dim)
-        logger.debug(f"Output node: {output_name} with shape {shape}.")
+        logger.debug(f"Output node: {model.graph.output[0].name} with shape {shape}.")
         # Initialize the output entries list
         context['output_entries'] = []
         # Iterate over all dimensions except the first one
         context['output_entries'].append({
-            'name': f"out{output_name}",
+            'name': f"{model.graph.output[0].name}",
             'type': onnx_to_c_types[element_type],
             'description': "Output name identifies tensor element.",
             'causality': "output",
@@ -248,8 +247,6 @@ def generateIOEntries(model):
                         enumerate(list(np.ndindex(shape)))},
         })
         i += len(list(np.ndindex(shape)))
-        print({i + j: idx for j, idx in
-                        enumerate(list(np.ndindex(shape)))})
     return context
 
 

@@ -1,0 +1,658 @@
+pytorch2.5.1: ¯
+÷ /Constant_output_0	/Constant"Constant*N
+value*BJ<Yí>îΩï>GN‹=öHe>Ò¯Ω;‘√ßDDF∏C)dÍG®@dXƒ>fff?ÇN€>b Q@´™AUU@†2⁄/tmp/ipykernel_1217/3936120478.py(14): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+í 
+input
+/Constant_output_0/Sub_output_0/Sub"Sub2⁄/tmp/ipykernel_1217/3936120478.py(14): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+⁄ /Constant_1_output_0/Constant_1"Constant*N
+value*BJ<ã™í<Àë<o$M<ªm<(≤;+wìB¯
+AÉ®9A~£?©á—=  Ä?  Ä?âr?ÅF@áÃ?†2⁄/tmp/ipykernel_1217/3936120478.py(14): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+ú 
+/Sub_output_0
+/Constant_1_output_0/Div_output_0/Div"Div2⁄/tmp/ipykernel_1217/3936120478.py(14): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+Ó'
+/Div_output_0
+trained_model.fc1.weight
+trained_model.fc1.bias /trained_model/fc1/Gemm_output_0/trained_model/fc1/Gemm"Gemm*
+alpha  Ä?†*
+beta  Ä?†*
+transB†2π&/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/linear.py(125): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3900991230.py(15): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3936120478.py(15): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+∞$
+ /trained_model/fc1/Gemm_output_0/trained_model/Relu_output_0/trained_model/Relu"Relu2“#/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/functional.py(1704): relu
+/tmp/ipykernel_1217/3900991230.py(15): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3936120478.py(15): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+˝'
+/trained_model/Relu_output_0
+trained_model.fc2.weight
+trained_model.fc2.bias /trained_model/fc2/Gemm_output_0/trained_model/fc2/Gemm"Gemm*
+alpha  Ä?†*
+beta  Ä?†*
+transB†2π&/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/linear.py(125): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3900991230.py(16): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3936120478.py(15): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+¥$
+ /trained_model/fc2/Gemm_output_0/trained_model/Relu_1_output_0/trained_model/Relu_1"Relu2“#/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/functional.py(1704): relu
+/tmp/ipykernel_1217/3900991230.py(16): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3936120478.py(15): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+ˇ'
+/trained_model/Relu_1_output_0
+trained_model.fc3.weight
+trained_model.fc3.bias /trained_model/fc3/Gemm_output_0/trained_model/fc3/Gemm"Gemm*
+alpha  Ä?†*
+beta  Ä?†*
+transB†2π&/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/linear.py(125): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3900991230.py(17): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/tmp/ipykernel_1217/3936120478.py(15): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+æ /Constant_2_output_0/Constant_2"Constant*2
+value*&J –ì<e£ì<ÊM<¡em<÷‹;2ñB$˚AÉ®9A†2⁄/tmp/ipykernel_1217/3936120478.py(16): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+Ø 
+ /trained_model/fc3/Gemm_output_0
+/Constant_2_output_0/Mul_output_0/Mul"Mul2⁄/tmp/ipykernel_1217/3936120478.py(16): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+æ /Constant_3_output_0/Constant_3"Constant*2
+value*&J Ì3ì>HTñ>â8Ÿ=ìc>)_ƒ;Û–®D…÷∏C)dÍG†2⁄/tmp/ipykernel_1217/3936120478.py(16): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+ï 
+/Mul_output_0
+/Constant_3_output_0output/Add"Add2⁄/tmp/ipykernel_1217/3936120478.py(16): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_1217/4042160404.py(2): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+main_graph*£@Btrained_model.fc1.weightJÄßÇ|Ω™≈…>ÆÇ`>‰≥ΩP]>-¨π=d∫>æt†æ»u?æ&
+æ›UıΩÖkæFÉ>ææ-Ôãæ ≈F=‘•Oæxt®º6∏–:]e∂=ﬂ◊wæG#= §N∫¿Ê!æÃéæï–—=^+Wæ)∞\=ﬂÕ=ëî®æ1øo<ùΩf9BØ>WçU>®Fõ>€∫+<4’Ω&]æÜöñæ≠¿.æù§=æ¨Ta=ÂCqæ!K•ΩN	æû!|>M`Çæç"úæÉ{∫æ\Zæ]`>Dî¥ºBG=€Àæ~-a>Vœ	æï1n>Ù1ΩnÖë>∑ßàΩ1ÌΩUí<øµù=ùI=‚<<õ =û®={œ•Ωüâ'=/yv>ww|æåØ>≈€=Ã÷ï=ÉçæÛªY=ÿ©à;úu°ª\:∂ΩŸ 8æ∆,æ‡u›;3H∑æ≠øÖæª1¨=‚Ä>I‹Ωæ©Äˇ<M®3ΩÃ;æ0…¶æxﬂ>©öΩ(>øΩSíí>ﬂ>=Ñ⁄=Cc>„≈w=»ÿÇæ€•É>{±s>¸jº…“Æ<†‹é=cçX>{*>}Î€<sı‡Ω ›”=¿tæ]˘dæ¯Fäæ¥ Ì=s≥)>˚—væp«c>û⁄=d˚ÉæÄk5>Ä•Ω©Ü>µ‚æ÷∏€Ωê—>h÷„:Ãve>÷35æ§+>c=@>hïf>—v <yó=¯ Ü>eÒ=0•æ√˙I>0ÛÈªY3
+æ¥,=„^æd≥rΩÒr>ñ¢m>†QoæZ»Ω¨Z+æ “n=åær&æóÑÊ=dcﬂ>˛(<h,ì∏ˆ·°æ≈xæ Y[ΩËŒë>î·¬>“ˆ4Ωën¸Ω<
+?+ùÖΩ=Ì=	n=œ
+'>üô=æ8B=x[^Ω©ræ^LK>®S;"ÑVæ‹˙`>çòwæ:Êª=IywΩq)Í<œ¥Ω›3fæ7Ä@>–«Íª}1ΩI#-æu{≈=9åØΩs¥±;+√•Ω„Jj>M"æ:êõΩ€#>›~£Ω¿±<‚j>ÑÁìΩ*‹<Ùﬁæy;B>U(æß"=´Ãè>ÏR∂<|eåΩº7â=±ˇ7>‚ÌîΩTûΩâQ÷Ω¢Cë>w©W>\;§>ä∆ò>Ä§¨æÀö„Ω(”è>"$æQ!æ¿>ÉûΩ˜I>s˙>∑@òæw‘F>0D);¶M=Ø”á=;∆>rúΩ¡∏>>w/ß=Í>M"¨Ω5÷‘=˝96>´¥æE”ä=–}É>hW’<£I7î;ΩæÚ"·=t∂>Äæ∞¡ræMX8>ñt°æiVæã˛J>ë◊X>«4lætÚΩ≈¶>G<æÛÜO=ØΩ æö∫W>9¢*æ2Ísæ◊;æΩß‘ΩT‘™=õ2>Z@æ¶8[æz)iææzì>É§æ$œ=…h{=!óæÌzæ6·Cæa¡7>∞ë>∑3Ω”⁄==ËÊ=eØ=Û‡æò˘ïΩ∆ÌäæÔ§ΩŸuWΩ+£º={„Œ>õ®1>;¢é=Ωº>|ëçºŸ0ëæ?Óíæ+Œˇ<$ƒØºÎOåΩjFæ5˘§=yßΩÅ(>7Ü¢>w≈>¢jæï•ï=Y@T>ÉÄëΩ.~>& öæ4Mæ˜ˇ÷=S;I<§‘[Ω_°>¥ñl=}y]=ºA>Åè'æB`=Ÿv?æ˝ÍÖΩxa?>«ug=ø:>/}C>“¢◊ΩÅ√ºey_æåz˜ΩÉ%>’qæÎVÉ=-I~>öÃ5æ¥¿J=·∂ç>wq`>
+ÕΩˆ’æ.•Ù=lA=±&æÕYyæv≤B>ÿ{*ææ~ ˘Ωáæü(Øæ4 £>Ï°Oæ„óq>h¥ ΩF„Ωàá>¿U >•≤b>ıÀ4ºŒ§ææH7æ1@ãæeˇbºA“=My@Ω≠I<iÓ~Ω÷l|ºôπΩÛÄª§≤ÒΩZ¨Ä>ù∏	>æú[ªÒ≤tΩÿ≈´=NJ.ΩaÛ =øÎ=µúQ>√
+Ù:«õº‰~•æùJt>Œ{=æÎ>«ºú>¿ªJæ{0æÿÍΩ Åâæ±>†ÿµΩ9[>)Üí=óéLæﬁH<Kõyær<æ5Œ¡>û¢Ω˛g>f7>ÅA>ov>€Ø	æ8}>"—ë>ê8§>g5ó>˛hRæ3_g>Q∆6<Ø¢Ä=µå‚<)>É◊Ã<5WJæ52sæãŒ|>áìŒæØ€>2"∑Ω”h∆=o7=Ó=ë<éØ¬Ωüàt=<éΩ˚<üΩ‚ˇ	æ*zW=/(>W«ª<ñK*>°|≠=…WLΩ9Àæ≠Oo>ÌÚ=v•˜æπ¶3æ≤(<æÂ'—æ>[>Hù{=M:@>îâ->HA˜=j>êr>:∏n∫R.>Oìæw€<∂ÀQæóJ§=¸ı˘ΩÈ*úΩÔgººû±ºRwΩ+PΩ]∏Â=–‹ΩÓT>g°2æ=}¨>Ÿæ∫Mæ∂D?ænãæÍë=ﬂ4íΩ»eaº‡∂˛;∞Ω;¸æßøf>ÔÒê=ŸÖ={[A>LÔÇ=!3∏<	#ÇΩZÉU>wˇç>˛ÉPæΩkÅºnÃ5æà8>ˆ≠tæØL@>¨¢=MhgΩYè=-æŒ<ƒ>bˆÎ= œuΩá-Ñ> Áüæ∏∞eº◊É=°ÏH=˚Ô/>·G{æÇÄ=Ì{ÈºµD=D¸æNÜLæÿ√IΩSK®>cm>ÿÕi>>€ -æ–5qæ‚Gr>3‰ΩÌ´#>g B>G0µ=|~éΩÎE„=›√–=«'>± 
+æ˘÷æ≠æì[>
+˙∑Ω°Ë¸æñ1ûº2∑fº≥ƒ@>ë¢=‰Ôéæ§u¢>ºà¬ΩuPÌºÏ…$æÿp0Ω<Ó® æﬁÎç=â’=µàÉº`ÿ	;Ä =G>gv>–®‚Ω∞À]=ŒP◊º¸¥∫æßhæ¸≤ó>qbû=p.ª%Õ=^¡áæAúü>ÚRXæÕ!ÉΩÛ&|ΩwöÇ>‘yQ=ù´·Ω$éæ¢vææf§ΩoñÑækeﬂ>√ªÒz'>œÜΩ&ì˘ΩwB!>Cö=u>˙É>ç&æ» æl˚3>Nâ’Ω?L±=E◊á>`9>Ï≥ÖæT€–=ëBÂ<ÆΩzïæRæY+=¸t4>~IÅ=˙€Ò=„ëw=âÀe=U@çΩ‹úq>Ã«í>NÃN>œ2>‚ßÍºd}£>;3æh ≠=a)5æ¶ ætKı=a∫=æ«
+T>Æb!=≠ õæPÙÉº2Õ|ºrWgæ«4À=e˜Ω…°>∆{Ω©*’ΩHÔ=<UZ>>ª°Ω/-ZΩ¨ÁW<f">[Eæéå‚;~a∫SSq>.—©=»¿ê>óÍ<rHL>iSùΩÚH!æO≤˜ΩôÓΩ›$6>£Ÿ`>oz}ΩÇ†ænËßæ§û©>˚a5ºË4Ωìù›=,>ÀæËvªæ%>?ü=ªoÇºwÊº=¥æ0Höº~c›ΩÓGg<∑&Ω“ôﬁ=ÒæŒ„Dæ≥∏Ÿ=Éh‡ΩX⁄XæèV<◊·Ç=qmëΩ$µ>gŸ">ó0WΩÓ À>ﬁ©¯=Ó—åæc®{>ÍGæ±dÒæë6Ω(õf=ClU>Q¿òΩ·qÊ=ãÇΩN!˚ΩΩr=ßBDæ≤ú©>’˘≥Ω›ìΩÚÁ¢=B_ÉænQé=∏≠√>‡Ûò>ÎàÒΩ>+eΩ≈◊˝Ω?*3æÕèF>œ zæ}Xtæ¸Oæ¸øÅ=˝DüæSê>Q°Õ=Vã0æDvÍºfs=≈v|æ	Áœ=§˚†ª	 >¢Æ=ç≤>‰,fΩÆúx>ÀXõ> ’>Öﬁ>ètæÕL">¡w;Ω˝°=∞7Ä=sºﬁ<ÙÅæäÙÚ<O=¡=`jäΩbwµ=y!>∏PI>/â)>≥9äæ\Zhº›>˙ º=…Á+>¡¶æø3>>Ë=?%ÙΩ)ˆ=
+/º"]æ…º-û¶ªÕææ˚Ìº•EæI7=¥\æY¯ÇΩüu	æ%]æÕ'yæ	∑U>ßu#æaïY>z”ΩÛ'>–πŒ<ŒˇIæJô>>¡<ãæCábæj$çΩÅ>@Î<Ú˘Y<A5æÀ°‡Ωqü∫ΩÓ@6=˚iŒΩBZ∑>cïæ¶Ë`æÙüê=_ñ|<·M>s‡\æPˇçæWVsæn’?:u{]æ6›Éæ˙ΩΩIÑ=˛Ω’‰ΩûaáæwÜ˙Ω(˜)æ1rh=M˙¨>ççÿ=åÉ⁄Ωvç;:ñ?0æï˝}>⁄ÎñΩ$è=ãNúΩÇæﬂè÷>∏∑a>Ç>PæPï>ƒ{úΩõôæK6Üær=©8â=ÙÚΩ$√ºvI2æåLWΩfjˆ=‡ùY>*ıÉ=9Á =xá‰º{â'æ˙i€ªÓ®ø9…À÷<¡∆GæaŸr>JÓüΩNÆd>ÂøΩ=ÃºeT¥;k…3>∆SæÈ¸∫==ÃÛΩN˚G<ÇIΩYEº=ÀbTæjÌ#æúÂ_æ∫µ‘=˘f=<Ul>9#Gæ∫LçΩñ+ÌªüÀÏΩYﬁΩÒ™Ï<Naæ‰…∫;úÇ˛<[x<∞Ω3>4-æœ>=√éRæ(|4>	≥	æﬁ’Ë=Œ9>é·Ωæ«fèΩU≥>}›ã=⁄ı8=3Ç2>6jüæ[·è=cãæÿÏ >˚‡gæ~<g>Ñ–=º˝‚Ç>jÙyæØÑ>unéæFÚ*>èSå>õêäæJezºÑR∏>*∂Íºu"æ+Á±Ω‘“Ω«⁄[Ω5Ä.>ó€ßæcÊ◊ΩÜåU>Øó#>ü∆>XzhæVÅl=¸}Àº{ >ÜR>€°ïæ˙Ò˝ΩıÂ¥=˛“Ÿºˇ;ü=	ï¬=»ìÛ=;Ä>≤Dú>óÿ©=:;>Pâ"ΩrÔ>æÉy3=äêÙ=zƒªŸΩ•Ô¡<§Ñ>¡wf>Œ'’;˜˚l;∑K≠æTÉ*= =»ƒæ·'ã>(Dà<4éáæüÒS=ÏÃ‡=P⁄K>òÎ\=xç=I[-=Gç`ºtôΩvR‚=§>Ñô!æ˛íu=¬Ω{«t=.h¯Ω&‰‡ΩYcàæŒlW>Æ|oΩƒ∏©Ω¿¶
+ΩÈÈè>*ü@Btrained_model.fc1.biasJÄ˘ûäΩŒyæ3òÍΩ{æ6‰∫á>ˇ4aΩÿ™ÈΩòò=æΩÑB>Û?€ÂΩ†≥=m>Øÿ•>ãÛﬁΩµ‡Ñæ_YN=˘ú£=ïN8ækS>6=àΩ_Åà>i‚Ωåxæ— ˆ=Ïõ>›i¡Ωÿ∫Éº¡’æqΩE•Ä>ÃæÜ	≤Ω·™ç>Ù‰¢æ,¨æ#•kº]2ùæ[ˆü>ú£¯=á|ß=∞´Z>åJ·æÿ-3ΩWzæ£r0>1?>≥B>æ1æ¡1æ:‰º`ÃæfS©ΩöbJªﬂÃ;æzZ+>]`ΩDç>RU€æﬂ[ÚΩ¸	ö>DS“ª·¨hæ*§Ä@@Btrained_model.fc2.weightJÄÄ±ˆ<áW=6y®<´LøÏ<ˆå>Ω†à>…*Ωÿ≤π2∑Ω´Ô≥=˛n§Ω·õ”=q$L>ñ¶Bæ0˛≥=—ÿ^=L≤Ω|ò»=”D?¨€Mæ∑ep=«∑tΩ=cæ@>iT*ΩŸùöºß‚ﬂΩHuÆ=úÈ§<w⁄º;Wπ=àÿ+æ∞aLæ˙ïé=´æ˚ÁæÁp]>gO¶=◊BΩ√&ûΩ}m?>B8J=E¶<>	ıkºtJ…ºñ—$º•Eî=ùsà=·˝1æ@ÓŒΩ∆¥»Ω¸ïCæXë>ÆÄ=â)«ΩLZE>gk˚æ=¥f<„HâΩ5M€Ω.ÔÜΩ ÊÖ=({©æÔÇ≈æŒn>TÛÎΩÁ∑iæ=bå=Ö°Ω7N—=9°›ª¢P˝Ω¨>Ò|0=≤%º#ÿ<`tc>Tìˇº- ı<Ó\•=Í≤≈=ó=«=ãùæDñf=sû#>â«>≠ízΩ∑#∫º¡¨=~∞rºò¶»=‰cDæâ15>y,ó>ua=Å»=›SÇΩ	W ΩP|√Ω,•÷=VWèΩüˆâΩ“∫<Wä=d0a>#=gäÜæ.°>¸ö¿º≤øóΩH~÷Ω|¯	º∞mê<ë–9ælf›=Ä»jΩ  æ!iøÂﬁ=«ëi>vñª=c’£>äu>ÔÄ,;„RÃ=\Îu>Ï˚ºBEΩ sôΩeªÉ=6®æP‰ΩYFó=Üo>"%
+æ5Îâæï‹Ôºy@Ê=≈”>≤w∆æH„¨<¡-?Àbæíﬁ;≈@ªª9ÄΩõE°Ω=$¸ª≠|ÎΩ<Ω=÷ıæúèÆΩ(∫=!ÑaΩx`æÌzÆΩtÅ∫Ωz6s=K=ÈÓæÚ…Ñæ°Mƒºtí> »0ΩG=ât øÊ…Ωj‰º≠áΩºf>tÛWΩÕyÚ<=äú>yÈ];´ëæ®ÍæO÷bΩ≠ÓôæøE<Ω*>C∞:=Ç˝¿=éÑq=ivK>6ÛÅø7ßÉΩIxÜ>›ƒ>=ˇ{>bæø>ΩÀº…tç={›s<[D<y]Xº”e=}˜Å>©Ö$æ6îïΩ^æWoG>ç)TΩÅÎæΩW≈=€ê∏ΩÊqz>ﬂÚ
+=ü∑ΩüˇªÌ5Ò;8ˇ’<≈%í=‘Xπ=2>ÙˆqΩ›π<ƒ∏ΩÑè·:õÙÈ=ôWGæóeEΩ∆Éf=myèΩ‚#8Ω@IñΩ:∑åæÊ>ÇpΩ∫œ*◊Ω\‡ÑΩªÇ-æª:;ΩxÓ\Ωb±ÁΩ©∫+=˚ï±=í|;kA@=<ΩÚΩ{∏>/%øºƒ $=/OòæBÔ(=$!v>&!»=`√î=Ü˙£<éÆ>A_±Ω˜*∑ΩÄõ >¿>Á÷WΩ(⁄¡æ∞1ıΩ|ebΩ‹≤ΩúC°æ{6V<! áΩÕﬁ{ºDæêæôêë>Æ«Äº@˚æÅ©Ç=≈‰=_Î~Ω?ÖΩ=¬Ë'æVmïΩı[,ΩØG3>≤Ò;<MÅ>¡Øèæ42å>¬®=‡—;¸‚>oèßΩI3LøıQæ†>ƒ°%æ®¿ÎΩÑèæ}{πΩFØÙΩldú>–…=5y-æÇæ≠¨ò=?
+E>bsÜæ[ŒÏ>yÔ!º˜ÖR<õNWæ XæÕ–æKÿ÷ΩéäÕ=%·º°‡;1_Z=‰æÁæ4 >ÆÃÍ=ÚûDΩ_q=ø~ö[æ¶çΩ=tQ=ˇ˚æ∂ç
+ΩÀ’=6>Ë;7æ‚¿<Ë1î>¨i1æùtå:∞mæEë=Ãˆø>¿˙ÒºπèΩ]π;ŒR->çù=1ΩX>(ﬂü<D:XæÄ—*ΩRâFæŒ8)æ0ÿÜΩVL==pÌ=ä¿&>n>”êú=#´=úJ:üò=d¸Ω¢\’=ºüΩ¡0>¿Íéæf,ΩM|>Éí>æàÇ>´uÒªJ€=)≥ΩöûÑæû.G>ÃJΩyû£=	˚¸=t°Ç=7Œª"Èˇ<oÓ)=(KæT@îæ°F•=∆±9ºµ”=âËß=?:ø=ï¿0º2bø=Uõl>◊ÅÍ=o(I<ñä©=]∑“<6z)>áx[æŒ∏É=”œΩk®ûæ;ˆòº`M~Ωd[S;~>≠=ˇ◊=π‡<y”~=ÒCN=ﬁ‰Y<=#Ω80æZWΩ`˚Z<uo.>ì5kæ›@>ºn¯Ωã≤y>Ùh—Ω*Óï<„¯Ï=è9æVÀ*æ“X∑ΩU˚ΩV6~>H±w=1>J9™:£˜B;uüãΩáUy;B∆¬=b¡ºkˆoºs‚Â=qÖYæ…ÀzΩ0è=Z:”ΩKQ√ΩòΩ>mÑ]>AèæÏdΩ‰ﬂBæ∆"ùΩæ¨ΩSr‘=gpˇΩÀ>¡º3yµ=iK=:¸#>Œéº=yâ2æ+ÜΩw>˝Ω$û$=mG2>F∏∑=jâã∏∞2éø!wî>·a¶æÃ„>Ö‰>=¨m‹>‚œÇΩ{µD=yì$>vπ=ç˜^=¬∆÷æ_¸ æÆØQ>qˇ0ª&ú>.Ø;ÑC>‰^∫=Á•MΩ”™/>…xj<ˇè>) Ω«M æOüë=Ä¶±=H~ßΩ
+·ÏΩ)ΩµæLˆ–ºb.=©‡hæ¬•ß=íΩ¥æ"i)æ)'UΩŒ˝Œ=Aà¿Ω#DÒæf∫Ωz>≥î=∆f≈=…âπæpí≈ΩΩ•$æ´åΩ' ¯<kë‘ΩDäΩ´4#>ù*=ÏÙ>œ∂ºã≠ÖæΩu'>Ä7>å◊„<ü(3æ≥Ç>3€¥=€Ÿ æôvÜæ[≥"æh`ºænì/>~¢?=Å£ﬂºÍ9êΩoΩ=L*s>∞∂9æ¿™˝ºK÷v>˛XºXy[< ˝=¶µ=}œ∏ºœ’_æ!πΩ‰>qÚÜ=¸Q	>ıüŒ=ZöÚΩâLvæ¶©òæsR>“ZªY¿øiSΩàIΩß >Ÿ2>ó1—Ωìˆæ’ó	>ú‚Ωøµ=π’L>o∏CæÕLï=r¬>!Â´<KsXæ^ÊU>o-∑æP?Ωï‚ΩO†\ø_ºã—RæÜTÇæˇÿ=çdÆ<‹ﬁΩ∏∂§ºnSh>[…ì=L"Ó<a‰æ¸lêΩó∫€=µ1Ê=¥^=$ΩÜ~j=á'¿>F©=MÛ1æº(>„∫3Ωt_ùΩ«˜ó<÷)?=Öå<}’\>π˛4=6—æÂ˛>±Ó">lævî<D2$ºyπ.>√`%º•w`>%t<œºæ÷éÜ;CˆA> Q∞=-h.=Æ&ºÊ∫æbÙº≠Ú©æ^ùà><w»º”∏I>OΩUf·Ω¡ÏÖæ∫æT˛=>«ÔÇΩ—√¨>òÄÑΩæ\%:`.¬=¿ˆΩòÓáΩÀ§ÎªÔüΩJ§>æ≈eæ»+ΩfnìΩe'W=˙∂©=x®>(’Ÿº©Ï[Ω5vr>Œ˙Ω◊◊Vº—uæ:q⁄=ƒÎ|=(>tÌzº\‰ΩkèΩcQæ¥?öΩ€∑>˚Æà=ƒï>5>û®=êw≥=2Õ<’Yæ˚≥*>ﬂıŒº•ÓµΩ∑ëf>·‚Ò<E0>s≤Ùºê›ΩXªﬂ=¡RG=õXZº¡!ﬁ= Ñæ‚7;¸v«=?£ΩÉôΩ_∞<>TÂ=”d=†L2=Oƒ=∞Mq>AÏä>]øº=‚–fΩcwîΩhñ1Ω’>DÍæø∫>∏;ö>ﬁ©^æ0◊‹Ωw^>O‹¨º¥‘çæE9>¸=óæµÿ=Æ	6=Aà?jWÒ=ï4^º‚-“=Œ`Á<Û§æQG¢ææ0ÅΩ†I•æ⁄⁄pæ¬π§ΩòΩ<Ï”÷=ßR=æ‚âº\ô¿Ω±,∞=,Yµ=î˚/ΩÉ`l=',‹æ@@>1ˆI>dWòº\4>Ç√.º¯Lè<…q˚;kûæ¬˝0>YÅñ=v‰–<â+?Ωœﬁ√=—¿>Os¢º2uï=Ó›Hø'^H<›]c=A¥æÉ›ÓΩﬁ…’=lMu>a˜°Ωm\%Ω†F>GsΩÒ†=«æFº1±ΩåÙúæpZæëõ*æ’tÏ=ÀI‚æÆÿ´ΩVçΩâ
+à>ã\¸Ω4E∂Ω.Æ	>ü6æãΩ
+>w<€†=™°0ºdœΩ"Â7>=wà=¢º<◊©ôæÃ«ûæ)∑=&˜@ª¡ÑΩ*pq>®#æ&åª=◊ç;F=/§Ö=qtºÍ◊æM3>˙Ωæ»j¨=‘<Ç&Mæ7WåªP«‚=—•ô<Ç?U>ë?Ω&hõΩæ¥ıΩÔ„>¥ñ,æÚ uæ‚w >≥)=è&æ…ã^=M›=*ÕÓΩÇûÜΩª∂£ΩÒÅºƒÍπÀVb=π]+>àñE=ö3æA;ÎΩ{b=ü4ΩÇB;>+˝ΩBë<üÒ9Ω 0æ|5=ê≥º”¶æé©Õ;=1>BπΩË¿>·ÕåΩ‰Gº3#æK∂!>µp3æ[Çfº¯˚"æ·†l<µçJº⁄Éæ''|;÷ﬂ√=‹‹Ω®ƒ7æÏº≥1<-∫º#®<J‘ΩÑ4Ωº+ÃLæ˜[=Æß*æïö†Ωl±Ü=_ù√ΩqÆ=YärΩDºΩøY˛=L-ºΩü∆Fºf≥+=·ﬁ,<„uíº:Wyª›Éô=3F
+æîÛΩ`ºΩıæ0Ó„Ωqù´=ÿòEΩŒ◊¢<‰á4=ûdπΩ≈N>r¸àºu&ΩÿìvΩ<≈èΩÏt®Ω$ˇÉæ’ìº¸-&æDyõªE˙=ò{5æ
+5=Ôû(æÓ›Ω‰öç∫7æ≤:öΩL†≥Ω!ÜK=ñ™¶ΩîñVæY¢µΩÉ∫ﬂº◊YeæëΩΩöÔ>ﬁ’æiÔMΩ 4>k^9æ"˚=Ô€)ΩI=
+ﬁ=ö™=@Ó>Ìq¸<ˇ~-æ˚Òπ=˘`Dºº9æm˜ä<íŸ4=åæ>≈‘4æ;6r=4SúΩéö2>ÉåÄ=öå$ΩÌ>æ%¡äΩâLø=ùIù=èëÚ;™?õ>Îk„Ω8≥d=y√Ω}9íª$≈±=˘5]=´¡Ì=Oâ=†£dæ™_£ΩÆìˇΩ≥£=‹å©Ω d>/HLΩﬁïΩüè>HÊzæ∑Næ&9ï=ˇ	ùΩÇ2>çc€Ω º>.¨>9äøΩ≠‰`>Böv>[sÔΩmzç>±
+æá€=à≈æf£<†øv<ÒoıΩà¶>öˇñ<D&ª|p=ΩÑóæ0ßî=wÕ>~@æ
+ÅΩ∏TQΩÜı"æ,í∏7°†æJvΩ1M=çmÅ=µïÆ>UùÂ<ö&=Mæ∞=¬s<30„ΩŸ'i=5®Å=aà ºÀÀYΩD[-æ°∆¨º+™µ=Nº =
+[üº‚™Ÿ=ÌıÅΩ#≥=™®ÊºDßΩ°Ó∂ΩKà€<}sVæ$Y==yÓæ>É ÆΩêM”=˘°n<ŒOŒºœ‹c<Ä◊Ω+¶Ω±|ºI:=ﬂY>,èIΩ»ÚAæB;ëM=?‰˜Ω+<bΩÅéZ=t>¨œRΩß„º€Í=‹µÑ>50‹<ÅÇ>¬|(æ_Æ=\‚Ó>>[vΩñ]<´S8Ωˇ=Yuæâæ€=ÎÊ“<ñ{æîFeæ∏PÖæ€êΩ“uΩÁ‹¯ªÙ´0;R9=Eè>-¸=ﬁ…æ“çmºPˇ*ΩBm9æ"‘¨;åòq=‚Âw=ú4æó“1=<Çå>∆w%æå]Ü>ŒõßΩà¨ºnπ/æË≤åæ˙â>âŸîΩ¯~1=2 ≤=]ÒæÜ&A;„ø{=≠Pﬁ<mßì=µ °Ω˝∆F=ß?˝=AX>Ñ‚5Ω˚n9=ˇtΩoB$>œ˜=¬iî<Êä≠=ºÛò™æ∞\>¥–ê>çøÛ=]Àæ
+L>Æ§,>ùS1=TZs>†æêÌ6æjB>'Ω+>V=1W=ŒÌ≈º–l.>Ì˜Æ=£æ%Ω=˛“ΩK<˜º ﬂÌ<èh#=à<bø;	jΩ˙ZÕ=ﬂŒ;∑q”ΩSUø
+ÄÔΩ’’NΩ◊îç=Y◊>x0øv·1<Æâ±Ωí÷ﬂæV!>™o=∆-'øºvæ]%="_¸=9VHΩ>?©=z%†=˛QäæÉ¨P>‘º+**=oCÁªŸÂÏº©´>÷çt=XéÌºòpæz≈Ωèk?æ¯ÚΩc*¬=Ú*∂æÚÄ#>%ûùøh¸?xÍπΩ∏MΩ‹¶üΩ∏=”Ì<MQ°æ7CŸΩ‹`<âOæ80±=Y–ÙºÊÙº3N÷æ˛’a=Ì≤=Ω.Å æ3Áó=HJFΩvzº˝_Aº\ïo>wŒ‘<îÚZ>{è:ΩW∏7ΩD≥=≈:[æí«ßΩ)ÊXΩúñœª†ÿì=üêæ˜⁄Æ=ùºiΩM∆ΩÉ#˜<Í…À=Ä9fæ	ä6>¢Î<™å>,π∫=®èıædÅDæ¥≥éæ:›æ,ü¥ºS^¶æÈ¶qΩ≈iæD;«=¶õìº¨*=_ÀìªZ‰	>Æ≤&æ›	 æU,fΩ«CÑ=Ω-™=‡z">“oΩ√…ﬁ:˙Ôæ5b)ΩVæ%Œ3>πíê=lüm9©ú=øDpæ[Ò•<A√Æºn° Ωë›ô=ôTÓ<eû'>πãÕ=¿ø>hïq=ÌPΩ®Àx<àûìΩwˆ∑º©ólª¸tãΩ?ÉÌæäP=:\>ÊtT>B£Õ<èFΩ)c¯º1<&<Â%CΩ%Œ˛=‹q•<&s∏ºÔ ]=èéΩß >Ÿ‡xæ§À;ún3>˘p=>!Áª<àÓ˚∫ñ >§v—Ωº±>j»=¡Ÿ9>ÏR+æŒA">
+=cä,æAµL>±≤…=yú
+æPÈΩØΩ¯=ıeç=e5ò>]_>»˝ü=$9\Ω€Tæ;öó=0¡VΩëz=8ºôΩ5c,>hŸÓΩÎ˘≥Ω0ˆ	=.Ü=ô2I>â”âΩ‚0æ@ËΩÔóΩAÈ‹ºËgæ0yR>Ê¢ÆæDÜä>≠ÙÅæ] FΩ}†=˘∏>;
+>.˛$Ωñ‘„<z“”ºt¡P=7≥∂ΩïÃ>«Ω2§Ω»ﬁ Ω∆∏√<’øº<™b> é2ΩUÙ<Ÿ,>9Ëå=@–â=ì2;{4gº„Î?=˛©óº-!ΩÙæ§6É>‚´B=PœO>Ω˛±æCgXæ¯xﬂ=ã`ÂΩΩÒﬂΩ°Bæ(>AΩÒ}>öéº{æÌ4>—>Oæ«ˇ⁄ΩŒªΩπ‹ÕΩ∫4<⁄ı> â>∑=¢<˙“)Ω°[∑ΩÆ„ΩO”iæ^; ø9D¡ΩcC=Õ◊=ÔÆ<M%÷=ºÀéæV∏∂æ…Ä±ΩÉ≈
+æÂñ`=•ß&=¯&=Ç¸>≥´x<~ç¶Ω≥«€=Îëª<Ø2B=áÙªä˛wæ*´3æˆ√>ë+ÉΩ⁄‹ =¡æ∂¯VΩ	’Ç=uîr<v◊∫‚À>ò,:æD‘î=∑j>u=Pq-æG*cº æeíçæ™µÙ∫µ=jî
+>L¶ƒΩO¯<â’Ω•+ôΩP·<√!9>76‹=≥%≈Ω9⁄æ†_õ=ÄÜææMÑΩxÊΩÏn;:(Y>ç˜=˙€Ω≥æËºCmvΩ…T˝Ωµ[é=¿‚ÂΩ¢g>…‹…=˛ñ-<IPæ \\> è<À-*æ;¥¶=ògû=u√E=èrΩΩï<Ü>‹ ΩÑΩÅ<C˜ΩG˛Ωk “=s6=≤æ^√∑=HƒΩd{>•¢K<±f æ˘ê˝<qòiΩﬁñØΩ∞”ºõΩ9gﬂΩÃ/0=òôæº=îúûºÛ#f=´î¢<≈&5æ◊E_æ–•OΩÌgæÔΩÅΩL=÷u‡=ºCΩ„¥Ωó≈˛ºBÑŒªêf¶>π◊æ«ó5>üﬂ©∫//+ΩMπ]=ÂÁâ=˛Œ=0Ûúæ…P%>ƒ{Z>®ìa>®%¶=¥HEº\vΩ"u3æÜó9<ö˛ª=Ó'æ≈∞É=$¥˝Ω‡†Ÿ<µeäæéìπΩº∑9∞'=–6≠ΩŒ∞º£Y€:o >fvŒΩòÁΩZxºÌ‚‘=˛Ùô<lÀÆº†◊b:‡6=A¸À=˝«j>œG=≤ﬂ>=õ˚H>∂Ö®Ωü3=π{√=«-æ¬5∫¨Ù=%‘g>jT =Y
+‚ºrê7=	oi=ô9ö<’ì>sñ´æ[∆˝ΩëLæzdû=ÜÕÿ>¿ˇ&> WÖ=Üìº\ºΩ¶ >¯4’æ#ƒgºfçèæ?Ò=±ˆΩÿƒDæ ã˜>XÿæΩôTæ><µ¿j>Á=ga©Ωo+ø=’ËÙ:∑Íø4v√=hﬁºıíºgOƒæÛª *?æv*ø«[æ´=7="e>aıæÅAæ4-E>lna>iÈ—>-Ω€=N˘[æı•ΩÜ&e>uáb>M`ﬂ>ƒ‘Ω>„ÅækÆ=É¨0>Ô˝=˚É=´ÄæífTΩ¥ö.>UE»Ω¸óΩô\æΩ58æÕ[g>“äﬁ<ÁùÁΩHI∆<hH>Ã#ß=2ıpΩN—<>∂ª=e=>êJãæ≈Sæ°⁄æ7É=W!æãfæS@-?ÔlAΩÜ<∞Ωö§–<ƒ"o=/§æêF=£ÁæÎSß=ú¸¡ºœÂ"æ‘ïøˆá6æÓZªæÓâ¨º´^'ΩUßÅ=ühæ%#Ω£PæPF‡</∂Y<’9_<pµ⁄Ω1^ê< øôøæYæõº¥„=G∞Ü<±ıOæ 9<˘ÙÉΩ…~IΩ˜ö=60ÙºÛjlΩñú_<õÏ¨ΩõîK=MË‹Ω(	(º$ÖeΩ–g§<Ø=ÑT±=º˛<†Èæπªﬂ= ø<&G2>¸‘◊=Öw«<Ò‹‚æhãîæT…¶Ωìµ‘ºÈƒ=ÇEÊΩu9
+æÜê˘æõsæi∏à=Èd@=∏‚yº	m/<H	0Ω—»œæ=ÄnæÕf>å´ı=πg>ÕA–Ω÷˙rΩ%‚éΩfv>ûíò>ßB¸ΩÉk$=0*9>)Ùà<≥√ô>üßX=ﬂk~æäı>Æ[ˇ=k|æ2äΩΩrò=∂ÿ=‰†ΩÛ˚ÿºL‚Bæ<çS>⁄>ÀôΩäÖ æ5aΩBñÌº}>Çùª;ΩoË;˚—y=b`ç=!uLΩ71#Ωﬁçåº—#Ω∑›π<ÔØæ¨∆˛=Éœ˛<0è6Ω0’«<π,íæÙ >LÉæ(	=©=ø°yΩØè3æcÑ">ˆ´L=¸:>‚jªÕ;3>Œoæ∞W£>s/M=(´ææT‰ºŸèÖ>‡,>úÔ<ºRJê=«>…ºCª≈Ω’P<‡ÇZæo4>D=¶Ω—2AæÅËfº\·ﬁΩX©º>[∏º4œŸ=ê% Ωì›¶=GRcæNÕΩß÷®ΩçkΩÛØÛ=%/=õcΩO^ æÉ»ΩB√é=èLØæe◊Ω oaæˇ^∂ºBHº=˝∏ΩïzæÍ∞(æ¢°åæë–ƒ<Ç[ΩØuàΩ%Ãæß¡bæ_l>ΩØÏåΩÙÔÑΩ–Ç:=h‰$æ3÷	>˘7«ΩŒhˇΩÊ#¨º[†=k™èæŸôÈ:,»æ|∆_>!ï=‰≥›ªa◊$æ±0>Ω!Á$<%¢=eîº:õwæ1‡ÈΩˇFø«Z>>AÕ=±Iæ8â%Ωn„tΩ>∆ëæ5√Úº†ÇΩÆ&Â=Òu¥=ﬂ$ÃΩ,&›=	“¨æ∂W÷==7x=‡jJΩ·H>¶Fíæ}(=3∂=—oæt±]>JÙ=ì==ù=G+g∫x
+H=6ì=g≠≈=∂j[=â≈‰=9îñ=¥T≈Ω…Ij>ÜüΩJœº@›◊>6¡ﬂ=_«Ä>^ƒÉ=√º-> ˜=!ˆ=KOãΩtœ§=ﬂ7|=!{=LZ=´b>Çåﬂª3éõ=)›öæy<ßæ`D«=nkæv‡æFe,>±m<’ƒ>s≤4> k=æÆ"Ω!Ò¯Ωπu◊=≤¶ß<;™Ωªõì<µßÇ=)Sf=·èæ¡r=í«v=˜‡≈=Ê=Ö	ΩnG|=Wä4>µª'Ω–^.=t∫Ωƒ«.æÖ¬à>ïkÌΩ™q>\ØÇº`ﬂ=´lñΩt–<‰~>Ω]Ù'>˜X Ω’Ωm>{Gæ«	ΩÊ7ΩΩ”!<≠Óû=∫6Ωÿ¯˜=÷x?>Ä/∏=S’†<FΩı=¶ñæsÕGæ) +ΩX¬∏<X>&S=≈J>ŒÈΩ$˙>|]wΩ«v=-O	ΩD_~=µı£=Ÿ/ûΩê’$Ωœ5ΩTÙ=^SH=∫»<·VΩoºFø9æóF4=Éñ=;ÃêŒ<ô¨•Ω!@7>	Y∞;““ºP >ä«–ºpæ>ËíÖ<°=∫ê¶=,<H>–Z2=fTâ>™≈îº)p≥=a&f> ålΩ3¶=ÿÕUΩ0Ωº!$=˙˚ >ymÄΩdVYΩ#3
+>Ç?ÔΩ*@
+>?ÈpΩÉÆæR®6Ω#Ì£=Nßäær»<åg«=Ÿ≤È=˜t∑=«+j=nAæ.Ïæ˛0>î;=\J6>3 ΩÜ
+aΩ@?¬=◊):ºA=Ω⁄Ì…ª÷Æ©Ω“ΩΩ.!=ÁΩÚ¶=ûl“ΩRy°=|K
+æ	6µΩçQèºÙ0ΩƒÔ”º3ó>ˇú=y”Ë=öﬂw=IıŒ=Ω˚Ü=:&!ΩczæV¨>Ò≥a={$˙=9ÜÊ=±DΩÀæÂΩæ;˛sΩ>~=wÁíΩ…•Ω^†ë=Fó´<ôâΩÒió<Ì<º =Bπã<{ÊΩêƒ3æ%˛kΩ÷Å>/Vr=⁄çæ¢6»<˚.RºâO“Ω}˚;mÆÚº◊:ê=ù&Ê<ÁñÀΩ˘Õª∆ñxæ´í	=BÃ5ºjﬁΩÍJærÿü=€ˇßΩŸ¢j>"ƒº“ÈΩ”m]=u„˚=ΩÅº¸≈Ω'ﬂæø«=Êˆìæ(º˘<]œºªÛüEº˝!{æÑ•<àÅ-ΩyÄ>'º†<aΩˇ=h‚q=õ!â<Ö&«ª‡+æzıΩÈé>,ö˝ºíë∞9'ÁTæ˜Ï=‰°æπ]>«π>øé_Ωºl >ø,!>∏9>2ƒÌ= ä–Ωå∞JΩ; ¥=\cÚ<DÅæ–VßΩ¯(¿Ω’§<!4 >”Nù=ﬂ≈;>Gî{º|G1>ÙÆ={‹=Ä,=Ã/´º∂P¿Ω1:æ´æ˛]!ΩÒ€
+>{Ø >§òIºHé6=˝‚æ=·<=›Ú¿Ω˜æl˛ƒ=bÀÃ>f‡>5éÄ=ÊmÈΩ2À+>UÖ©ºWïÎ=Ú:æ…xΩ‚l#>¿	>ø√ÒºÂóÈ=…9øΩÿÉ>*÷[=∫:>Yæ+=ÛÎÆΩ^Tó<_}j<´¯<<€!v=ƒ„G>ú3W>\=)KßºHpærÏß=1‘Ω„{Ω'aò=”(æl˙>ªì;	äæ(ùº4{≥<Fs>±w]ªù->Pˆùæì ∫tÄô=«®æHr4æ∆÷=è'>≤‘êæ™©ÚΩœ£Q=?>Í-œæ oæ˜æ™Ì\=›ÒΩ≥„	øÒ˘=ElŸΩ,Q≤æ†iæ ¡¡æΩÃΩ≈-æ,ê§>Ω¶≠>‰'-º|GøΩ£)”Ω»ÿæyG·æ +Z=DÜææ÷Ù>p·nº≤øÏº„öK<v±X>8ëæ*=É’≥>÷a=)ïo=ê=ÖO<˛©ßΩy*>”)$ªÜ’æıÛÛΩ8±Âº˝ﬁ«=æôó=§9¢æu”˜Ω_ë=çîΩ{q>êÖÖ<m•&æ{ﬂΩÊ™ùΩbD’<¥5;Ω°/fΩãdÌ=(m©º	æÏLΩ‘˚?Ωúóí=´ã<Ω¸Ω◊Ω‚º`/¿æ5q= …>·éÕ=–SKΩxÄ!=…u•æ¸Ï>m’ëæ”¢Ä=„XÅ>¥pÃ;ee¶Ω«2¸Ω◊óæ¿Q`=∏îﬁ=ìt<7ê˙=8FVæãªT>ä≤òΩ9>| Ò=Ú?>∞≠„∫´ÌT<-+É>Ê¢ÿΩ"¸=IØF=ÙΩ<ÎJ'æŸ	ª"M\=ΩbAΩˆø‡=ÜˆºΩrˇä=Èü’Ω%{ŸΩh``Ωï=õ˘£;è˛√Ω“5=é∂?ΩÇ†ˆ=`°DºM`2=¸e®<¯Y$æ∞æ˜Ω"DÕº⁄ÔÌ;Æ˜º
+‚Åº˛zæoä>æ.Î=‹"=é8ΩÉ=∆≠>ë æ;!ØΩÙÛ¥=ª`Z=–kvΩ¬‰QæxÃçΩ‰1Ï=a,æØa&æNΩ]Ÿ$>˜Êæ=ó√º‹ü—=˝•‹º ÊÄ<∏|F>ò±æxc->oÀ◊ºî‘ô=±⁄lΩ◊Jæ˛?+øs >á‘>âˇM>$ï>7¡¨Ωºs\æ®˙“æ†ıÇæÍÉ€ºQ≠á=•+Ωπs†;ú‚ÄªzÛ æ&kæã€∂º O	Ω-/I>!dï>@…<Á-'æØc=dZ™ºl¿3>»bh>}˚hΩj¶!>ööøp)ÀªäØ8ºã⁄¨Ω«ïº‘ÙΩ"ûL>}UF>pb-Ω—Ö>\Õø›¡<·ü>µa)ªÔIæò8=Í©ΩCyãæÃˆ6æ–¥X>çÊæ˘≥>‰ÚuønpΩ`î>Ã÷æ^ÿ@Ω·Ûo<Øü¨=ä>>^6a>åû=ΩLH’æx{$ªZÀ
+Ωcﬂ“=i<æ>√y=˛®>öˆÃ=_ê[Ω{Ä~=•HæÕú>>pøΩÅ>æﬂà>∏=4ºÓEΩ®–ˇ=ãM<)>Á/$æv§=ıª+æÁ
+>Ü≤,=∏e’ΩÉó=¨\ï<∏&>µ=Ë°<r="á<H‹¡=Öo˛=á.Í=¶n„=Ë.ÄΩçFæô3=∏À´;ƒq=âæ&oEæﬁAΩá	>åê >˘@ûΩY·>⁄l≤>ìI>)^æuÄ<,øk>Ö[*>Ä¯.∫ùÏ!>◊˛7æ!-á<äÆÛ<îæ º˚<ı7Åº¶¢æ=?+ÿ=ÄÑ›=H‰§Ωmz>[ÉÎΩKU>Læ>ø!Íæ˙Ã>/d§Ω‡ø?Ú!æt¨Rø∞H=·7«ºÁ¢=§xæÛbÑ>ﬁñ>Í≤>æ}‡≥ºÉ˝⁄ºMöéøæ°<A•ø¸I?–Í˝º°Ÿ¶=C~≤=“¥Ω>¸tc>™Ç‹=¡l’ºyŒæ≈Iqæ—H∑Ω«”„æÔˇø¬ë<M1≈æå†D=˙éΩsÃ1=N¶úΩ»OâΩt:õ=¬a‚=ÎZøú,>ﬂx!?9¨o=M¸Å>[Ük>\†„º•£à<ÕÅ=˙J¿ælhà>˜ õ=zMæ˙%?ºÕ>êi4æ`ôæ„vΩ3&Üæ÷§ê>í>RÙ=ó#à=Î0>/„ΩPPÅΩÉ|ÓΩä#æΩÇY øQ»ñΩÍL¶Ωû´0>`8nΩèË’:aª¿=e›æ2—õæùS+ª[JΩË¸=î8=°œq;fæ<JvŸ=)ãéΩ⁄ŒXºK¯>Ä∞>]J’=„Z)ΩÆ›<æ 
+Ü<áﬁd;•%1>§>Ωóö–ºÛ æwi+æ3ÇΩ	¬Î;˘&>eéáΩu£'æ ªπªGÇæoxÄΩ:Bl>„]ì=Í=∏πΩ\Z>ÇÄû>Z$>kh”<≤'==m>Ù)¢Ω»,æ‚ö4æÕn3æ§"÷ΩÆ.E>Q^5ΩsÆæƒl>íøø»NÌ=OíæbœéΩ≤˜œ;=†=4≠›>u/;ﬂ∞Ω5+Ñ>Y#ıæ!ÿΩ…}+>géºK…N>kÁçæ>E,<C$=/)s=uR•>zÜ2ΩìP‰;BΩ/∞äΩsÂ‹Ω^rÖΩÇÆ8>á®æÑ?≤=~!w>|jæä÷ÖΩ]Ì¶æS	æe™>†’=Ûf8ækZH=∑&·Ω≤ø?Ω*Ä=ﬁ◊_ΩFÑ≥;•ÈKæ˚[wæ`!Z?YºÀT>¸¸=®°ï=¡uæ© ç;•¬æ2C”=ÕzNΩÔ∑æƒÍÖ=_>⁄ª˙Ü>˝Æ¬æ∏^]æªù=—lOΩıaæ>úÁ=0}=6yΩºÿ,>}ﬁºtT=Â⁄=?Ì◊Ωô˚ìΩ.ÕÇ=„-®ΩIÃˆ=hí >‡¡A>ÕÁ™=;n¨=UÁzΩÌû—=Ê{>=1Íi>¸∞Ω·I
+>1Ä!=≈öÇΩ+√ºb≤`;E‚>ÆÊº∆Ìåºh˚<g>ÒΩ‰U˝Ωî®ÃΩÜÀTΩf@åº‡êΩcπT<™:dºGLÈ=ÏOæ=4S}>^Ö'>O>†>ÄˇΩ;ïΩ≠gà><>¶í†æË‡Dæê≤–<Ï(=‹bE>kJº<È»=√<T∫œΩ1»4>–ˆ+æ§u>2!>´ªgΩíÕâ=!ÄΩEäΩd2Ÿ=Gº˘(1æ]‘îΩ`É
+ΩùæÏ·%æù-†ΩîùΩı“<÷úHæFS:æ"æ˙ÏîºŸÉ(º£≈{= ê°<ÒH∑ΩSÑ°ΩuÊ:Ω#Óâ<°≠s=8¥ºË∞]>ﬁYìΩXÕ°Ωl»>˚»Çºèõ-æ…¯¨Ω‹Ü◊<7ãíæÊlæ0o]Ωëù∂={ü∫=Æº3º®4<>#ñà=dè="^Y=Kú$Ωê≠NΩ0¨ªçÁU>'xΩÊﬁΩA'æΩ(æcæGud>ÂÍ{>+ÛΩÈzì<_J†æõû5æƒêΩêhÆΩZèï=96ÎºïÊΩ÷≠Ω¥î^ΩôR¸Ω”3Ω∑ﬂŸ=j3à>sâî<5R'=/ﬂÑ=ˆΩ∞=…ßµΩrr⁄ºÊÚ=w`Z=b's>’	ôºr_ù>…ìL>©8ä=ﬂﬁÃ<ˆﬁ3æ∫Ãºº6©•=(;ΩlAc==èç>{íΩ)*ó=æ¡Ωÿç=‰
+F=©w3æËå{æò>}VÜ=ßY¿ªÆfÄ==…ªºî ¢∫˛gÄºı©∫>π„B><Òºñæ§t,=ﬁ=[`
+æJ◊°πˆÇæWçæup~>CœŸΩìÑÚ=Ï∂Ø=t">ÕD=lz=§J[Ωj*>ÏY{<Œ·ã>Z›Ñ>∆œ#>#>!°ºÊÌΩÙ^DæÉx¶=Y‰ºæ˝y…º!/æŒ°ΩeHg=≤záΩunMΩyn:K9>ËÍ=hï)æ*øÈ=xèh=/ïªîuäæÏöJæCØXæ´b>)™=:=ƒM=≤ﬂ=æ	ü´ænp?=ç§}Ω>1RΩÃπºCèêæ≈M=t«6;‹S“Ωƒ§#æ≤5¬;{Ë"æúO§=o‘b=°>=¶í"æÃJœ<¢+æ<Ä”=è¿æ{¿>˘-9ºù1=ºÒÉæ¢ug>£æËhJ>éÂÒ=∆Û”ΩòÅΩ·ä,Ω°»·ΩA=l<ÒAº=@p¯<c≠B< ÊP=J<ΩHtΩ=+E•æ„áˆΩ¶∫ΩlKû<¯Î@=ò@
+ΩDP˘Ωx¡‚ΩÎÚ<∏˚·<K9Y<¢“âΩdx3Ω‹4Ω,IΩ
+ÿó;dΩ†Õü=√ña=’jÊΩ-'òΩe™ó=D¶ÍΩÒ´º“í˛ΩZÍj=ÿ“ﬁΩƒàÎΩíâ”= 3ºˆR„ΩﬁPN=◊=<¥+=[È%< ≤ÈΩy†Ω˜èºnc∏=5` =f˚‘Ω¥S÷ªÿˆgΩLΩ ø$<ê}|ΩÛÏºQ'+Ω?9≥º(ãéºPAîΩª—“Ωbß_ΩÓΩ=FKΩ1öΩ$=´fíΩ¿∂äΩ5âæÄ∫ˇ=œSk=vÅøΩKÖçΩ»"ﬁªœ_ïæ≥W(>†a[ΩãﬂV>#îΩ)…Ù=¿€≥º…-<ç“‹æ‚ó¿æﬁ0∑==OΩwû^="úº9»ºΩ∂’¯=/›=h!Ω†„‚æ”>T>SÈ˝Ωå=GCΩ@A?>™øm=õu≠=πoåæÕJSæ‘ÂæÊ4.ø
+[_ΩùãÇ<„â.æ´]?6Ÿ1æ„˚<	>>Ãè=ΩÆÏÚ=ZtE>∆‘G=€7 =t#‹=<3øÿZ4=Ÿ fæçΩäi#ærÆ™Ωò·#=9]é;¿ sæÆÒ>˙
+>©ÿ!æõ≈=Y–bΩ¢Ï≤>ÕëæÃô>®∑>è#øRÏ±>·˙ﬂΩyç∑ªxhΩ’ñ;πû†=j]È=ÅÒü;∞ß Ωm_9æ…P•<.ÂÀΩ¥Ω=ü
+ΩµÈá=$hAæ¡ﬂ/>sï=Á˝πºF.?æpΩx>>¸»=Üîû<)ﬁ∫=d˘?<Uﬁ=M'>˘˙=ñö=»”J>∞>>?ÇÛæ)@¥ª:yY=©muæíP=}¡õΩ—ø:úîƒ<»◊û>1 >á1∑<˛»¶ædè6>I^ì=êˇ⁄=QØÄΩuÒº©±ƒ>Ç<˘±ì=`≠=Ñ∏æê∑Õ=ÖkKΩ¸∏=Í∫≠gÇæ»Œ ;;Òt>ˇÆæ˘o<>Rª˘=FâΩà·f=õiøf©+;*óàæ…ˆò>	˜bæmRqΩUd3=ﬁwæ(î
+æø°=⁄ÖæÜ"nΩ#>›8ªΩø`¢>^=≥ÿÅΩRJi=ô≈æ>æáæËÛ∏ªrâFª_ÄΩyá>Ì˚êº©/<*< ¨¥Ωã3L>#ª=˛°Ω=ˇSΩ*
+ä=)‡%=ˇÓæ·{NæÉq>&$@æªìe>8≥»<hDìº;ï1>be>¨ó=mX¢∫·ÜÊΩsî!ª»B¯Ωõ	îæ‰'≈<Çs>Ô˙=∞JΩF¬ë:t;æùi∑ΩdRë>b¬B>qı>åçæi∂s>Ω&Ó:)>I/zºÉ3>ZºØñædb>HËY=ƒ®»Ωv™˙Ωå‰=0´Ω!Ä>õ≥=7áï<ﬁ·>É†MΩüú>∞Ñ7>8˘Ωüˆ>éû=i´=é|w>˝vL>ˇp>kP>ù‘ªp∂Ø=aoi>û>U>«rt>À˜§=4 =å%¶==áG=ÙèºËïó<ª[Ì<@ñΩ{¡î;¿<æΩkfúΩ¢i1ºËt=ÅzËΩÕºu¸>5ü>⁄z> 2º‹j›º/˛=¯«x=ˇB8ΩÒ<”º¸Í‡ΩÌ~7ºlŸ"=∆ï=ÌjÈΩw;3øz˚=V±Ã>)¿ª0/∫Ωù>|éº{#F<”Ü/æü’=Ä–Ωòi ªº(ß;˘ŒX=~n¥<Í´=ºö<ü∆é;µV>ª‡?æÇAæÈRæ∞£·ªw£H=œÂæ,Ô◊=π®=8Ê>¨îΩ>MºòÓΩ,¯e>-ÑªdÕ<MiGæ·ÚÜªëü::°=PAô=ÿF1=Ö∑=æˇﬂ∆ª¢–“=ƒ·'æt‚9∫’ñ>ÃìI=[∞ >íˆŒΩùTºãæní>ä?R>eÁ	ΩT–"=ˆfoæä,≤Ω"0Vækî®Ω(Åùª¥)Å=Û~Œ<p∆	æ÷È>ﬁ¬<=9öı=My=A˘æÜßO={1;æZwæüàΩvb)=®´“Ω≤2>Û†˜ºz¥=ƒ†.æ>ˇº∂g>XnÙº)i˚ΩÎX¸=ı9ö<h‹˚=ﬂ⁄;=A|º®“«º†ã=›~Æ=q≈=ˇ∏Hºd£'>√ß3æxë2>Ç–≈ºMWæõú	>cê≥æôã˙ºµ’Ω~£ÈΩÅ–æ—rT=…Näæ–t>â>øûy=gÌÆΩVæ7:£=/»ëº ”>à¶æADúæ|¥2>
+¢Ω“îΩÖWæaÓæ•vÅ<ú„Ωbf=F‰≥ºŸπæ∑îzæÑ9Ωﬁ$£>Ó ¶Ω^ æ7‚>=m>°]≈ΩÇ=“0ıæ)8ﬂΩ¢i<_∏C=ªÃæç˚ΩÇ*&>3÷ΩUfæ–÷Ìºw¿<;}º≠A=Ë…©>ëì†Ω¿DöæcioΩrH*æÁ¬„º¢’ç:•Èæ[Ç>?,>aá\Ω∞àÄ>éÏV> wä>ì=,’#;Xª˛ΩlC$>U;¿Ωöõó<»Y∞ΩÉ∏áΩÅÃX=zÔ Ωã≠V=Iâ >Üj=4x
+>$π?>˝O“æyDØΩl:>>:í:=á2ËΩú{tΩ∂ÜÛ=±0ΩΩ_˚Ω(#_æK∆…ºŒq´=Sµπ¨>ânÒ=ò±ò=COyΩˆˇ>Z{Ω:<Hæ“’øhÇû=q“ØΩÈ˝<Kí=b»√ΩîtßΩéúæ†¿>ºy≥i<ËRÕ=Œ¥ù=O©g=røë<≈€=›∏;æƒræ¥Tm=øóËº
+jΩT“@>QL¨Ωö= )Íº¥£¢æ%÷ı<$¨ª}±âºa=è=%uæéæë‹—Ω√@)æü*æ˜¢gº\5*>.èñºZò?ª$ú>…
+%>†Æ=·7∞ΩïèΩ≤mZ:u’ºPßæÍfßΩ8iVΩGS}æ	l£ΩfæFÙÔ=Ræ(Ωà K>Ær=|*≤;_Z?ΩÜ‹T=ÅÛΩ=ˇ	Ω¿æ≠BÏªHYh<ãÜ~ªS'“=¥˝í=#ëÂ=p¥ΩCıH=p?f>X˘N<¡Î?>@7}æ7rw=~`?a0Ëºw©H∫àçFΩW≤>ü?>n>i Æ=\®MæMÌµ<sÌˇΩ(HZæ≤.Ω±tC=]˛≠<v,%>ÖÏq>kΩÕRô=…÷#=·E≥=Ãπæ≠æzº~Aà=Ëæ
+=£îoæyD¸ªÜ…°>ü∂>[ò~>õ ∞=à	>ç	åæÊlºæËJ.>¬ïb>8FÈ<l|O=Öó◊=á|>ı¨º˚fç<˜‰æ^4âæ6Mæ eÑΩ!3dºA+D=“πe=ke>Ä-V>êv*>…CΩˆ ¨=RÎ>î¡ºıñπºÕ© æu‰'=%ößΩ≤ÏΩ¸¶Å=“&Ω∂‡=˝h
+>{`õ=åÊ=>≤ˇô<àÍóæ¶òO=:>º˛’∏º◊4>eˇÉΩ’b>WÊv=ï¿<¢ê2æ¬	⁄=lZ)æl—Ω{≥N>>ñ÷ΩºéŸ=«='æ†=Iú^=3É>VU¥;}+O=«€æw˚ºzIÑæ˝–=(ñgæ¡Q6æ°yºñæ]R∏ªÓØΩMßﬁΩ{ü>Ωõ‡=CÊ"ª^æ>dπ“ºpÊ/ø˚âú=	ç >õ·ΩB9>Ñ≈Éæ∂ﬁΩ€èOæ¿∫<ìˇ‰=#bΩk¬ÑΩ¢?6æEÕbΩ>1æ∏∫Ñ<çË$=ﬁc=˙Ä–=]¨¶=l˝f>õıæQßvΩøÏ<≈HÏΩf–1æ(FÇ>EF¶>WNi;áN)Ω±uæºàûævM>ìñ<äKXªÿœ˙=Ä:∫=]WSΩM)IæGeΩÖÈ◊ΩåÛΩó?àΩ¬º=!ÊÔªd∞æùCL>>¿*Ω)∫Ω’àUæÊ«=fâ>˝§°=sk§=e”w>Ï6=J\>ã U;iˆæ‹◊VΩGé{>ÇZΩÇ≤‚=>äB=Q}üΩ"jõæÇ–=ä@ó=ULOæ¢ï¢>√o->5
+æñ"Ùºï¿+>¶.]Ω≠î‘ºñÍ˙ºÅ¿”<6>æô˛Œ=0ØΩè⁄Ω≤üR>kƒ<>g≠£ΩèoÊ=@Øúºßf‘º…l|>m‹éæó€>â‰‰Ωk=áΩ*Ã
+>¡¿Ω≥ªΩK∆1Ω(À=H?Íæ5\ÿ=ÀÁºÔ7«>Åúù=æziΩ>4<Ñ".>q	Q∫;JàΩ]ûÇ>¿CÖΩ\lΩˇÎºÅÓdΩπ-∑9¬qí=9„>_/=∑≤Ô=LÆQΩû¯M=ﬁ>?Aí>âõíºPo˙∫Wˆå=ª&¬ºT!“<‚YÅævë√<¸ÍOΩ8s;µ-æ!w<Ù ëæï/0>tû>Bè>¶Ï™æt õªáøÏæπPoæ¯ºfæÉ˙lΩz±æ©¿,=è©m>/ˇøxgû=eCßæÓM>$≈íΩÿ<¶ºŸ`òΩÏ7ºΩÚª§Ω¡πì=ï∂æIJ=>€∞(Ω:>˙r¢=pæIΩŸÖQæÚ*∑=⁄ª<k#…<Õ˚+Ω*e"=w!9<í'æ≤˘=öÄ1>>sæëæØfÎ=IÂ\<ˇÛÖ=IûVæÎÚû=‡¬V=kÙø∞Z–Ω˝^∏=úï;>˝?/<¥=YíÇæJD>£—@=≈ =>É Aæê¶⁄> äæıò&Ωbù>œÌæ™/æ2Kæò–‚=√k>,IΩﬂU=øJf> 3º+÷Ω (æP¥âΩÌrΩŒ∞Ω™=‡ùüª0≥j=# +Ω®w	Ωêè=¿EÀºZô<Çú<‡[P=óÆ<âåΩXâ<,0ÚΩÅnΩámpΩ´°=§±YΩ§ô=B∞∫Ω˘‹EΩæöúΩÆ†ΩGK<=ˆÈæh™ß<∏áæ˘µ=Ì≥OΩ;Ï=‰≤7Ω|Xm<äŸ„Ωoıg=ß˙ΩÖpê=Z:⁄Ω–≠æ=˚">=6Wú=ú‰æÍ¢´Ω4l º.µΩ`fΩ ØôΩã√=@Ω–-V=“∆∆<~¶Ω®GµºÃ}hΩ⁄∫="?Ωa0æQ0=Ø‡z=∑úÌ=˙Ê=¶L<=∂U¬Ω›Õ5º(÷v=r∂åæ/õ>>§≥=rÑœ=Ö¡=ùt·ºH*:º"c¯=#ú=Lñ5æ?Â¢<Í
+Ω(‰Ωt>\íæê÷<’¢	<—´kæ=ñ€Ω™À'>ò@Â=x$•Ω∫”Ωÿ'æGùt=¿È≠Ωù	ñæøkáΩU|™º¡‹N=8¯„º{;≈Ë£Ωü∫ Ωﬂ-πº∆˚=Ò:>h †=1—·= 5Æ=`õã=∆ê3ΩaŒ>†g)Ωqπ=”≈™ΩπjJ>ªZë=5Å;Ω§≈÷=ƒ[˘<‘/>⁄aDæßï=∂æâeÊ=K=õñ®=˘–<;èΩ4pçæñ;ÙΩ'Ÿ1æÀ\>J3ãΩ·;õΩÃU æ1®Dº…U=GÛñΩÓò=Öy≈æY˝´=ÕÛ®ΩíöCΩÈf	Ω@æ≥ª∂§ø ﬁTºÁYGæÛÊÖΩ|8‚ΩœÛﬂ;[ñ√=‹#Ç=4Ò•Ω‰n>$îøOEûΩmΩÇ=)ªæ:Ô€ø…X¥=áŸæûœz>û◊ÚΩTKæ‚ç"ΩQ}æ4æ1øæYà<ÇK >ﬂîpæ;L
+æQºΩΩû=Q<j ∑=#OTæb±H<∂ÇZæùˇh>–\Qæ¡Ùbº"H:æ/_A=∑ò>æÓ(åΩ{•;¢ˆ[º¬∑ªøü“P>•îé>N≥Ωk±Ω~¿æ´¬[ΩQ =„qg>äSæqz=H+=dŒ
+<˛ﬂ(ø†F>¡ÏÉæ‡ŸøM˜Ÿ=•=Ú=ﬂ™Øº:VŒ<6`Ωå#3>‹Pµº:ÎŒ=mü$æU.´ΩÖﬁi=yÛı=;;:>ÊàH>ôME>h£TæˆuaΩŸÅ>*æÀ∆=<·Å=“õ(Ω[Læ7RΩ‚eHæ‡‘ΩL¥Bø;bé>≈Ω˝ô•=äÛm>ºËø∆ÇsΩ.ãˇ<m`øÎ;g ëæAñæ>Ú,=q¿Ω∆A,>lÔ|ΩøLÚ§>qX?æê†ó<ú±cæÇüæcãvºá‹ænM‡Ω≈+;¡M*ºx$ë=®∞/>Ù.çæ)a=÷*Ö>≠ºøÛ=>º˘Ω—SüΩ‹ŒÃ=⁄i-æôGÄ=%VD=4ø>-≠>Éÿ Ω9P	º
+dN∫«g÷Ω*§∫º"Ÿ¥<ô# æÛıp<î±	Ω©um>ìo≠Ω∆(ºò+8=•ë<π©<G•∂>Ùõ÷Ω˘a=‹«!æÅt=ûû‘=N3C>Ñ¨2æh_æxDÌΩ¡p>ªycæjgQ=ÔÃa=gm˜º#hèΩmVæ›·+>u∂>Û B>ﬂúæ]ﬂŸ="=w=∆>-=·íûΩüyΩS˜+=Ùæ*ü@Btrained_model.fc2.biasJÄ˜
+=<}Í>êJ—Ω =	h >ß[b>RÓg>ó£ü>÷*¯=‰«º9^
+Ω—>G{í>≈çºˇõ>5ƒ]<Ç©>¶W>°
+>ˆââ=º™Èa>ó>∆‚=Ñ∏=†ª<è»4=ê=Å”æ4Ø=∏tºØ^Ú=L∞ﬁ=ˇåE=Ïz#>€u“=_>wΩ¯êΩnª;⁄( >g*¿º5ËΩbÁΩì_>A—ñ=≈z=âæÍ°˛=IÔ>}È•>0>¨-ŸΩÁ∫j>~ÑK< lª>r8ç>¶2ßºê?á>+:o@ƒΩ†TÓ∫‚“=Ò°òªø“ò<*£@Btrained_model.fc3.weightJÄ-∞¥<‘->Æ*ë<&Á-<‰˙=Ÿ,æüÊ=Úü9>\É<ALs=k—_ºvdXΩÑË<Eiîº 8>,Ω<À«oæéΩ'pø=Éo∞9ë]øºYm)<“n=É#˛ºx¨Ω47"ΩS√<6°<<⁄º6=ñ ¶<Ì∞Ê<8Ø<—CÑ=Y_=˘ íΩs…Ωπ˝àΩ)“Æ=L◊‹ºíØº¨K%=ˇ=»Ω≈”◊<≤ æ
+ÿ<+¬)=rA‹ΩõúæΩY(æjb¿=Hu~Ωhc<3ÿî=õòﬂºèl3æ[É=>>Ì®=]`Ω]U©=È„ï=“˚)ΩRÕ¸=´oDΩ˛Æ⁄Ω-ÒîæVW=§¥éΩvN >)ÇæN¥=ﬂ◊£=<”º%£ºvÌ/=†ç9ì¯0æ/aâ<Ûqº¶qΩ}SAΩ˛r>‡¿Î=ˆG√ªlQNΩ7ì>ÑÜæΩ6<t0‚ΩYê<ÜÆºûÚËªÅxæ®Ö√ºÖàΩ8Íƒ<ËHæ—ö=ﬁ≤¡Ω6$f=	”∞Ωıè=…;ﬁ=ic:º˘ﬂ=3F1<≤T*>˝EqΩÒæ>™ ÉΩ–u>LΩÇΩD®˝=¬’\Ω†∫Q<¸–0>!I;5C9Ω˚BΩu¸Ω“›D=*À–ºDQΩAãNº‰<º◊ =¢1BΩŒ#>ø[z;v»=z‹óΩæAÀºÓ)->Ì*˚<o04æ‡˛°<Ùzz=>JÁ<ÃÎ-=N üº;fÁ:¬ΩßåâΩFE>üÍº˚íÖªhÉ0Ω;jΩMœ·;]{>d£T=°ΩŸ‹˘ºPŸ√=ÿ2	=6“Ω¬=8Ö#=œGı<[≥C=i¥Ö=ò”®ΩóÖÄº>Ω¬Ü<“ÉóΩ•ørº?Ç>ΩfQòΩ°≤R<ÕΩæ“IŒ;êΩ‘·íΩÊ}4æ˘$÷º¢cæÈG∫XÎºKiîΩrÿu<Ïy3>ƒ|gΩÃ`òªQE<Y√≤<¢2d=¡Û>b=X=iô=‘÷<Æ™Ωr§ÿ<WEΩ˙îoΩwŸ≠ºp#*>^∫˙=Ê!-æï—_ΩxÙ6=∞_>?"<éÛ∏<'Öó<ûîÃª¬©ºË∏±ªm=·ÆÊºòÍæe∏=Dy3ªUˇ!æ¬ü6ºU=)¥˛<í8=ûµ~<√¸=ù…f=gH¡=êí9Pß˜Ω¢´h<´t€Ω4ˆ.ºEƒ‘º∂,ÏΩ Ω<‘8UΩû(Óºh˘∆<WDèºŒ<|>å$Ωñƒ=ö[=Ë§˙=lΩ‹VVædœwΩ>Òè=ôï≥ΩíÊ∏~OÉ>D…æâ˝‰=ö˘	æ~t†Ω†{=±h’ΩeπÌ;Ú#Xº§‡Óºw$EΩNëë=˛Ω£ΩV
+r; ¥≤<Ù©OΩ~¶èºop>k;`ßA=Á<mG€<qÉú=b1Ω©Íñ=¡ë<…&.æ‹Psæí~æîß„Ω˜àÜ=¢æòÌ=õ(Ã=î%<úM8Ω[ ∏=⁄a€<.>%Äºˇ.ƒ<êÒ”;ü:>$≈é<©’ÕΩw∑öΩZœ˝º˙≠Ω«|è<u°è=õ˝=•≠Ω˘ß<«+æ Rº¬/HΩ?nΩAÂΩπç®æ¬ö=º)>Ü¥=B“@º~N%<–4Pægd,>'ÍπΩ'v=>1ã*=|H=^¢…º¬éìª?éX>6˚"Ω$‘«=≈î‰ºÉ’tΩ˘åbΩ¨Ø >^0
+æ`≥<?æ>µú∏<”&Ω"√>nmfªû–=êë‘º¥ö=2Ø8=^%æ£ôG>uæ™ÀΩNz)=ÂN>ﬁó†ΩFYΩrÿWΩ√Ö =≈W—=5pΩ≠◊ØΩmúÒΩá#„Ωüøh<A€æ¥ƒà<˘]=ß3µ=òyëΩ<LΩá€º∑&MΩ*√;®Ñ)=èA.<¨y*=qΩÂR¢ΩvˆùºLóàºcb	>ìµ>#Z=XùºE#3>ZÏ«;ÌyºΩa µ;ª¥};3‘ΩÑIΩ®W—ΩUc∞=¸ÆΩ≠aÄæÚ	ó∫≥Œºñûí=7¬≥=&Ωô€=	øKæÒaq<6ÂD>ÊΩg\Ñ;õå=iß=Ì˘)=Ñ«º3Æ>©•ÎΩ»}ÃΩèo=.Ωsf Ω…€ü<∫µ‹;Ÿ>Ç=ÚXπº¡ÊΩ„›ªçΩŸhª˛LN=kfAΩ¿sáΩ¶”Ω€“EΩıÀº∂;ΩÃÖNΩQª=ãﬁ˘<ıóy<„∑Ω}«m= ˇdΩ'fß<∏Æâ=@
+=QS4:úÑ-º
+Q<p±=À=¬⁄ç= Ê¶<ÍÙ=:J<∑oæ©®o=X‰)=ﬂ+=*w§Ω#M=™G Ω 6ΩSë<Ú±=5ï»=€Ö˘=“=ädûº∆,Ω1€áª≤ÃΩµN ª∞+Í9ŸöUΩ_f>˝À∫ÆxΩZ°a=Éa:=2w1<VƒºÙà∫;`‰ãΩé õ>1ÂJ<˝€º|0kæÙA¸=QvVºâ*sªN«µΩ∞f¨;˛*>"ÁÌ<-}çΩ!Wºªrh æ≥ÆÃ<)Ω∏ﬂ;º‚<“ª0ı=®Õ[Ω lÔªœ<»c>ë`:UUaæbz]º∞‡=ŒtΩ¶4æøêx=ﬁôΩ[®T>¯Å=¡Ë;i∂IªTÅ={ï4æñóPºˆ≥™>3∑*Ω®0<Bm»=≈=´æ[ûHº*>Btrained_model.fc3.biasJ ®M>ìf6=óÓŒΩ ·æ;ê˛=9> t=tiüΩZ
+input
+
+
+b
+output
+
+
+B

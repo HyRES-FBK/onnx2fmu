@@ -290,8 +290,6 @@ def build(
     # Read the model file
     model = load(model_path)
     # Generate input entries for all dimensions except the first one
-    # context["FMI2"] = FMI2generateIOEntries(model)
-    # context["FMI3"] = FMI3generateIOEntries(model)
 
     context.update(generateIOEntries(model))
 
@@ -326,6 +324,11 @@ def build(
     model_target_path.parent.mkdir(exist_ok=True)
     # Copy the model to the target directory
     shutil.copy(model_path, model_target_path)
+    # Copy onnxruntime to the resources directory, do not change
+    onnx_folder = "onnxruntime-linux-x64-1.20.0"
+    onnxruntime_target_path = target_path / f"resources/{onnx_folder}"
+    shutil.copytree(f"lib/{onnx_folder}",
+                    onnxruntime_target_path)
 
     ############################
     # Generate the FMU

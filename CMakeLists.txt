@@ -32,8 +32,6 @@ if (NOT FMI_ARCHITECTURE)
   endif ()
 endif ()
 
-set(WITH_FMUSIM OFF CACHE BOOL "Add fmusim project")
-
 if (MSVC)
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 
@@ -139,8 +137,11 @@ SET(SOURCES
   src/ortUtils.c
 )
 
+# Set the onnxruntime directory name
+set(ONNXRUNTIME onnxruntime-linux-x64-1.20.0)
+
 # Set the path to the onnxruntime directory
-set(ONNXRUNTIME_ROOTDIR ${CMAKE_SOURCE_DIR}/lib/onnxruntime-linux-x64-1.20.0)
+set(ONNXRUNTIME_ROOTDIR ${MODEL_NAME}/resources/${ONNXRUNTIME})
 
 # Include the onnxruntime directory like in https://github.com/microsoft/onnxruntime-inference-examples/blob/main/c_cxx/CMakeLists.txt
 include_directories(${ONNXRUNTIME_ROOTDIR}/include)
@@ -190,6 +191,13 @@ target_include_directories(${TARGET_NAME} PRIVATE
 )
 
 set(FMU_BUILD_DIR temp/${MODEL_NAME})
+
+set_target_properties(${TARGET_NAME} PROPERTIES
+    INSTALL_RPATH "$ORIGIN:$ORIGIN/../../resources/${ONNXRUNTIME}/lib"
+    BUILD_WITH_INSTALL_RPATH TRUE
+)
+
+message("$ORIGIN:$ORIGIN/resources/${ONNXRUNTIME}/lib")
 
 set_target_properties(${TARGET_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY         "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}"
@@ -267,7 +275,7 @@ if (MSVC)
       ${CMAKE_COMMAND} -E rm -f
       "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}/${MODEL_NAME}.exp"
       "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}/${MODEL_NAME}.lib"
-     )
+    )
   )
 endif()
 
@@ -279,7 +287,3 @@ add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
 )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/fmus/${MODEL_NAME}.fmu DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-if (WITH_FMUSIM)
-  add_subdirectory(fmusim)
-endif ()

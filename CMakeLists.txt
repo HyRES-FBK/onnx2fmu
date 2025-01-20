@@ -259,6 +259,15 @@ else()
   )
 endif()
 
+# onnxruntime lib, use glob for file names containin .so
+file(GLOB ONNXRUNTIME_LIBS ${ONNXRUNTIME_ROOTDIR}/lib/*.so*)
+foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_LIBS})
+  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+    ${ONNXRUNTIME_LIB}
+    "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}"
+  )
+endforeach(ONNXRUNTIME_LIB)
+
 set(ARCHIVE_FILES "modelDescription.xml" "binaries" "sources")
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}/resources")

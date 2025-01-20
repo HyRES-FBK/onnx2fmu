@@ -14,8 +14,7 @@ cross_compilation:
     - conda init bash
     - source ~/.bashrc
     - conda env create -f environment.yml
-    - conda activate onnx2fmu
-    - onnx2fmu build onnx_models/stand_model.onnx
+    - conda run -n onnx2fmu onnx2fmu build onnx_models/stand_model.onnx
   artifacts:
     paths:
       - build/fmus/stand_model.fmu

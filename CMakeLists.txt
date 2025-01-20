@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.17)
+cmake_minimum_required (VERSION 3.16)
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
@@ -315,7 +315,7 @@ else()
 endif()
 
 # onnxruntime lib, use glob for file names containin .so
-file(GLOB ONNXRUNTIME_LIBS ${ONNXRUNTIME_ROOTDIR}/lib/*.so*)
+file(GLOB ONNXRUNTIME_LIBS ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/lib/*.so*)
 foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_LIBS})
   add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
     ${ONNXRUNTIME_LIB}

@@ -18,3 +18,4 @@ cross_compilation:
   artifacts:
     paths:
       - build/fmus/stand_model.fmu
+    expire_in: 20 minutes

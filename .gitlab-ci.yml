@@ -12,6 +12,7 @@ cross_compilation:
     - bash Miniconda3-latest-Linux-x86_64.sh -b
     - export PATH=$HOME/miniconda3/bin:$PATH
     - conda init bash
+    - source ~/.bashrc
     - conda env create -f environment.yml
     - conda activate onnx2fmu
     - onnx2fmu build onnx_models/stand_model.onnx

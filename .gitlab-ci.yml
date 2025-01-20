@@ -1,9 +1,28 @@
 stages:
-  - setup_environment
+  - build
 
-cross_compilation:
-  stage: setup_environment
+ubuntu_20.04:
+  stage: build
   image: ubuntu:20.04
+  script:
+    - apt-get update
+    - apt-get install -y build-essential
+    - apt-get install -y wget
+    - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    - bash Miniconda3-latest-Linux-x86_64.sh -b
+    - export PATH=$HOME/miniconda3/bin:$PATH
+    - conda init bash
+    - source ~/.bashrc
+    - conda env create -f environment.yml
+    - conda run -n onnx2fmu onnx2fmu build onnx_models/stand_model.onnx
+  artifacts:
+    paths:
+      - build/fmus/stand_model.fmu
+    expire_in: 20 minutes
+
+ubuntu_22.04:
+  stage: build
+  image: ubuntu:22.04
   script:
     - apt-get update
     - apt-get install -y build-essential

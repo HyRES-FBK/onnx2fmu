@@ -1,5 +1,8 @@
+stages:
+  - setup_environment
+
 cross_compilation:
-  stage: setup_enviroment
+  stage: setup_environment
   image: ubuntu:20.04
   script:
     - apt-get update

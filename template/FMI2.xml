@@ -48,7 +48,7 @@
     {%- endfor %}
     {%- for output in output_entries %}
     {%- for i, idx in output.indexes.items() %}
-    <ScalarVariable name="{{ output.name }}_{{ idx|join('_')}}]" valueReference="{{ i }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ output.description }}">
+    <ScalarVariable name="{{ output.name }}_{{ idx|join('_')}}" valueReference="{{ i }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ output.description }}">
       <Real/>
     </ScalarVariable>
     {%- endfor %}

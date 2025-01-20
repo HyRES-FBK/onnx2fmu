@@ -9,5 +9,6 @@ dependencies:
   - loguru
   - typer
   - fmpy
+  - cmake
   - pip:
     - -e .

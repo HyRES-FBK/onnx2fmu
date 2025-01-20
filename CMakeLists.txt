@@ -137,17 +137,74 @@ SET(SOURCES
   src/ortUtils.c
 )
 
-# Set the onnxruntime directory name
-set(ONNXRUNTIME onnxruntime-linux-x64-1.20.0)
+# URL of the latest release API endpoint
+set(GITHUB_API_URL "https://api.github.com/repos/microsoft/onnxruntime/releases/latest")
 
-# Set the path to the onnxruntime directory
-set(ONNXRUNTIME_ROOTDIR ${MODEL_NAME}/resources/${ONNXRUNTIME})
+# Path to store the JSON response
+set(RELEASE_INFO_FILE "${CMAKE_CURRENT_BINARY_DIR}/release_info.json")
+
+# Download the latest release information
+file(DOWNLOAD ${GITHUB_API_URL} ${RELEASE_INFO_FILE} SHOW_PROGRESS)
+
+# Read the JSON response
+file(READ ${RELEASE_INFO_FILE} RELEASE_INFO_JSON)
+
+# Extract the tag name from the JSON response
+string(REGEX MATCH "\"tag_name\": \"([^\"]+)\"" _ ${RELEASE_INFO_JSON})
+
+# Remove the "v" prefix if it exists
+string(REGEX REPLACE "^v" "" LATEST_RELEASE_TAG ${CMAKE_MATCH_1})
+
+message(STATUS "Latest ONNX Runtime release tag: ${LATEST_RELEASE_TAG}")
+
+# Detect the operating system
+if (WIN32)
+    set(ONNXRUNTIME_OS "win")
+elseif (APPLE)
+    set(ONNXRUNTIME_OS "osx")
+elseif (UNIX)
+    set(ONNXRUNTIME_OS "linux")
+else ()
+    message(FATAL_ERROR "Unknown operating system")
+endif ()
+
+# Detect the architecture
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+    set(OS_ARCH "x64")
+elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "i386|i686|x86")
+    set(OS_ARCH "x86")
+elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+    set(OS_ARCH "arm64")
+elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
+    set(OS_ARCH "arm")
+else ()
+    message(FATAL_ERROR "Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+endif ()
+
+# Set the onnxruntime directory name
+set(ONNXRUNTIME onnxruntime-${ONNXRUNTIME_OS}-${OS_ARCH}-${LATEST_RELEASE_TAG})
+
+# Set the URL to download ONNX Runtime
+set(ONNXRUNTIME_URL "https://github.com/microsoft/onnxruntime/releases/download/v${LATEST_RELEASE_TAG}/${ONNXRUNTIME}.tgz")
+
+# Path to the downloaded ONNX Runtime archive
+set(ONNXRUNTIME_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}.tgz")
+# Download the ONNX Runtime release only if the file does not exist
+if (NOT EXISTS ${ONNXRUNTIME_ARCHIVE_PATH})
+    message(STATUS "Downloading ONNX Runtime from ${ONNXRUNTIME_URL}")
+    file(DOWNLOAD ${ONNXRUNTIME_URL} ${ONNXRUNTIME_ARCHIVE_PATH} SHOW_PROGRESS)
+else ()
+    message(STATUS "ONNX Runtime archive already exists at ${ONNXRUNTIME_ARCHIVE_PATH}")
+endif ()
+
+# Extract the ONNX Runtime release
+execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}.tgz WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Include the onnxruntime directory like in https://github.com/microsoft/onnxruntime-inference-examples/blob/main/c_cxx/CMakeLists.txt
-include_directories(${ONNXRUNTIME_ROOTDIR}/include)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include)
 
 # Link the onnxruntime library
-link_directories(${ONNXRUNTIME_ROOTDIR}/lib)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/lib)
 
 # Add only the library
 add_library(${TARGET_NAME} SHARED
@@ -193,11 +250,9 @@ target_include_directories(${TARGET_NAME} PRIVATE
 set(FMU_BUILD_DIR temp/${MODEL_NAME})
 
 set_target_properties(${TARGET_NAME} PROPERTIES
-    INSTALL_RPATH "$ORIGIN:$ORIGIN/../../resources/${ONNXRUNTIME}/lib"
+    INSTALL_RPATH "$ORIGIN:$ORIGIN"
     BUILD_WITH_INSTALL_RPATH TRUE
 )
-
-message("$ORIGIN:$ORIGIN/resources/${ONNXRUNTIME}/lib")
 
 set_target_properties(${TARGET_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY         "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}"

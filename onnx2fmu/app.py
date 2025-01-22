@@ -104,6 +104,11 @@ def generateIOEntries(model):
             'indexes': {i + j: idx for j, idx in
                         enumerate(list(np.ndindex(shape)))},
         })
+        input_names = node.doc_string.split(",")
+        if len(input_names) == np.prod(shape):
+            context['input_entries'][-1]['input_names'] = input_names
+        else:
+            print(f"Input names {input_names} do not match the shape {shape}.")
         i += len(list(np.ndindex(shape)))
         # Print the output node name
     for node in model.graph.output:
@@ -124,6 +129,11 @@ def generateIOEntries(model):
             'indexes': {i + j: idx for j, idx in
                         enumerate(list(np.ndindex(shape)))},
         })
+        output_names = node.doc_string.split(",")
+        if len(output_names) == np.prod(shape):
+            context['output_entries'][-1]['output_names'] = output_names
+        else:
+            print(f"Output names {output_names} do not match the shape {shape}.")
         i += len(list(np.ndindex(shape)))
     return context
 

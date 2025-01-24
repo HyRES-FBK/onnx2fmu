@@ -314,6 +314,18 @@ else()
   )
 endif()
 
+# onnxruntime include files
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+  ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include/onnxruntime_c_api.h
+  "${FMU_BUILD_DIR}/sources/onnxruntime_c_api.h"
+)
+
+# ortUtils
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/ortUtils.h"
+  "${FMU_BUILD_DIR}/sources/ortUtils.h"
+)
+
 # onnxruntime lib, use glob for file names containin .so
 file(GLOB ONNXRUNTIME_LIBS ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/lib/*.so*)
 foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_LIBS})

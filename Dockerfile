@@ -20,11 +20,9 @@ WORKDIR /app
 COPY . .
 # Create a new conda environment
 RUN conda env create -f environment.yml
-# Activate the conda environment
-RUN conda activate onnx2fmu
 # Build FMU
-RUN onnx2fmu build onnx_models/stand_model.onnx
+RUN conda run -n onnx2fmu onnx2fmu build onnx_models/stand_model.onnx
 # Test the FMU
 RUN ./fmusim --input-file tests/resources/RDFrampup-CH10-CO1.5-input.csv --logging-on --log-level ok --output-file out.txt --stop-time 10 build/fmus/stand_model.fmu
-# Copy out.txt to the host
-CMD cp out.txt /out.txt
+# Copy the FMU to the host
+CMD cp build/fmus/stand_model.fmu /stand_model.fmu

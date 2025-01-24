@@ -3,19 +3,9 @@
   fmiVersion="2.0"
   modelName="{{ model_name }}"
   description="{{ model_description }}"
-  generationTool="ONNX2FMI"
+  generationTool="ONNX2FMU"
   guid="{{ model_GUID }}"
   numberOfEventIndicators="0">
-
-  <ModelExchange
-    modelIdentifier="{{ model_name }}"
-    canNotUseMemoryManagementFunctions="{{ canNotUseMemoryManagementFunctions }}"
-    canGetAndSetFMUstate="{{ canGetAndSetFMUstate }}"
-    canSerializeFMUstate="{{ canSerializeFMUstate }}">
-    <SourceFiles>
-      <File name="all.c"/>
-    </SourceFiles>
-  </ModelExchange>
 
   <CoSimulation
     modelIdentifier="{{ model_name }}"

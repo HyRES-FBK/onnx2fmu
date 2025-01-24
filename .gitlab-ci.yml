@@ -15,9 +15,11 @@ ubuntu_20.04:
     - source ~/.bashrc
     - conda env create -f environment.yml
     - conda run -n onnx2fmu onnx2fmu build onnx_models/stand_model.onnx
+    - ./fmusim --logging-on --input-file tests/resources/RDFrampup-CH10-CO1.5-input.csv --output-file out.txt build/fmus/stand_model.fmu
   artifacts:
     paths:
       - build/fmus/stand_model.fmu
+      - out.txt
     expire_in: 20 minutes
 
 ubuntu_22.04:
@@ -34,7 +36,9 @@ ubuntu_22.04:
     - source ~/.bashrc
     - conda env create -f environment.yml
     - conda run -n onnx2fmu onnx2fmu build onnx_models/stand_model.onnx
+    - ./fmusim --logging-on --input-file tests/resources/RDFrampup-CH10-CO1.5-input.csv --output-file out.txt build/fmus/stand_model.fmu
   artifacts:
     paths:
       - build/fmus/stand_model.fmu
+      - out.txt
     expire_in: 20 minutes

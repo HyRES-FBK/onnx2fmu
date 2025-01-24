@@ -118,9 +118,9 @@ void createOrtSession(OrtEnv* env, const char* resourceLocation, OrtSessionOptio
 #if FMI_VERSION == 1
     strncat(path, "/resources/model.onnx", MAX_PATH_LENGTH-strlen(path)-1);
 #elif FMI_VERSION == 2
-    strncat(path, "model.onnx", MAX_PATH_LENGTH-strlen(path)-1);
+    strncat(path, "/model.onnx", MAX_PATH_LENGTH-strlen(path)-1);
 #else
-    strncat(path, "model.onnx", MAX_PATH_LENGTH-strlen(path)-1);
+    strncat(path, "/model.onnx", MAX_PATH_LENGTH-strlen(path)-1);
 #endif
     path[MAX_PATH_LENGTH-1] = 0;
 

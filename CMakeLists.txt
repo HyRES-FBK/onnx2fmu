@@ -9,6 +9,7 @@ ENDFUNCTION()
 
 project (Reference-FMUs)
 
+# Set default FMI version to 2
 set(FMI_VERSION 2 CACHE STRING "FMI Version")
 set_property(CACHE FMI_VERSION PROPERTY STRINGS 1 2 3)
 

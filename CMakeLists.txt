@@ -182,6 +182,8 @@ else ()
     message(FATAL_ERROR "Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 endif ()
 
+# Temporarily set the ONNX Runtime version
+set(LATEST_RELEASE_TAG "1.20.1")
 # Set the onnxruntime directory name
 set(ONNXRUNTIME onnxruntime-${ONNXRUNTIME_OS}-${OS_ARCH}-${LATEST_RELEASE_TAG})
 
@@ -199,7 +201,13 @@ else ()
 endif ()
 
 # Extract the ONNX Runtime release
-execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}.tgz WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${ONNXRUNTIME}.tgz WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+# Check if the extraction was successful by verifying the existence of a known file or directory
+if (EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include/onnxruntime_c_api.h")
+  message(STATUS "ONNX Runtime extraction successful.")
+else ()
+  message(FATAL_ERROR "ONNX Runtime extraction failed. File not found: ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include/onnxruntime_c_api.h")
+endif ()
 
 # Include the onnxruntime directory like in https://github.com/microsoft/onnxruntime-inference-examples/blob/main/c_cxx/CMakeLists.txt
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include)

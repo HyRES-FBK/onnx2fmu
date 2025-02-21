@@ -183,7 +183,12 @@ else ()
 endif ()
 
 # Temporarily set the ONNX Runtime version
-set(LATEST_RELEASE_TAG "1.17.1")
+if (WIN32)
+    set(LATEST_RELEASE_TAG "1.17.1")
+else ()
+    set(LATEST_RELEASE_TAG "1.20.1")
+endif ()
+
 # Set the onnxruntime directory name
 set(ONNXRUNTIME onnxruntime-${ONNXRUNTIME_OS}-${OS_ARCH}-${LATEST_RELEASE_TAG})
 

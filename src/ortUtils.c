@@ -150,12 +150,8 @@ void createOrtSession(OrtEnv* env, const char* resourceLocation, OrtSessionOptio
         return;
     }
 #else
-    // Convert char path to wchar_t path
-    wchar_t wpath[MAX_PATH_LENGTH];
-    mbstowcs(wpath, path, MAX_PATH_LENGTH);
-
     OrtSession* session = NULL;
-    OrtStatus* status = comp->g_ort->CreateSession(env, wpath, session_options, &session);
+    OrtStatus* status = comp->g_ort->CreateSession(env, path, session_options, &session);
 
     if (status != NULL) {
         const char* msg = comp->g_ort->GetErrorMessage(status);

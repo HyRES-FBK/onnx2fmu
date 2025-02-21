@@ -6,6 +6,13 @@
 #include "ortUtils.h"
 #include "onnxruntime_c_api.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#include <wchar.h>
+#include <shlwapi.h>
+#pragma comment(lib, "shlwapi.lib")
+#endif
+
 #define MAX_PATH_LENGTH 4096
 
 void initializeOrtApi(ModelInstance* comp) {
@@ -68,11 +75,11 @@ void createOrtSession(OrtEnv* env, const char* resourceLocation, OrtSessionOptio
 #endif
 
 #if FMI_VERSION == 1
-    if (!PathAppendA(path, "resources") || !PathAppendA(path, "model.onnx")) return Error;
+    if (!PathAppendA(path, "resources") || !PathAppendA(path, "model.onnx")) return;
 #elif FMI_VERSION == 2
-    if (!PathAppendA(path, "model.onnx")) return Error;
+    if (!PathAppendA(path, "model.onnx")) return;
 #else
-    if (!strncat(path, "model.onnx", MAX_PATH_LENGTH)) return Error;
+    if (!strncat(path, "model.onnx", MAX_PATH_LENGTH)) return;
 #endif
 
 #else
@@ -128,8 +135,13 @@ void createOrtSession(OrtEnv* env, const char* resourceLocation, OrtSessionOptio
 
     logEvent(comp, "Model path: %s", path);
 
+#if _WIN32
+    // Convert char path to wchar_t path
+    wchar_t wpath[MAX_PATH_LENGTH];
+    mbstowcs(wpath, path, MAX_PATH_LENGTH);
+
     OrtSession* session = NULL;
-    OrtStatus* status = comp->g_ort->CreateSession(env, path, session_options, &session);
+    OrtStatus* status = comp->g_ort->CreateSession(env, wpath, session_options, &session);
 
     if (status != NULL) {
         const char* msg = comp->g_ort->GetErrorMessage(status);
@@ -137,6 +149,21 @@ void createOrtSession(OrtEnv* env, const char* resourceLocation, OrtSessionOptio
         comp->g_ort->ReleaseStatus(status);
         return;
     }
+#else
+    // Convert char path to wchar_t path
+    wchar_t wpath[MAX_PATH_LENGTH];
+    mbstowcs(wpath, path, MAX_PATH_LENGTH);
+
+    OrtSession* session = NULL;
+    OrtStatus* status = comp->g_ort->CreateSession(env, wpath, session_options, &session);
+
+    if (status != NULL) {
+        const char* msg = comp->g_ort->GetErrorMessage(status);
+        logError(comp, msg);
+        comp->g_ort->ReleaseStatus(status);
+        return;
+    }
+#endif
 
     comp->session = session;
 
@@ -159,3 +186,4 @@ void freeOrtEnv(OrtEnv* env, ModelInstance* comp) {
     comp->g_ort->ReleaseEnv(env);
     logEvent(comp, "ONNX Runtime environment released.");
 }
+

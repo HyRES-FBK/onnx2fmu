@@ -183,15 +183,26 @@ else ()
 endif ()
 
 # Temporarily set the ONNX Runtime version
-set(LATEST_RELEASE_TAG "1.20.1")
+set(LATEST_RELEASE_TAG "1.17.1")
 # Set the onnxruntime directory name
 set(ONNXRUNTIME onnxruntime-${ONNXRUNTIME_OS}-${OS_ARCH}-${LATEST_RELEASE_TAG})
 
+if (WIN32)
+    set(ONNXRUNTIME_ARCHIVE ${ONNXRUNTIME}.zip)
+else ()
+    set(ONNXRUNTIME_ARCHIVE ${ONNXRUNTIME}.tgz)
+endif ()
+
 # Set the URL to download ONNX Runtime
-set(ONNXRUNTIME_URL "https://github.com/microsoft/onnxruntime/releases/download/v${LATEST_RELEASE_TAG}/${ONNXRUNTIME}.tgz")
+set(ONNXRUNTIME_URL "https://github.com/microsoft/onnxruntime/releases/download/v${LATEST_RELEASE_TAG}/${ONNXRUNTIME_ARCHIVE}")
 
 # Path to the downloaded ONNX Runtime archive
-set(ONNXRUNTIME_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}.tgz")
+if (WIN32)
+    set(ONNXRUNTIME_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME_ARCHIVE}")
+else ()
+    set(ONNXRUNTIME_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME_ARCHIVE}")
+endif ()
+
 # Download the ONNX Runtime release only if the file does not exist
 if (NOT EXISTS ${ONNXRUNTIME_ARCHIVE_PATH})
     message(STATUS "Downloading ONNX Runtime from ${ONNXRUNTIME_URL}")
@@ -201,7 +212,11 @@ else ()
 endif ()
 
 # Extract the ONNX Runtime release
-execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${ONNXRUNTIME}.tgz WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -E tar xzf ${ONNXRUNTIME_ARCHIVE_PATH}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 # Check if the extraction was successful by verifying the existence of a known file or directory
 if (EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include/onnxruntime_c_api.h")
   message(STATUS "ONNX Runtime extraction successful.")

@@ -8,7 +8,8 @@
 #include <assert.h>
 
 #ifdef _WIN32
-#include "shlwapi.h"
+#include <windows.h>
+#include <shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
 #endif
 
@@ -242,3 +243,4 @@ Status eventUpdate(ModelInstance *comp) {
 
     return OK;
 }
+

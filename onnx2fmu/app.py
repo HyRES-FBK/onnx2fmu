@@ -1,3 +1,4 @@
+import os
 import re
 import typer
 import shutil
@@ -178,7 +179,6 @@ def build(
     # Read the model file
     model = load(model_path)
     # Generate input entries for all dimensions except the first one
-
     context.update(generateIOEntries(model))
 
     ############################
@@ -200,7 +200,7 @@ def build(
         if not template_name.is_file():
             continue
         # Load the template
-        template = env.get_template(str(template_name))
+        template = env.get_template("template/" + str(template_name.name))
         # Render the template with the context
         out = template.render(context)
         # Write the rendered template to the target directory

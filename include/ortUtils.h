@@ -15,3 +15,4 @@ void freeSession(OrtSession* session, ModelInstance* comp);
 void freeOrtSessionOptions(OrtSessionOptions* session_options, ModelInstance* comp);
 // Release the environment
 void freeOrtEnv(OrtEnv* env, ModelInstance* comp);
+

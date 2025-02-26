@@ -171,7 +171,11 @@ endif ()
 
 # Detect the architecture
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+  if (APPLE)
+    set(OS_ARCH "x86_64")
+  else ()
     set(OS_ARCH "x64")
+  elseif ()
 elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "i386|i686|x86")
     set(OS_ARCH "x86")
 elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")

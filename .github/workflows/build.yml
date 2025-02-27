@@ -48,7 +48,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gasifier-${{ matrix.image }}-${{ matrix.arch }}.fmu  # Name of the artifact
+          name: gasifier-${{ matrix.image }}-${{ matrix.arch }}  # Name of the artifact
           path: build/fmus/gasifier.fmu      # Path to the files or directory
           retention-days: 1  # (Optional) Days to keep the artifact (default: 90)
 

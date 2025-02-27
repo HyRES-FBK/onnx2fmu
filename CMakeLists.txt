@@ -342,7 +342,7 @@ if (WIN32)
 elseif (APPLE)
   file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.dylib)
 elseif (UNIX)
-  file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.so)
+  file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.so ${TEMP_LIB}/*.so*)
 endif ()
 
 # copy onnxruntime lib

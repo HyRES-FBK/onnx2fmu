@@ -1,7 +1,7 @@
 name: onnx2fmu
 channels:
   - conda-forge
-  - default
+  - defaults
 dependencies:
   - python=3.10
   - pip

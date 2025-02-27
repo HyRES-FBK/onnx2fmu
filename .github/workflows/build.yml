@@ -26,9 +26,9 @@ jobs:
           - name: aarch64-linux
             image: ubuntu-20.04
             arch: aarch64
-          - name: aarch64-darwin
-            image: macos-13
-            arch: aarch64
+          # - name: aarch64-darwin
+          #   image: macos-13
+          #   arch: aarch64
     runs-on: ${{ matrix.image }}
     steps:
       - name: Check out repository
@@ -60,6 +60,6 @@ jobs:
       - name: Upload results as artefacts
         uses: actions/upload-artifact@v4
         with:
-          name: output-${{ matrix.image }}-${{ matrix.arch }}.csv  # Name of the artifact
+          name: output-${{ matrix.image }}-${{ matrix.arch }}  # Name of the artifact
           path: output.csv
           retention-days: 1

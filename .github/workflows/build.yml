@@ -1,4 +1,4 @@
-name: Build the Reference FMUs
+name: Build and test the Reference FMUs
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  build:
+  build_and_test:
     strategy:
       matrix:
         include:
@@ -52,49 +52,14 @@ jobs:
           path: build/fmus/gasifier.fmu      # Path to the files or directory
           retention-days: 1  # (Optional) Days to keep the artifact (default: 90)
 
-
-  test:
-    needs: build
-    strategy:
-      matrix:
-        include:
-          - name: x86-windows
-            image: windows-2022
-            arch: x86
-          - name: x86_64-windows
-            image: windows-2022
-            arch: x86_64
-          - name: x86_64-linux
-            image: ubuntu-20.04
-            arch: x86_64
-          - name: aarch64-linux
-            image: ubuntu-20.04
-            arch: aarch64
-          - name: aarch64-darwin
-            image: macos-13
-            arch: aarch64
-    runs-on: ${{ matrix.image }}
-    steps:
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Install fmpy
-        shell: bash -l {0}
-        run: |
-          python -m pip install --upgrade pip
-          pip install fmpy
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: gasifier-${{ matrix.image }}-${{ matrix.arch}}.fmu
       - name: Test FMU
         shell: bash -l {0}
         run: |
           fmpy simulate --input-file tests/resources/RDFrampup-CH10-CO1.5-input.csv --output-file output.csv gasifier-${{ matrix.image }}-${{ matrix.arch}}.fmu
+
       - name: Upload results as artefacts
         uses: actions/upload-artifact@v4
         with:
-          name: gasifier-${{ matrix.image }}-${{ matrix.arch }}.fmu  # Name of the artifact
+          name: output-${{ matrix.image }}-${{ matrix.arch }}.csv  # Name of the artifact
           path: output.csv
           retention-days: 1

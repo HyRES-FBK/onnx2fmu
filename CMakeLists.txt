@@ -138,25 +138,8 @@ SET(SOURCES
   src/ortUtils.c
 )
 
-# URL of the latest release API endpoint
-set(GITHUB_API_URL "https://api.github.com/repos/microsoft/onnxruntime/releases/latest")
-
-# Path to store the JSON response
-set(RELEASE_INFO_FILE "${CMAKE_CURRENT_BINARY_DIR}/release_info.json")
-
-# Download the latest release information
-file(DOWNLOAD ${GITHUB_API_URL} ${RELEASE_INFO_FILE} SHOW_PROGRESS)
-
-# Read the JSON response
-file(READ ${RELEASE_INFO_FILE} RELEASE_INFO_JSON)
-
-# Extract the tag name from the JSON response
-string(REGEX MATCH "\"tag_name\": \"([^\"]+)\"" _ ${RELEASE_INFO_JSON})
-
-# Remove the "v" prefix if it exists
-string(REGEX REPLACE "^v" "" LATEST_RELEASE_TAG ${CMAKE_MATCH_1})
-
-message(STATUS "Latest ONNX Runtime release tag: ${LATEST_RELEASE_TAG}")
+# Manually set the latest release tag
+set (LATEST_RELEASE_TAG "1.20.1")
 
 # Detect the operating system
 if (WIN32)
@@ -184,13 +167,6 @@ elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
     set(OS_ARCH "arm")
 else ()
     message(FATAL_ERROR "Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}")
-endif ()
-
-# Temporarily set the ONNX Runtime version
-if (WIN32)
-    set(LATEST_RELEASE_TAG "1.17.1")
-else ()
-    set(LATEST_RELEASE_TAG "1.20.1")
 endif ()
 
 # Set the onnxruntime directory name

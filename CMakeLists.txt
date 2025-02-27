@@ -359,8 +359,17 @@ add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
   "${FMU_BUILD_DIR}/sources/ortUtils.h"
 )
 
-# onnxruntime lib
-file(GLOB ONNXRUNTIME_LIBS ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/lib/*)
+# Define which files to copy
+set (TEMP_LIB ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/lib/)
+if (WIN32)
+  file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.dll ${TEMP_LIB}/*.lib ${TEMP_LIB}/*.pdb)
+elseif (APPLE)
+  file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.dylib)
+elseif (UNIX)
+  file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.so)
+endif ()
+
+# copy onnxruntime lib
 foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_LIBS})
   add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
     ${ONNXRUNTIME_LIB}

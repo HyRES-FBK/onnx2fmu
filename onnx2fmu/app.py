@@ -225,6 +225,7 @@ def build(
         "-B",
         "build",
         "-DMODEL_NAME=" + model_path.stem,
+        "--debug-output"
     ]
     # Declare CMake build arguments
     build_command = [

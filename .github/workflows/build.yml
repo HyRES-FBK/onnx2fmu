@@ -55,7 +55,7 @@ jobs:
       - name: Test FMU
         shell: bash -l {0}
         run: |
-          fmpy simulate --input-file tests/resources/RDFrampup-CH10-CO1.5-input.csv --output-file output.csv gasifier-${{ matrix.image }}-${{ matrix.arch}}.fmu
+          fmpy simulate --input-file tests/resources/RDFrampup-CH10-CO1.5-input.csv --output-file output.csv build/fmus/gasifier.fmu
 
       - name: Upload results as artefacts
         uses: actions/upload-artifact@v4

@@ -1,0 +1,38 @@
+{
+    "name": "Example1",
+    "description": "The model defines a simple example model with a scalar input and two vector inputs, one with 'local' variability and one with 'continuous' variability.",
+    "FMIVersion": "2.0",
+    "input": [
+        {
+            "name": "scalar_input",
+            "description": "A scalar input to the model."
+        },
+        {
+            "name": "vector_input_local",
+            "description": "A vector of 'local' variability inputs.",
+            "causality": "local"
+        },
+        {
+            "name": "vector_input_continuous",
+            "description": "A vector of 'continuous' variability inputs."
+        }
+    ],
+    "output": [
+        {
+            "name": "output",
+            "description": "The output array.",
+            "names": [
+                "Class1",
+                "Class2",
+                "Class3",
+                "Class4",
+                "Class5",
+                "Class6",
+                "Class7",
+                "Class8",
+                "Class9",
+                "Class10"
+            ]
+        }
+    ]
+}

@@ -224,6 +224,46 @@ Status calculateValues(ModelInstance *comp) {
     return OK;
 }
 
+Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
+                  size_t nValues, size_t *index) {
+
+    // Calculate values
+    calculateValues(comp);
+
+    switch (vr)
+    {
+    case vr_time:
+        ASSERT_NVALUES(1);
+        values[(*index)++] = M(time);
+        return OK;
+#if FMI_VERSION < 3
+        // Inputs
+        {%- for input in inputs %}
+        {%- for scalar in input.scalarValues %}
+        case vr_{{ cleanName(scalar.name) }}:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M({{ cleanName(scalar.name) }});
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
+        // Outputs
+        {%- for output in outputs %}
+        {%- for scalar in output.scalarValues %}
+        case vr_{{ cleanName(scalar.name) }}:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M({{ cleanName(scalar.name) }});
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
+#endif
+    default:
+        // Compose message for log with value reference
+        logError(comp, "getFloat64: ValueReference %d not available.", vr);
+        return Error;
+    }
+
+}
+
 Status eventUpdate(ModelInstance *comp) {
 
     comp->valuesOfContinuousStatesChanged   = false;

@@ -283,15 +283,6 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Outputs
-        {%- for output in outputs %}
-        {%- for scalar in output.scalarValues %}
-        case vr_{{ cleanName(scalar.name) }}:
-            ASSERT_NVALUES(1);
-            M({{ cleanName(scalar.name) }}) = values[(*index)++];
-            return OK;
-        {%- endfor %}
-        {%- endfor %}
 #endif
     default:
         // Compose message for log with value reference

@@ -48,7 +48,7 @@ class ScalarVariable:
                  causality: str,
                  valueReference: int,
                  vType: TensorProto.DataType,
-                 start: str):
+                 start: str = None):
 
         # Mandatory arguments
         if not name:
@@ -87,7 +87,7 @@ class ScalarVariable:
         else:
             self.vType = self.TYPES[vType]
 
-        if not start:
+        if self.causality == 'input' and self.variability == 'continuous':
             self.start = 1.0
         else:
             self.start = start
@@ -102,7 +102,8 @@ class ScalarVariable:
         context['variability'] = self.variability
         context['causality'] = self.causality
         context['type'] = self.vType
-        context['start'] = self.start
+        if self.start is not None:
+            context['start'] = self.start
         return context
 
 

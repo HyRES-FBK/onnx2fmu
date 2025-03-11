@@ -5,9 +5,9 @@ import typer
 import shutil
 import subprocess
 import numpy as np
-from onnx import load, TensorProto, ModelProto
 from pathlib import Path
 from loguru import logger
+from onnx import load, TensorProto, ModelProto
 from jinja2 import Environment, FileSystemLoader
 
 
@@ -54,8 +54,7 @@ class ScalarVariable:
         if not name:
             raise ValueError("Name is a required argument.")
         else:
-            self.name = name.replace(" ", "_").replace("-", "_")\
-                .replace(".", "_").replace(":", "_")
+            self.name = re.sub(r'[^\w]', '', name)
 
         # Optional arguments
         if not description:
@@ -89,8 +88,6 @@ class ScalarVariable:
 
         if self.causality == 'input' and self.variability == 'continuous':
             self.start = 1.0
-        else:
-            self.start = start
 
     def __repr__(self):
         return self.generate_context()
@@ -113,7 +110,7 @@ class Model:
     """
 
     FMI_VERSIONS = ["2.0", "3.0"]
-    canGetAndSetFMUstat = True
+    canGetAndSetFMUstate = True
     canSerializeFMUstate = True
     canNotUseMemoryManagementFunctions = True
     canHandleVariableCommunicationStepSize = True
@@ -229,8 +226,7 @@ class Model:
                         causality=description.get('causality', entry),
                         valueReference=next(self.vr),
                         vType=node.type.tensor_type.elem_type,
-                        start=1.0
-                    ) for j in range(len(np.ndindex(array['shape'])))
+                    ) for j in range(len(array_names))
                 ]
                 # Store indexes for easy access when generating templates
                 setattr(self, entry, getattr(self, entry) + [array])

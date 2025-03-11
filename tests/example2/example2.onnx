@@ -1,0 +1,142 @@
+ExampleModel0.0.1"example(:™a
+Å 
+x_1
+x_2/Add_output_0/Add"Add2⁄/tmp/ipykernel_81078/3350249101.py(7): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_81078/650132765.py(6): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+Å 
+x_2
+x_3/Sub_output_0/Sub"Sub2⁄/tmp/ipykernel_81078/3350249101.py(8): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_81078/650132765.py(6): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+ú 
+/Add_output_0
+/Sub_output_0y/Concat"Concat*
+axis †2⁄/tmp/ipykernel_81078/3350249101.py(9): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1726): _slow_forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(130): wrapper
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(139): forward
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1747): _call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/nn/modules/module.py(1736): _wrapped_call_impl
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/jit/_trace.py(1500): _get_trace_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(904): _trace_and_get_graph_from_model
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(997): _create_jit_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1113): _model_to_graph
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(1564): _export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/utils.py(502): export
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/torch/onnx/__init__.py(375): export
+/tmp/ipykernel_81078/650132765.py(6): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3577): run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3517): run_ast_nodes
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3334): run_cell_async
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3130): _run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3075): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/events.py(80): _run
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(1909): _run_once
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/asyncio/base_events.py(603): run_forever
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/tornado/platform/asyncio.py(205): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(86): _run_code
+/home/miki/miniconda3/envs/myrechemical/lib/python3.10/runpy.py(196): _run_module_as_main
+
+main_graphR+Example model with scalar and vector inputsZ
+x_1
+
+
+Z
+x_2
+
+
+Z
+x_3
+
+
+b
+y
+
+
+B

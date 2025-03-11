@@ -28,20 +28,6 @@
 // Import Jinja2 macros
 {% from 'template/config.h' import cleanName %}
 
-// Function to flatten a multi-dimensional array
-void flatten_array(double* input, float* output, int64_t* index, const int64_t* shape, int64_t dim, int64_t current_dim) {
-    if (current_dim == dim - 1) {
-        for (int64_t i = 0; i < shape[current_dim]; ++i) {
-            output[*index] = (float)input[i];
-            (*index)++;
-        }
-    } else {
-        for (int64_t i = 0; i < shape[current_dim]; ++i) {
-            flatten_array(input + i * shape[current_dim + 1], output, index, shape, dim, current_dim + 1);
-        }
-    }
-}
-
 void setStartValues(ModelInstance *comp) {
     UNUSED(comp);
 }
@@ -102,7 +88,7 @@ Status calculateValues(ModelInstance *comp) {
         );
 
     assert({{ cleanName(input.name) }}_is_tensor);
-    {% endfor -%}
+    {%- endfor %}
 
     // Release the memory info
     comp->g_ort->ReleaseMemoryInfo(memory_info);
@@ -160,7 +146,7 @@ Status calculateValues(ModelInstance *comp) {
     int {{ cleanName(output.name) }}_is_tensor;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->IsTensor(
-            {{ cleanName(output.name) }}_tensor,
+            {{ cleanName(output.name) }}_tensors[{{ loop.index0 }}],
             &{{ cleanName(output.name) }}_is_tensor),
             comp
         );
@@ -214,9 +200,6 @@ Status calculateValues(ModelInstance *comp) {
     {%- endfor %}
 
     // Free arrays
-    {%- for output in outputs %}
-    free({{ cleanName(output.name) }}_tensor_data);
-    {%- endfor %}
     {%- for input in inputs %}
     free({{ cleanName(input.name) }}_float);
     {%- endfor %}

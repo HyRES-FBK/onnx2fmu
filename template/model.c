@@ -146,7 +146,7 @@ Status calculateValues(ModelInstance *comp) {
     int {{ cleanName(output.name) }}_is_tensor;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->IsTensor(
-            {{ cleanName(output.name) }}_tensors[{{ loop.index0 }}],
+            output_tensors[{{ loop.index0 }}],
             &{{ cleanName(output.name) }}_is_tensor),
             comp
         );

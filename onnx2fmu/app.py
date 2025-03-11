@@ -245,7 +245,7 @@ class Model:
         context['description'] = self.description
         context['GUID'] = self.GUID
         context['FMIVersion'] = self.FMIVersion
-        context['canGetAndSetFMUstat'] = self.canGetAndSetFMUstat
+        context['canGetAndSetFMUstate'] = self.canGetAndSetFMUstate
         context['canSerializeFMUstate'] = self.canSerializeFMUstate
         context['canNotUseMemoryManagementFunctions'] = \
             self.canNotUseMemoryManagementFunctions

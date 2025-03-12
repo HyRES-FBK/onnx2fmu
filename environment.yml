@@ -9,6 +9,7 @@ dependencies:
   - jinja2
   - loguru
   - typer
+  - flake8
   - fmpy
   - cmake
   - pip:

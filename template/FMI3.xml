@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fmiModelDescription
   fmiVersion="3.0"
-  modelName="{{ model_name }}"
-  description="{{ model_description }}"
+  modelName="{{ name }}"
+  description="{{ description }}"
   generationTool="ONNX2FMU"
-  instantiationToken="{{ model_GUID }}">
-
-  <ModelExchange
-    modelIdentifier="{{ model_name }}"
-    canGetAndSetFMUState="{{ canGetAndSetFMUstate }}"
-    canSerializeFMUState="{{ canSerializeFMUstate }}"/>
+  instantiationToken="{{ GUID }}"
+  generationDateAndTime="{{ generationDateAndTime }}">
 
   <CoSimulation
-    modelIdentifier="{{ model_name }}"
+    modelIdentifier="{{ name }}"
     canGetAndSetFMUState="{{ canGetAndSetFMUstate }}"
     canSerializeFMUState="{{ canSerializeFMUstate }}"
     canHandleVariableCommunicationStepSize="{{ canHandleVariableCommunicationStepSize }}"
@@ -29,26 +25,12 @@
 
   <ModelVariables>
     <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
-  {%- for input_variable in input_entries %}
-    <{{ input_variable.type.FMI3 }} name="{{ input_variable.name }}" valueReference="{{ input_variable.index }}" causality="input" variability="continuous" description="{{ input_variable.description }}">
-      {%- for d in input_variable.dimensions %}
-      <Dimension start="{{ d }}"/>
-      {%- endfor %}
-    </{{ input_variable.type.FMI3 }}>
-  {%- endfor %}
-  {%- for output_variable in output_entries %}
-    <{{ output_variable.type.FMI3 }} name="{{ output_variable.name }}" valueReference="{{ output_variable.index }}" causality="output" variability="continuous" description="{{ output_variable.description }}">
-      {%- for d in output_variable.dimensions %}
-      <Dimension start="{{ d }}"/>
-      {%- endfor %}
-    </{{ output_variable.type.FMI3 }}>
-  {%- endfor %}
   </ModelVariables>
 
   <ModelStructure>
-  {%- for output_variable in output_entries %}
-    <Output valueReference="{{ output_variable.index }}"/>
-    <InitialUnknown valueReference="{{ output_variable.index }}"/>
+  {%- for output in outputs %}
+    <Output valueReference="{{ output.valueReference + 1 }}"/>
+    <InitialUnknown valueReference="{{ output.valueReference + 1 }}"/>
   {%- endfor %}
   </ModelStructure>
 

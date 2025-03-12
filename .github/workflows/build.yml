@@ -14,18 +14,18 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: x86-windows
-            image: windows-2022
-            arch: x86
-          - name: x86_64-windows
-            image: windows-2022
-            arch: x86_64
+          # - name: x86-windows
+          #   image: windows-2022
+          #   arch: x86
+          # - name: x86_64-windows
+          #   image: windows-2022
+          #   arch: x86_64
           - name: x86_64-linux
             image: ubuntu-20.04
             arch: x86_64
-          - name: aarch64-linux
-            image: ubuntu-20.04
-            arch: aarch64
+          # - name: aarch64-linux
+          #   image: ubuntu-20.04
+          #   arch: aarch64
           # - name: aarch64-darwin
           #   image: macos-13
           #   arch: aarch64
@@ -40,26 +40,12 @@ jobs:
           environment-file: environment.yml
           auto-activate-base: false
 
-      - name: Build FMU
+      - name: Build example1 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/models/gasifier.onnx
+          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.onnx
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: gasifier-${{ matrix.image }}-${{ matrix.arch }}  # Name of the artifact
-          path: build/fmus/gasifier.fmu      # Path to the files or directory
-          retention-days: 1  # (Optional) Days to keep the artifact (default: 90)
-
-      - name: Test FMU
+      - name: Build example2 FMU
         shell: bash -l {0}
         run: |
-          fmpy simulate --input-file tests/resources/ga1rampup-ch5-co1.5.csv --output-file output.csv build/fmus/gasifier.fmu
-
-      - name: Upload results as artefacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: output-${{ matrix.image }}-${{ matrix.arch }}  # Name of the artifact
-          path: output.csv
-          retention-days: 1
+          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.onnx

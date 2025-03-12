@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fmiModelDescription
   fmiVersion="2.0"
-  modelName="{{ model_name }}"
-  description="{{ model_description }}"
+  modelName="{{ name }}"
+  description="{{ description }}"
   generationTool="ONNX2FMU"
-  guid="{{ model_GUID }}"
-  numberOfEventIndicators="0">
+  guid="{{ GUID }}"
+  numberOfEventIndicators="0"
+  generationDateAndTime="{{ generationDateAndTime }}">
 
   <CoSimulation
-    modelIdentifier="{{ model_name }}"
-    canHandleVariableCommunicationStepSize="{{ canHandleVariableCommunicationStepSize }}"
-    canNotUseMemoryManagementFunctions="{{ canNotUseMemoryManagementFunctions }}"
-    canGetAndSetFMUstate="{{ canGetAndSetFMUstate }}"
-    canSerializeFMUstate="{{ canSerializeFMUstate }}">
+    modelIdentifier="{{ name }}"
+    canHandleVariableCommunicationStepSize="{{ canHandleVariableCommunicationStepSize|lower }}"
+    canNotUseMemoryManagementFunctions="{{ canNotUseMemoryManagementFunctions|lower }}"
+    canGetAndSetFMUstate="{{ canGetAndSetFMUstate|lower }}"
+    canSerializeFMUstate="{{ canSerializeFMUstate|lower }}">
     <SourceFiles>
       <File name="all.c"/>
     </SourceFiles>
@@ -29,17 +30,17 @@
     <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
       <Real/>
     </ScalarVariable>
-    {%- for input in input_entries %}
-    {%- for i, idx in input.indexes.items() %}
-    <ScalarVariable name="{{ input.name }}_{{ idx|join('_')}}" valueReference="{{ i }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{{ input.input_names[loop.index0] }}">
-      <Real start="2.0"/>
+    {%- for input in inputs %}
+    {%- for scalar in input.scalarValues %}
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}">
+      <{{ scalar.vType }} {% if scalar.start %}start="{{ scalar.start }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
-    {%- for output in output_entries %}
-    {%- for i, idx in output.indexes.items() %}
-    <ScalarVariable name="{{ output.name }}_{{ idx|join('_')}}" valueReference="{{ i }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ output.output_names[loop.index0] }}">
-      <Real/>
+    {%- for output in outputs %}
+    {%- for scalar in output.scalarValues %}
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}">
+      <Real />
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
@@ -47,16 +48,16 @@
 
   <ModelStructure>
     <Outputs>
-    {%- for output in output_entries %}
-    {%- for k in output.indexes.keys() %}
-      <Unknown index="{{ k + 1 }}"/>
+    {%- for output in outputs %}
+    {%- for scalar in output.scalarValues %}
+      <Unknown index="{{ scalar.valueReference + 1 }}"/>
     {%- endfor %}
     {%- endfor %}
     </Outputs>
     <InitialUnknowns>
-    {%- for output in output_entries %}
-    {%- for k in output.indexes.keys() %}
-      <Unknown index="{{ k + 1 }}"/>
+    {%- for output in outputs %}
+    {%- for scalar in output.scalarValues %}
+      <Unknown index="{{ scalar.valueReference + 1 }}"/>
     {%- endfor %}
     {%- endfor %}
     </InitialUnknowns>

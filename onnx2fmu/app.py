@@ -1,14 +1,15 @@
-import os
 import re
+import uuid
+import json
 import typer
 import shutil
 import subprocess
 import numpy as np
-from onnx import load, TensorProto
+from datetime import datetime
 from pathlib import Path
 from loguru import logger
+from onnx import load, TensorProto, ModelProto
 from jinja2 import Environment, FileSystemLoader
-from itertools import product
 
 
 app = typer.Typer()
@@ -18,11 +19,260 @@ TEMPLATE_DIR = "template"
 template_path = Path(TEMPLATE_DIR)
 
 
-# C types are strings because they are simply copied in the template
-onnx_to_c_types = {
-    "FLOAT": {"FMI2": "Real", "FMI3": "Float32", "C": "float"},  # This is the most common
-    "DOUBLE": {"FMI2": "Real", "FMI3": "Float64", "C": "double"},
-}
+class ScalarVariable:
+    """
+    A 'ScalarVariable' entry of the model description for FMI 2.0.
+    """
+
+    VARIABILITY = ["constant", "fixed", "tunable", "discrete", "continuous"]
+    CAUSALITY = ["parameter", "calculatedParameter", "input", "output",
+                 "local", "independent"]
+    TYPES = {
+        TensorProto.FLOAT: "Real",
+        TensorProto.INT4: "Integer",
+        TensorProto.INT8: "Integer",
+        TensorProto.INT16: "Integer",
+        TensorProto.INT32: "Integer",
+        TensorProto.INT64: "Integer",
+        TensorProto.UINT8: "Integer",
+        TensorProto.UINT16: "Integer",
+        TensorProto.UINT32: "Integer",
+        TensorProto.UINT64: "Integer",
+        TensorProto.BOOL: "Boolean",
+        TensorProto.STRING: "String"
+    }
+
+    def __init__(self,
+                 name: str,
+                 description: str,
+                 variability: str,
+                 causality: str,
+                 valueReference: int,
+                 vType: TensorProto.DataType,
+                 start: str = None):
+
+        # Mandatory arguments
+        if not name:
+            raise ValueError("Name is a required argument.")
+        else:
+            self.name = re.sub(r'[^\w]', '', name)
+
+        # Optional arguments
+        if not description:
+            self.description = "Description of the array was not provided."
+        else:
+            self.description = description
+
+        if not variability:
+            self.variability = 'discrete'
+        elif variability not in self.VARIABILITY:
+            raise ValueError(f"Variability {variability} is not valid.")
+        else:
+            self.variability = variability
+
+        if not causality:
+            raise ValueError("Causality is a required argument.")
+        elif causality not in self.CAUSALITY:
+            raise ValueError(f"Causality {causality} is not valid.")
+        else:
+            self.causality = causality
+
+        if not valueReference:
+            raise ValueError("Value reference is a required argument.")
+        else:
+            self.valueReference = valueReference
+
+        if not vType:
+            self.vType = 'Real'
+        else:
+            self.vType = self.TYPES[vType]
+
+        if self.causality == 'input' and self.variability == 'continuous':
+            self.start = 1.0
+
+    def __repr__(self):
+        return self.generate_context()
+
+    def generate_context(self):
+        context = {}
+        context['name'] = self.name
+        context['description'] = self.description
+        context['variability'] = self.variability
+        context['causality'] = self.causality
+        context['type'] = self.vType
+        if self.start is not None:
+            context['start'] = self.start
+        return context
+
+
+class Model:
+    """
+    The model factory class.
+    """
+
+    FMI_VERSIONS = ["2.0", "3.0"]
+    canGetAndSetFMUstate = True
+    canSerializeFMUstate = True
+    canNotUseMemoryManagementFunctions = True
+    canHandleVariableCommunicationStepSize = True
+    providesIntermediateUpdate = True
+    canReturnEarlyAfterIntermediateUpdate = True
+    fixedInternalStepSize = 1
+    startTime = 0
+    stopTime = 1
+
+    def __init__(self, onnx_model: ModelProto, model_description: dict):
+        """
+        Initialize the model factory.
+
+        Parameters:
+        -----------
+        - ``onnx_model`` (onnx.ModelProto): The ONNX model.
+        - ``model_description`` (dict): The model description.
+        """
+
+        #####################
+        # Model description #
+        #####################
+
+        self.model_description = model_description
+
+        if 'name' not in model_description:
+            self.name = "Model"
+        # Check if special characters are present in the model name
+        else:
+            self.name = model_description['name'].replace(" ", "_")\
+                .replace("-", "_").replace(".", "_").replace(":", "_")
+
+        if 'description' not in model_description:
+            self.description = "Description of the model was not provided."
+        else:
+            self.description = model_description['description']
+
+        if 'FMIVersion' not in model_description:
+            self.FMIVersion = "2.0"
+        else:
+            self.FMIVersion = model_description['FMIVersion']
+
+        # Generate model GUID
+        self.GUID = str(uuid.uuid4())
+
+        # Initialize value reference index for model description variables
+        self.vr = (i for i in range(1, 10000))
+
+        ############################
+        # ONNX model health checks #
+        ############################
+
+        self.onnx_model = onnx_model
+
+        # Check that the number of inputs in the model description matches the
+        # number of inputs in the ONNX model
+        assert \
+            (len(model_description.get('input', [])) ==
+             len(onnx_model.graph.input)), \
+            "The number of inputs in the model description does not match " + \
+            "the ONNX model."
+
+        # Check that the list of inputs in the model description is not empty
+        assert len(model_description.get('input', [])) > 0, \
+            "At least one input must be provided."
+
+        # Check that onnx node names and description names match
+        for i, node in enumerate(onnx_model.graph.input):
+            assert node.name == model_description['input'][i]['name']
+
+        # Check that the number of outputs in the model description matches the
+        # number of outputs in the ONNX model
+        assert \
+            (len(model_description.get('output', [])) ==
+             len(onnx_model.graph.output)), \
+            "The number of outputs in the model description does not match" + \
+            " the ONNX model."
+
+        # Check that the list of outputs in the model description is not empty
+        assert len(model_description.get('output', [])) > 0, \
+            "At least one output must be provided."
+
+        # Check that onnx node names and description names match
+        for i, node in enumerate(onnx_model.graph.output):
+            assert node.name == model_description['output'][i]['name']
+
+        ############################################
+        # Variables extraction from the ONNX model #
+        ############################################
+
+        # FMI 2.0 and 3.0 have different ways of handling model variables
+        if self.FMIVersion == "2.0":
+            self.fmi2GetVariables()
+        elif self.FMIVersion == "3.0":
+            self.fmi3GetVariables()
+
+    def fmi2GetVariables(self):
+        entries = ['input', 'output']
+        for entry in entries:
+            setattr(self, entry, [])
+            nodes = getattr(self.onnx_model.graph, entry)
+            for i, node in enumerate(nodes):
+                description = self.model_description[entry][i]
+                array = {}
+                array["name"] = description.get('name', node.name)
+                # Retrieve tensor shape
+                array["shape"] = tuple(
+                    dim.dim_value for dim in node.type.tensor_type.shape.dim
+                )
+                # If tensor shape is empty, set it to 1
+                if not array["shape"]:
+                    array["shape"] = (1,)
+                # Define array names
+                array_names = [
+                    array['name'] + "_" + "_".join([str(k) for k in idx])
+                    for idx in np.ndindex(array['shape'])
+                ]
+                # Store the scalar variables
+                array["scalarValues"] = [
+                    ScalarVariable(
+                        name=array_names[j],
+                        description=description.get('description', None),
+                        variability=description.get('variability',
+                                                    'continuous'),
+                        causality=description.get('causality', entry),
+                        valueReference=next(self.vr),
+                        vType=node.type.tensor_type.elem_type,
+                    ) for j in range(len(array_names))
+                ]
+                # Store indexes for easy access when generating templates
+                setattr(self, entry, getattr(self, entry) + [array])
+
+    def fmi3GetVariables(self):
+        pass
+
+    def generate_context(self):
+        # Initialize the context dictionary
+        context = {}
+        # Iterate over attributes and add model information
+        context['name'] = self.name
+        context['description'] = self.description
+        context['GUID'] = self.GUID
+        context['FMIVersion'] = self.FMIVersion
+        context['generationDateAndTime'] = datetime.now().isoformat()
+        context['canGetAndSetFMUstate'] = self.canGetAndSetFMUstate
+        context['canSerializeFMUstate'] = self.canSerializeFMUstate
+        context['canNotUseMemoryManagementFunctions'] = \
+            self.canNotUseMemoryManagementFunctions
+        context['canHandleVariableCommunicationStepSize'] = \
+            self.canHandleVariableCommunicationStepSize
+        context['providesIntermediateUpdate'] = self.providesIntermediateUpdate
+        context['canReturnEarlyAfterIntermediateUpdate'] = \
+            self.canReturnEarlyAfterIntermediateUpdate
+        context['fixedInternalStepSize'] = self.fixedInternalStepSize
+        context['startTime'] = self.startTime
+        context['stopTime'] = self.stopTime
+        # Add variables to the context
+        context['inputs'] = self.input
+        context['outputs'] = self.output
+        # Return the context
+        return context
 
 
 def find_version(file_path: str) -> str:
@@ -51,97 +301,12 @@ def version():
     typer.echo(f"ONNX2FMU {find_version('version.txt')}")
 
 
-def cleanName(name: str) -> str:
-    """
-    Clean the name of the ONNX node.
-
-    Parameters:
-    -----------
-    - ``name`` (str): The name of the ONNX node or element
-
-    Returns:
-    --------
-    - ``str``: The cleaned name.
-    """
-    return name.replace("/", "_").replace(":", "")
-
-
-def generateIOEntries(model):
-    """
-    Parse the ONNX model and generate input/output entries for the FMU.
-
-    Parameters:
-    -----------
-    - ``model`` (onnx.ModelProto): The ONNX model.
-    - ``context`` (dict): The context dictionary for templating.
-    """
-    # A unique index is used for all model variables. It starts at 1 because
-    # the first index is reserved for the time variable.
-    i = 1
-    context = {}
-    # Initialize the input entries list
-    context['input_entries'] = []
-    # Add all input nodes as multi-dimensional variables
-    for node in model.graph.input:
-        # Node names must be cleaned from C-unsupported characters
-        # input_name = cleanName(model.graph.input[0].name)
-        # Retrieve input tensor shape
-        shape = tuple(dim.dim_value for dim in
-                      model.graph.input[0].type.tensor_type.shape.dim)
-        # Print the input node name
-        logger.debug(f"Input node {node.name} with shape {shape}.")
-        # FMI3 supports multi-dimensional variables.
-        # Iterate over all input nodes
-        element_type = TensorProto.DataType.Name(
-            node.type.tensor_type.elem_type
-        )
-        context['input_entries'].append({
-            'name': node.name,
-            'type': onnx_to_c_types[element_type],
-            'description': "Input name identifies tensor element.",
-            'causality': "input",
-            'variability': "continuous",
-            'dimensions': shape,
-            'indexes': {i + j: idx for j, idx in
-                        enumerate(list(np.ndindex(shape)))},
-        })
-        input_names = node.doc_string.split(",")
-        if len(input_names) == np.prod(shape):
-            context['input_entries'][-1]['input_names'] = input_names
-        else:
-            print(f"Input names {input_names} do not match the shape {shape}.")
-        i += len(list(np.ndindex(shape)))
-        # Print the output node name
-    for node in model.graph.output:
-        # Retrieve output tensor shape
-        shape = tuple(dim.dim_value for dim in
-                      model.graph.output[0].type.tensor_type.shape.dim)
-        logger.debug(f"Output node: {model.graph.output[0].name} with shape {shape}.")
-        # Initialize the output entries list
-        context['output_entries'] = []
-        # Iterate over all dimensions except the first one
-        context['output_entries'].append({
-            'name': f"{model.graph.output[0].name}",
-            'type': onnx_to_c_types[element_type],
-            'description': "Output name identifies tensor element.",
-            'causality': "output",
-            'variability': "continuous",
-            'dimensions': shape,
-            'indexes': {i + j: idx for j, idx in
-                        enumerate(list(np.ndindex(shape)))},
-        })
-        output_names = node.doc_string.split(",")
-        if len(output_names) == np.prod(shape):
-            context['output_entries'][-1]['output_names'] = output_names
-        else:
-            print(f"Output names {output_names} do not match the shape {shape}.")
-        i += len(list(np.ndindex(shape)))
-    return context
-
-
 @app.command()
 def build(
     model_path: str = typer.Argument(help="The path to the ONNX model file."),
+    model_description_path: str = typer.Argument(
+        help="The path to the model description file."
+    ),
 ):
     """
     Build the FMU.
@@ -149,6 +314,7 @@ def build(
     Parameters:
     -----------
     - ``model_path`` (str): The path to the model to be encapsulated in an FMU.
+    - ``model_description_path`` (str): The path to the model description file.
     """
     # Cast to Path
     model_path = Path(model_path)
@@ -157,29 +323,17 @@ def build(
         logger.error(f"Model file {model_path} does not exist.")
         raise typer.Exit(code=1)
 
-    ############################
-    # Retrieve model information
-    ############################
-    # Empty context dictionary for templating
-    context = {
-        "model_description": "This FMU loads an ONNX model and runs inference on it.",
-        "model_name": model_path.stem,
-        "model_version": find_version('pyproject.toml'),
-        "model_GUID": "{7b9c2114-2ce5-4076-a138-2cbc69e069e5}",
-        "canGetAndSetFMUstate": "true",
-        "canSerializeFMUstate": "true",
-        "canNotUseMemoryManagementFunctions": "true",
-        "canHandleVariableCommunicationStepSize": "true",
-        "providesIntermediateUpdate": "true",
-        "canReturnEarlyAfterIntermediateUpdate": "true",
-        "fixedInternalStepSize": "1",
-        "startTime": "0",
-        "stopTime": "1",
-    }
+    ##############################
+    # Retrieve model information #
+    ##############################
     # Read the model file
-    model = load(model_path)
-    # Generate input entries for all dimensions except the first one
-    context.update(generateIOEntries(model))
+    onnx_model = load(model_path)
+    # Read model description
+    model_description = json.loads(Path(model_description_path).read_text())
+    # Initialize model handler
+    model = Model(onnx_model, model_description)
+    # Generate context for the template
+    context = model.generate_context()
 
     ############################
     # Populate the templates

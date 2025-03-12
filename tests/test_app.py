@@ -13,10 +13,12 @@ from onnx2fmu.app import ScalarVariable, Model, build
 class TestApp(unittest.TestCase):
 
     def setUp(self):
-        self.model_path = Path('tests/example1/example1.onnx')
+        self.model_name = 'example1'
+        self.model_path = \
+            Path(f'tests/{self.model_name}/{self.model_name}.onnx')
         self.model = load(self.model_path)
         self.model_description_path = \
-            Path('tests/example1/example1Description.json')
+            Path(f'tests/{self.model_name}/{self.model_name}Description.json')
         self.model_description = \
             json.loads(self.model_description_path.read_text())
 
@@ -112,17 +114,22 @@ class TestApp(unittest.TestCase):
 
     def test_validate_FMU(self):
         # Set FMU path
-        fmu_path = Path(f"build/fmus/{self.model_path.stem}.fmu")
+        fmu_path = Path(f"build/fmus/{self.model_name}.fmu")
         # Validate
         res = validate_fmu(fmu_path)
         self.assertEqual(len(res), 0)
 
     def test_FMU(self):
-        model_name = "example1"
         # Set test folder
-        test_folder = Path(f"tests/{model_name}")
+        test_folder = Path(f"tests/{self.model_name}")
+        # Build the FMNU
+        # Test the model build process. Remember to check for multiple OSs
+        build(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+        )
         # Set FMU path
-        fmu_path = Path(f"build/fmus/{model_name}.fmu")
+        fmu_path = Path(f"build/fmus/{self.model_name}.fmu")
         # Read data
         signals = np.genfromtxt(test_folder / "input.csv",
                                 delimiter=",", names=True)

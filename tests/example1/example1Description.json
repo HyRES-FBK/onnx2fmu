@@ -8,13 +8,12 @@
             "description": "A scalar input to the model."
         },
         {
-            "name": "vector_input_local",
-            "description": "A vector of 'local' variability inputs.",
-            "causality": "local"
+            "name": "vector_input",
+            "description": "A vector of input variables with variability discrete."
         },
         {
-            "name": "vector_input_continuous",
-            "description": "A vector of 'continuous' variability inputs."
+            "name": "vector_input_discrete",
+            "description": "Inputs have variability discrete by default."
         }
     ],
     "output": [

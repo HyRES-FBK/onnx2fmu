@@ -41,7 +41,7 @@ Status calculateValues(ModelInstance *comp) {
             OrtArenaAllocator, OrtMemTypeDefault, &memory_info
         ),
         comp);
-    {% for input in inputs %}
+    {%- for input in inputs %}
     // Create {{ cleanName(input.name) }} tensor
     OrtValue* {{ cleanName(input.name) }}_tensor;
 

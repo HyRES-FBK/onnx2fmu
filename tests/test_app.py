@@ -101,6 +101,14 @@ class TestApp(unittest.TestCase):
             model_path=self.model_path,
             model_description_path=self.model_description_path,
         )
+        # Check that the FMU is present
+        self.assertTrue(Path(f'build/fmus/{self.model_name}.fmu').exists())
+
+    def test_number_of_inputs(self):
+        pass
+
+    def test_number_of_outputs(self):
+        pass
 
     def test_validate_FMU(self):
         # Set FMU path

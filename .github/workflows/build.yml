@@ -40,9 +40,9 @@ jobs:
       - name: Build example1 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.onnx
+          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json
 
       - name: Build example2 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.onnx
+          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json

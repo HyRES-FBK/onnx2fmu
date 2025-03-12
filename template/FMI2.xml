@@ -5,7 +5,8 @@
   description="{{ description }}"
   generationTool="ONNX2FMU"
   guid="{{ GUID }}"
-  numberOfEventIndicators="0">
+  numberOfEventIndicators="0"
+  generationDateAndTime="{{ generationDateAndTime }}">
 
   <CoSimulation
     modelIdentifier="{{ name }}"

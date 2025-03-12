@@ -5,6 +5,7 @@ import typer
 import shutil
 import subprocess
 import numpy as np
+from datetime import datetime
 from pathlib import Path
 from loguru import logger
 from onnx import load, TensorProto, ModelProto
@@ -254,6 +255,7 @@ class Model:
         context['description'] = self.description
         context['GUID'] = self.GUID
         context['FMIVersion'] = self.FMIVersion
+        context['generationDateAndTime'] = datetime.now().isoformat()
         context['canGetAndSetFMUstate'] = self.canGetAndSetFMUstate
         context['canSerializeFMUstate'] = self.canSerializeFMUstate
         context['canNotUseMemoryManagementFunctions'] = \

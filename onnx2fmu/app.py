@@ -24,8 +24,8 @@ class ScalarVariable:
     """
 
     VARIABILITY = ["constant", "fixed", "tunable", "discrete", "continuous"]
-    CAUSALITY = ["parameter", "calculated", "input", "output", "local",
-                 "independent"]
+    CAUSALITY = ["parameter", "calculatedParameter", "input", "output",
+                 "local", "independent"]
     TYPES = {
         TensorProto.FLOAT: "Real",
         TensorProto.INT4: "Integer",
@@ -63,7 +63,7 @@ class ScalarVariable:
             self.description = description
 
         if not variability:
-            self.variability = 'continuous'
+            self.variability = 'discrete'
         elif variability not in self.VARIABILITY:
             raise ValueError(f"Variability {variability} is not valid.")
         else:
@@ -159,9 +159,9 @@ class Model:
         # Initialize value reference index for model description variables
         self.vr = (i for i in range(1, 10000))
 
-        ##############
-        # ONNX model #
-        ##############
+        ############################
+        # ONNX model health checks #
+        ############################
 
         self.onnx_model = onnx_model
 
@@ -177,6 +177,10 @@ class Model:
         assert len(model_description.get('input', [])) > 0, \
             "At least one input must be provided."
 
+        # Check that onnx node names and description names match
+        for i, node in enumerate(onnx_model.graph.input):
+            assert node.name == model_description['input'][i]['name']
+
         # Check that the number of outputs in the model description matches the
         # number of outputs in the ONNX model
         assert \
@@ -188,6 +192,14 @@ class Model:
         # Check that the list of outputs in the model description is not empty
         assert len(model_description.get('output', [])) > 0, \
             "At least one output must be provided."
+
+        # Check that onnx node names and description names match
+        for i, node in enumerate(onnx_model.graph.output):
+            assert node.name == model_description['output'][i]['name']
+
+        ############################################
+        # Variables extraction from the ONNX model #
+        ############################################
 
         # FMI 2.0 and 3.0 have different ways of handling model variables
         if self.FMIVersion == "2.0":

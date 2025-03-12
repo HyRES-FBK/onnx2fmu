@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install onnx jinja2 loguru typer fmpy cmake
+          pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
           pip install -e .
 
       - name: Python unit tests

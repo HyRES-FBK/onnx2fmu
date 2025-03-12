@@ -12,5 +12,7 @@ dependencies:
   - flake8
   - fmpy
   - cmake
+  - numpy
+  - pandas
   - pip:
     - -e .

@@ -28,10 +28,6 @@
   </ModelVariables>
 
   <ModelStructure>
-  {%- for output in outputs %}
-    <Output valueReference="{{ output.valueReference + 1 }}"/>
-    <InitialUnknown valueReference="{{ output.valueReference + 1 }}"/>
-  {%- endfor %}
   </ModelStructure>
 
 </fmiModelDescription>

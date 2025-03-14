@@ -88,10 +88,10 @@ class ScalarVariable:
             self.vType = self.TYPES[vType]
 
         if self.causality == 'input' and self.variability == 'continuous':
-            self.start = 1.0
-
-    def __repr__(self):
-        return self.generate_context()
+            if start:
+                self.start = start
+            else:
+                self.start = 1.0
 
     def generate_context(self):
         context = {}
@@ -229,11 +229,16 @@ class Model:
                     array['name'] + "_" + "_".join([str(k) for k in idx])
                     for idx in np.ndindex(array['shape'])
                 ]
+                # Use names provided by the user if available
+                if 'names' in description:
+                    array["names"] = description["names"]
+                else:
+                    array["names"] = array_names
                 # Store the scalar variables
                 array["scalarValues"] = [
                     ScalarVariable(
                         name=array_names[j],
-                        description=description.get('description', None),
+                        description=array["names"][j],
                         variability=description.get('variability',
                                                     'continuous'),
                         causality=description.get('causality', entry),

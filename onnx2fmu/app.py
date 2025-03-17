@@ -5,9 +5,10 @@ import typer
 import shutil
 import subprocess
 import numpy as np
-from datetime import datetime
 from pathlib import Path
 from loguru import logger
+from datetime import datetime
+from typing_extensions import Annotated
 from onnx import load, TensorProto, ModelProto
 from jinja2 import Environment, FileSystemLoader
 
@@ -308,10 +309,18 @@ def version():
 
 @app.command()
 def build(
-    model_path: str = typer.Argument(help="The path to the ONNX model file."),
-    model_description_path: str = typer.Argument(
-        help="The path to the model description file."
-    ),
+    model_path: Annotated[
+        str,
+        typer.Argument(help="The path to the ONNX model file.")
+    ],
+    model_description_path: Annotated[
+        str,
+        typer.Argument(help="The path to the model description file.")
+    ],
+    fmi_version: Annotated[
+        str,
+        typer.Option(help="The FMI version, only 2.0 and 3.0 are supported. Default is 2.0.")
+    ] = "2.0",
 ):
     """
     Build the FMU.
@@ -320,6 +329,7 @@ def build(
     -----------
     - ``model_path`` (str): The path to the model to be encapsulated in an FMU.
     - ``model_description_path`` (str): The path to the model description file.
+    - ``fmi_version`` (str): The FMI version, only 2.0 and 3.0 are supported.
     """
     # Cast to Path
     model_path = Path(model_path)

@@ -16,8 +16,7 @@ from jinja2 import Environment, FileSystemLoader
 app = typer.Typer()
 
 
-TEMPLATE_DIR = "template"
-template_path = Path(TEMPLATE_DIR)
+TEMPLATE_DIR = Path("template")
 
 
 class ScalarVariable:
@@ -307,6 +306,11 @@ def version():
     typer.echo(f"ONNX2FMU {find_version('version.txt')}")
 
 
+def complete_platform():
+    return ['x86-windows', 'x86_64-windows', 'x86_64-linux', 'aarch64-linux',
+            'x86_64-darwin', 'aarch64-darwin']
+
+
 @app.command()
 def build(
     model_path: Annotated[
@@ -318,17 +322,26 @@ def build(
         typer.Argument(help="The path to the model description file.")
     ],
     fmi_version: Annotated[
+        int,
+        typer.Option(help="The FMI version, only 2 and 3 are supported. Default is 2.")
+    ] = 2,
+    fmi_platform: Annotated[
         str,
-        typer.Option(help="The FMI version, only 2.0 and 3.0 are supported. Default is 2.0.")
-    ] = "2.0",
+        typer.Option(
+            help="Platform to build for, e.g. x86_64-windows.",
+            autocompletion=complete_platform)
+    ] = "x86_64-windows"
 ):
     """
     Build the FMU.
 
     Parameters:
     -----------
+
     - ``model_path`` (str): The path to the model to be encapsulated in an FMU.
+
     - ``model_description_path`` (str): The path to the model description file.
+
     - ``fmi_version`` (str): The FMI version, only 2.0 and 3.0 are supported.
     """
     # Cast to Path
@@ -364,7 +377,7 @@ def build(
     # path
     env = Environment(loader=FileSystemLoader("."))
     # Iterate over all the remaining templates
-    for template_name in template_path.iterdir():
+    for template_name in TEMPLATE_DIR.iterdir():
         # Skip directories and FMI files
         if not template_name.is_file():
             continue
@@ -386,24 +399,52 @@ def build(
     # Generate the FMU
     ############################
 
+    fmi_architecture, fmi_system = fmi_platform.split("-")
+
+    fmi_version = str(fmi_version)
+
     # Declare CMake arguments
-    cmake_command = [
-        "cmake",
-        "-S",
-        ".",
-        "-B",
-        "build",
+    cmake_args = [
+        "-S", ".",
+        "-B", "build",
         "-DMODEL_NAME=" + model_path.stem,
+        "-DFMI_VERSION=" + fmi_version,
+        "-DFMI_ARCHITECTURE=" + fmi_architecture
     ]
+
+    if fmi_system == "windows":
+
+        cmake_args += ["-G", "'Visual Studio 17 2022'"]
+
+        if fmi_architecture == "x86":
+            cmake_args += ["-A", "Win32"]
+        elif fmi_architecture == "x86_64":
+            cmake_args += ["-A", "x64"]
+
+    # elif fmi_platform == "aarch64-linux":
+
+    #     toolchain_file = parent_dir / "aarch64-linux-toolchain.cmake"
+    #     cmake_args += ["-D", f"CMAKE_TOOLCHAIN_FILE={ toolchain_file }"]
+
+    elif fmi_platform == "x86_64-darwin":
+
+        cmake_args += ["-D", "CMAKE_OSX_ARCHITECTURES=x86_64"]
+
+    elif fmi_platform == "aarch64-darwin":
+
+        cmake_args += ["-D", "CMAKE_OSX_ARCHITECTURES=arm64"]
+
+
     # Declare CMake build arguments
     build_command = [
         "cmake",
-        "--build",
-        "build",
+        "--build", "build",
+        "--config", "Release"
     ]
     # Run cmake to generate the FMU
-    subprocess.run(cmake_command, check=True)
-    subprocess.run(build_command, check=True)
+    logger.info(f"Call cmake {' '.join(cmake_args)}")
+    subprocess.check_call(["cmake"] + cmake_args)
+    subprocess.check_call(build_command)
 
     ############################
     # Clean up

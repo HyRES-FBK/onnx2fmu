@@ -1,7 +1,7 @@
 import json
+import platform
 import unittest
 import numpy as np
-import pandas as pd
 from onnx import load
 from pathlib import Path
 from fmpy import simulate_fmu
@@ -21,6 +21,10 @@ class TestApp(unittest.TestCase):
             Path(f'tests/{self.model_name}/{self.model_name}Description.json')
         self.model_description = \
             json.loads(self.model_description_path.read_text())
+        # Detect OS and architecture
+        self.architecture = platform.machine()
+        self.os_name = platform.system().lower()
+        self.fmi_platform = "-".join([self.architecture, self.os_name])
 
     def test_fmi2_scalar_variable(self):
         # Check againts name containing non-alfanumeric characters
@@ -102,6 +106,7 @@ class TestApp(unittest.TestCase):
         build(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
+            fmi_platform=self.fmi_platform
         )
         # Check that the FMU is present
         self.assertTrue(Path(f'build/fmus/{self.model_name}.fmu').exists())
@@ -127,6 +132,7 @@ class TestApp(unittest.TestCase):
         build(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
+            fmi_platform=self.fmi_platform
         )
         # Set FMU path
         fmu_path = Path(f"build/fmus/{self.model_name}.fmu")

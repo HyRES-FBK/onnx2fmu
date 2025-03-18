@@ -42,12 +42,12 @@ jobs:
       - name: Build example1 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi_platform ${{ matrix.arch }}-${{ matrix.os }}
+          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
 
       - name: Build example2 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi_platform ${{ matrix.arch }}-${{ matrix.os }}
+          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
 
   windows_build_and_test:
     runs-on: [self-hosted, windows]
@@ -80,9 +80,9 @@ jobs:
       - name: Build example1 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi_platform ${{ matrix.arch }}-${{ matrix.os }}
+          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
 
       - name: Build example2 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi_platform ${{ matrix.arch }}-${{ matrix.os }}
+          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}

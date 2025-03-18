@@ -1,23 +1,44 @@
-name: Build and test the Reference FMUs
+name: Build and test the project master branch
 
 on:
   push:
     branches:
       - master
-      - 2-add-cmakelists-variables-declaration-to-the-app
   pull_request:
     branches:
       - master
 
 jobs:
 
-  linux_build_and_test:
-    runs-on: [self-hosted, linux]
+  build_and_test:
     strategy:
       matrix:
-        os: [linux]
-        arch: [x86_64]
-        python-version: ["3.10", "3.11", "3.12"]
+        include:
+          - name: x86-windows
+            image: windows-2022
+            arch: x86
+            python-version: ["3.10"]
+          - name: x86_64-windows
+            image: windows-2022
+            arch: x86_64
+            python-version: ["3.10"]
+          - name: x86_64-linux
+            image: ubuntu-20.04
+            arch: x86_64
+            python-version: ["3.10"]
+          - name: aarch64-linux
+            image: ubuntu-20.04
+            arch: aarch64
+            python-version: ["3.10"]
+          # - name: x86_64-darwin
+          #   image: macos-13
+          #   arch: x86_64
+          #   python-version: ["3.10"]
+          # - name: aarch64-darwin
+          #   image: macos-13
+          #   arch: aarch64
+          #   python-version: ["3.10"]
+    runs-on: ${{ matrix.image }}
 
     steps:
       - name: Check out repository
@@ -42,47 +63,9 @@ jobs:
       - name: Build example1 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
+          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi-platform ${{ matrix.name }}
 
       - name: Build example2 FMU
         shell: bash -l {0}
         run: |
-          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
-
-  windows_build_and_test:
-    runs-on: [self-hosted, windows]
-    strategy:
-      matrix:
-        os: [windows]
-        arch: [x86_64]
-        python-version: ["3.10", "3.11", "3.12"]
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: "pip"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
-          pip install -e .
-
-      - name: Python unit tests
-        run: |
-          python -m unittest tests.test_app
-
-      - name: Build example1 FMU
-        shell: bash -l {0}
-        run: |
-          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
-
-      - name: Build example2 FMU
-        shell: bash -l {0}
-        run: |
-          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
+          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi-platform ${{ matrix.name }}

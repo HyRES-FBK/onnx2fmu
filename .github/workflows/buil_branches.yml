@@ -39,14 +39,16 @@ jobs:
           python -m unittest tests.test_app
 
       - name: Build example1 FMU
-        shell: bash -l {0}
+        shell: pwsh
         run: |
-          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
+          $fmiPlatform = "${{ matrix.arch }}-${{ matrix.os }}"
+          onnx2fmu build tests/example1/example1.onnx tests/example1/example1Description.json --fmi-platform $fmi_platform
 
       - name: Build example2 FMU
-        shell: bash -l {0}
+        shell: pwsh
         run: |
-          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi-platform ${{ matrix.arch }}-${{ matrix.os }}
+          $fmiPlatform = "${{ matrix.arch }}-${{ matrix.os }}"
+          onnx2fmu build tests/example2/example2.onnx tests/example2/example2Description.json --fmi-platform $fmi_platform
 
   build_and_test_linux:
     strategy:

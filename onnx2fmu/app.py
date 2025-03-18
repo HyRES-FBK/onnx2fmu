@@ -3,6 +3,7 @@ import uuid
 import json
 import typer
 import shutil
+import platform
 import subprocess
 import numpy as np
 from pathlib import Path
@@ -16,6 +17,7 @@ from jinja2 import Environment, FileSystemLoader
 app = typer.Typer()
 
 
+PARENT_DIR = Path(__file__).parent
 TEMPLATE_DIR = Path("template")
 
 
@@ -323,8 +325,18 @@ def build(
     ],
     fmi_version: Annotated[
         int,
-        typer.Option(help="The FMI version, only 2 and 3 are supported. Default is 2.")
+        typer.Option(
+            help="The FMI version, only 2 and 3 are supported. Default is 2."
+        )
     ] = 2,
+    fmi_platform: Annotated[
+        str,
+        typer.Option(
+            help="The target platform to build for. If empty, the program" + \
+            "set the target to the platform where it is compiled.",
+            autocompletion=complete_platform
+        )
+    ] = ""
 ):
     """
     Build the FMU.
@@ -336,7 +348,11 @@ def build(
 
     - ``model_description_path`` (str): The path to the model description file.
 
-    - ``fmi_version`` (str): The FMI version, only 2.0 and 3.0 are supported.
+    - ``fmi_version`` (int): The FMI version, only 2.0 and 3.0 are supported.
+
+    - ``fmi_platform`` (str): One of 'x86-windows', 'x86_64-windows',
+    'x86_64-linux', 'aarch64-linux', 'x86_64-darwin', 'aarch64-darwin'. If left
+    blank, it builds for the current platform.
     """
     # Cast to Path
     model_path = Path(model_path)
@@ -395,13 +411,45 @@ def build(
 
     fmi_version = str(fmi_version)
 
+    if fmi_platform in complete_platform():
+        fmi_architecture, fmi_system = fmi_platform.split("-")
+    else:
+        fmi_system = platform.system()
+        # Left empty, CMake will detect it
+        fmi_architecture = None
+
     # Declare CMake arguments
     cmake_args = [
         "-S", ".",
         "-B", "build",
-        "-DMODEL_NAME=" + model_path.stem,
-        "-DFMI_VERSION=" + fmi_version,
+        "-D" + f"MODEL_NAME={model_path.stem}",
+        "-D" + f"FMI_VERSION={fmi_version}",
     ]
+
+    if fmi_architecture:
+        cmake_args += ["-D", f"FMI_ARCHITECTURE={fmi_architecture}"]
+
+    if fmi_system == 'windows':
+
+        cmake_args += ['-G', "'Visual Studio 17 2022'"]
+
+        if fmi_architecture == 'x86':
+            cmake_args += ['-A', 'Win32']
+        elif fmi_architecture == 'x86_64':
+            cmake_args += ['-A', 'x64']
+
+    elif fmi_platform == 'aarch64-linux':
+
+        toolchain_file = PARENT_DIR / 'aarch64-linux-toolchain.cmake'
+        cmake_args += ['-D', f'CMAKE_TOOLCHAIN_FILE={ toolchain_file }']
+
+    elif fmi_platform == 'x86_64-darwin':
+
+        cmake_args += ['-D', 'CMAKE_OSX_ARCHITECTURES=x86_64']
+
+    elif fmi_platform == 'aarch64-darwin':
+
+        cmake_args += ['-D', 'CMAKE_OSX_ARCHITECTURES=arm64']
 
     # Declare CMake build arguments
     build_command = [

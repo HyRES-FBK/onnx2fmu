@@ -375,9 +375,11 @@ endif()
 
 # create ZIP archive
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E tar "cfv" ${CMAKE_CURRENT_BINARY_DIR}/fmus/${MODEL_NAME}.fmu --format=zip
+  COMMAND ${CMAKE_COMMAND} -E tar
+  $<IF:$<CONFIG:Debug>,cfv,cf>
+  ${CMAKE_CURRENT_BINARY_DIR}/fmus/${MODEL_NAME}.fmu --format=zip
   ${ARCHIVE_FILES}
-  WORKING_DIRECTORY ${FMU_BUILD_DIR} COMMENT "Creating ZIP archive"
+  WORKING_DIRECTORY ${FMU_BUILD_DIR}
 )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/fmus/${MODEL_NAME}.fmu DESTINATION ${CMAKE_INSTALL_PREFIX})

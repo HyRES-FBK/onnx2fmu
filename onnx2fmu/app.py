@@ -325,12 +325,6 @@ def build(
         int,
         typer.Option(help="The FMI version, only 2 and 3 are supported. Default is 2.")
     ] = 2,
-    fmi_platform: Annotated[
-        str,
-        typer.Option(
-            help="Platform to build for, e.g. x86_64-windows.",
-            autocompletion=complete_platform)
-    ] = "x86_64-windows"
 ):
     """
     Build the FMU.
@@ -399,8 +393,6 @@ def build(
     # Generate the FMU
     ############################
 
-    fmi_architecture, fmi_system = fmi_platform.split("-")
-
     fmi_version = str(fmi_version)
 
     # Declare CMake arguments
@@ -409,31 +401,7 @@ def build(
         "-B", "build",
         "-DMODEL_NAME=" + model_path.stem,
         "-DFMI_VERSION=" + fmi_version,
-        "-DFMI_ARCHITECTURE=" + fmi_architecture
     ]
-
-    if fmi_system == "windows":
-
-        cmake_args += ["-G", "'Visual Studio 17 2022'"]
-
-        if fmi_architecture == "x86":
-            cmake_args += ["-A", "Win32"]
-        elif fmi_architecture == "x86_64":
-            cmake_args += ["-A", "x64"]
-
-    # elif fmi_platform == "aarch64-linux":
-
-    #     toolchain_file = parent_dir / "aarch64-linux-toolchain.cmake"
-    #     cmake_args += ["-D", f"CMAKE_TOOLCHAIN_FILE={ toolchain_file }"]
-
-    elif fmi_platform == "x86_64-darwin":
-
-        cmake_args += ["-D", "CMAKE_OSX_ARCHITECTURES=x86_64"]
-
-    elif fmi_platform == "aarch64-darwin":
-
-        cmake_args += ["-D", "CMAKE_OSX_ARCHITECTURES=arm64"]
-
 
     # Declare CMake build arguments
     build_command = [

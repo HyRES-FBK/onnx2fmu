@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.28)
+cmake_minimum_required (VERSION 3.22)
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
@@ -7,18 +7,11 @@ FUNCTION(cat IN_FILE OUT_FILE)
   file(APPEND ${OUT_FILE} "${CONTENTS}")
 ENDFUNCTION()
 
-project (Reference-FMUs)
+project (ONNX2FMU)
 
 # Set default FMI version to 2
 set(FMI_VERSION 2 CACHE STRING "FMI Version")
 set_property(CACHE FMI_VERSION PROPERTY STRINGS 1 2 3)
-
-set(FMI_TYPE ME CACHE STRING "FMI Type (FMI 1.0 only)")
-set_property(CACHE FMI_TYPE PROPERTY STRINGS ME CS)
-
-if (${FMI_VERSION} GREATER 1)
-  set(FMI_TYPE "")
-endif ()
 
 set(FMI_ARCHITECTURE "" CACHE STRING "FMI Architecture")
 set_property(CACHE FMI_ARCHITECTURE PROPERTY STRINGS "" "aarch64" "x86" "x86_64")
@@ -35,7 +28,6 @@ endif ()
 
 if (MSVC)
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-
   # Minimum supported MSVC version is 1800 = Visual Studio 12.0/2013
   # See also https://cmake.org/cmake/help/latest/variable/MSVC_VERSION.html
   if (MSVC_VERSION VERSION_LESS 1800)
@@ -48,6 +40,7 @@ if (UNIX AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
 endif()
 
+# FMI platforms names differ between FMI 3, and FMI 2 and 1
 if (${FMI_VERSION} GREATER 2)
 
   if (WIN32)
@@ -57,7 +50,7 @@ if (${FMI_VERSION} GREATER 2)
   else ()
     set(FMI_PLATFORM "${FMI_ARCHITECTURE}-linux")
   endif ()
-
+# FMI 2 and 1
 else ()
 
   if (WIN32)
@@ -141,36 +134,25 @@ SET(SOURCES
 # Manually set the latest release tag
 set (LATEST_RELEASE_TAG "1.20.1")
 
-# Detect the operating system
+# Detect the operating system for onnxruntime download
 if (WIN32)
-    set(ONNXRUNTIME_OS "win")
-elseif (APPLE)
-    set(ONNXRUNTIME_OS "osx")
-elseif (UNIX)
-    set(ONNXRUNTIME_OS "linux")
-else ()
-    message(FATAL_ERROR "Unknown operating system")
-endif ()
-
-# Detect the architecture
-if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
-  if (APPLE)
-    set(OS_ARCH "x86_64")
-  else ()
-    set(OS_ARCH "x64")
+  set(ONNXRUNTIME_OS "win")
+  if (${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "AMD64|x86_64")
+    set(FMI_ARCHITECTURE "x64")
   endif ()
-elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "i386|i686|x86")
-    set(OS_ARCH "x86")
-elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
-    set(OS_ARCH "arm64")
-elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
-    set(OS_ARCH "arm")
+elseif (APPLE)
+  set(ONNXRUNTIME_OS "osx")
+elseif (UNIX)
+  set(ONNXRUNTIME_OS "linux")
+  if (${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "AMD64|x86_64")
+    set(FMI_ARCHITECTURE "x64")
+  endif ()
 else ()
-    message(FATAL_ERROR "Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+  message(FATAL_ERROR "Unknown operating system")
 endif ()
 
 # Set the onnxruntime directory name
-set(ONNXRUNTIME onnxruntime-${ONNXRUNTIME_OS}-${OS_ARCH}-${LATEST_RELEASE_TAG})
+set(ONNXRUNTIME onnxruntime-${ONNXRUNTIME_OS}-${FMI_ARCHITECTURE}-${LATEST_RELEASE_TAG})
 
 if (WIN32)
     set(ONNXRUNTIME_ARCHIVE ${ONNXRUNTIME}.zip)

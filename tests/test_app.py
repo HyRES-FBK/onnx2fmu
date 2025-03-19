@@ -98,13 +98,17 @@ class TestApp(unittest.TestCase):
             Model({}, self.model_description)
 
     def test_model_build(self):
+        # Set FMU path
+        fmu_path = Path(f"{self.model_name}.fmu")
         # Test the model build process. Remember to check for multiple OSs
         build(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
         )
         # Check that the FMU is present
-        self.assertTrue(Path(f'build/fmus/{self.model_name}.fmu').exists())
+        self.assertTrue(Path(f'{self.model_name}.fmu').exists())
+        # Cleanup FMU
+        fmu_path.unlink()
 
     def test_number_of_inputs(self):
         pass
@@ -114,10 +118,12 @@ class TestApp(unittest.TestCase):
 
     def test_validate_FMU(self):
         # Set FMU path
-        fmu_path = Path(f"build/fmus/{self.model_name}.fmu")
+        fmu_path = Path(f"{self.model_name}.fmu")
         # Validate
         res = validate_fmu(fmu_path)
         self.assertEqual(len(res), 0)
+        # Cleanup FMU
+        fmu_path.unlink()
 
     def test_FMU(self):
         # Set test folder
@@ -129,7 +135,7 @@ class TestApp(unittest.TestCase):
             model_description_path=self.model_description_path,
         )
         # Set FMU path
-        fmu_path = Path(f"build/fmus/{self.model_name}.fmu")
+        fmu_path = Path(f"{self.model_name}.fmu")
         # Read data
         signals = np.genfromtxt(test_folder / "input.csv",
                                 delimiter=",", names=True)
@@ -157,3 +163,5 @@ class TestApp(unittest.TestCase):
         mse = np.sum(np.pow(res - out_real, 2))
         # Check that mse is lower than 1e-6
         self.assertLessEqual(mse, 1e-6)
+        # Cleanup FMU
+        fmu_path.unlink()

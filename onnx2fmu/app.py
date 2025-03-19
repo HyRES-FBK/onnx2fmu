@@ -413,7 +413,7 @@ def build(
             f.write(rendered)
 
     # Copy the model to the resources directory, do not change
-    model_target_path = target_path / "resources/model.onnx"
+    model_target_path = target_path / f"{model_path.stem}/resources/model.onnx"
     model_target_path.parent.mkdir(exist_ok=True)
     # Copy the model to the target directory
     shutil.copy(model_path, model_target_path)

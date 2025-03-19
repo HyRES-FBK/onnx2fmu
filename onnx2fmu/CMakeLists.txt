@@ -94,11 +94,6 @@ if (${FMI_VERSION} LESS 3)
 ")
 endif ()
 
-# Check if a directory with the name of the model exists
-if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}")
-  message(FATAL_ERROR "Model directory not found: ${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}")
-endif ()
-
 set(TARGET_NAME ${MODEL_NAME})
 
 SET(HEADERS

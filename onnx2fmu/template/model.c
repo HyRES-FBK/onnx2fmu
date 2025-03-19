@@ -1,3 +1,7 @@
+{% macro cleanName(name) -%}
+{{ name | replace(":", "") }}
+{%- endmacro %}
+
 #include "config.h"
 #include "model.h"
 #include "onnxruntime_c_api.h"
@@ -24,9 +28,6 @@
             comp->g_ort->ReleaseStatus(onnx_status); \
         } \
     } while (0);
-
-// Import Jinja2 macros
-{% from 'template/config.h' import cleanName %}
 
 void setStartValues(ModelInstance *comp) {
     UNUSED(comp);

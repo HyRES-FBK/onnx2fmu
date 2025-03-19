@@ -19,7 +19,8 @@ dependencies = [
   "jinja2",
   "cmake",
   "numpy",
-  "loguru"
+  "loguru",
+  "typer"
 ]
 
 [tool.black]

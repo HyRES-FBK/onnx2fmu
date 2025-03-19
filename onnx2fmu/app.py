@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 from loguru import logger
 from datetime import datetime
-from importlib.resources import resources, files
+import importlib.resources as resources
 from typing_extensions import Annotated
 from onnx import load, TensorProto, ModelProto
 from jinja2 import Environment, BaseLoader
@@ -18,8 +18,8 @@ from jinja2 import Environment, BaseLoader
 app = typer.Typer()
 
 
-PARENT_DIR = files("onnx2fmu")
-TEMPLATE_DIR = files("onnx2fmu.template")
+PARENT_DIR = resources.files("onnx2fmu")
+TEMPLATE_DIR = resources.files("onnx2fmu.template")
 
 
 class ScalarVariable:
@@ -324,6 +324,10 @@ def build(
         str,
         typer.Argument(help="The path to the model description file.")
     ],
+    destination: Annotated[
+        str,
+        typer.Option(help="The destination path.")
+    ] = ".",
     fmi_version: Annotated[
         int,
         typer.Option(
@@ -333,7 +337,7 @@ def build(
     fmi_platform: Annotated[
         str,
         typer.Option(
-            help="The target platform to build for. If empty, the program" + \
+            help="The target platform to build for. If empty, the program" +
             "set the target to the platform where it is compiled.",
             autocompletion=complete_platform
         )
@@ -349,6 +353,8 @@ def build(
 
     - ``model_description_path`` (str): The path to the model description file.
 
+    - ``destination`` (str): The destination path where to copy the FMU.
+
     - ``fmi_version`` (int): The FMI version, only 2.0 and 3.0 are supported.
 
     - ``fmi_platform`` (str): One of 'x86-windows', 'x86_64-windows',
@@ -357,6 +363,7 @@ def build(
     """
     # Cast to Path
     model_path = Path(model_path)
+    destination = Path(destination)
     # Check if the model file exists
     if not model_path.exists():
         logger.error(f"Model file {model_path} does not exist.")
@@ -382,8 +389,9 @@ def build(
     # Remove the target directory if it exists
     if target_path.exists():
         shutil.rmtree(target_path)
-    # Create the target directory
+    # Create the target directories
     target_path.mkdir(exist_ok=True)
+    (target_path / f'{model_path.stem}').mkdir(exist_ok=True)
     # Create a Jinja2 environment and set the current directory as the search
     # path
     env = Environment(loader=BaseLoader())
@@ -400,7 +408,8 @@ def build(
         # Render the template with the context
         rendered = template.render(context)
         # Write the rendered template to the target directory
-        with open(target_path / f"{template_name.name}", "w") as f:
+        core_dir = target_path / f"{model_path.stem}/{template_name.name}"
+        with open(core_dir, "w") as f:
             f.write(rendered)
 
     # Copy the model to the resources directory, do not change
@@ -408,6 +417,17 @@ def build(
     model_target_path.parent.mkdir(exist_ok=True)
     # Copy the model to the target directory
     shutil.copy(model_path, model_target_path)
+    # Copy CMakeLists.txt to the target path
+    shutil.copy(resources.files('onnx2fmu').joinpath('CMakeLists.txt'),
+                target_path)
+    # Copy src folder
+    src_folder = resources.files('onnx2fmu').joinpath('src')
+    with resources.as_file(src_folder) as path:
+        shutil.copytree(path, target_path / path.name, dirs_exist_ok=True)
+    # Copy include folder
+    include_folder = resources.files('onnx2fmu').joinpath('include')
+    with resources.as_file(include_folder) as path:
+        shutil.copytree(path, target_path / path.name, dirs_exist_ok=True)
 
     ############################
     # Generate the FMU
@@ -461,13 +481,10 @@ def build(
 
         cmake_args += ['-D', 'CMAKE_OSX_ARCHITECTURES=arm64']
 
-    install_dir = Path(".")
-
     # Declare CMake build arguments
     build_command = [
         'cmake',
         '--build', str(build_dir),
-        '--install', str(install_dir),
         '--config', 'Release'
     ]
     # Run cmake to generate the FMU
@@ -479,7 +496,7 @@ def build(
     # Clean up
     ############################
     # Copy the FMU
-    shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu")
+    shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu", destination)
     # Remove the build folder
     shutil.rmtree(build_dir)
     # Remove the target directory

@@ -1,7 +1,7 @@
 import json
+import platform
 import unittest
 import numpy as np
-import pandas as pd
 from onnx import load
 from pathlib import Path
 from fmpy import simulate_fmu

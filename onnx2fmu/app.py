@@ -9,16 +9,17 @@ import numpy as np
 from pathlib import Path
 from loguru import logger
 from datetime import datetime
+from importlib.resources import resources, files
 from typing_extensions import Annotated
 from onnx import load, TensorProto, ModelProto
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, BaseLoader
 
 
 app = typer.Typer()
 
 
-PARENT_DIR = Path(__file__).parent
-TEMPLATE_DIR = Path("template")
+PARENT_DIR = files("onnx2fmu")
+TEMPLATE_DIR = files("onnx2fmu.template")
 
 
 class ScalarVariable:
@@ -385,19 +386,22 @@ def build(
     target_path.mkdir(exist_ok=True)
     # Create a Jinja2 environment and set the current directory as the search
     # path
-    env = Environment(loader=FileSystemLoader("."))
+    env = Environment(loader=BaseLoader())
     # Iterate over all the remaining templates
     for template_name in TEMPLATE_DIR.iterdir():
         # Skip directories and FMI files
         if not template_name.is_file():
             continue
-        # Load the template
-        template = env.get_template("template/" + str(template_name.name))
+        # Read the template content from the package resource
+        with resources.as_file(template_name) as path:
+            template_source = path.read_text()
+        # Create a Jinja2 template from the source
+        template = env.from_string(template_source)
         # Render the template with the context
-        out = template.render(context)
+        rendered = template.render(context)
         # Write the rendered template to the target directory
         with open(target_path / f"{template_name.name}", "w") as f:
-            f.write(out)
+            f.write(rendered)
 
     # Copy the model to the resources directory, do not change
     model_target_path = target_path / "resources/model.onnx"
@@ -418,10 +422,16 @@ def build(
         # Left empty, CMake will detect it
         fmi_architecture = None
 
+    # Create build dir
+    build_dir = target_path / "build"
+
+    if not build_dir.exists():
+        build_dir.mkdir(exist_ok=True)
+
     # Declare CMake arguments
     cmake_args = [
-        '-S', '.',
-        '-B', 'build',
+        '-S', str(target_path),
+        '-B', str(build_dir),
         '-D', f'MODEL_NAME={model_path.stem}',
         '-D', f'FMI_VERSION={fmi_version}',
     ]
@@ -451,10 +461,13 @@ def build(
 
         cmake_args += ['-D', 'CMAKE_OSX_ARCHITECTURES=arm64']
 
+    install_dir = Path(".")
+
     # Declare CMake build arguments
     build_command = [
         'cmake',
-        '--build', 'build',
+        '--build', str(build_dir),
+        '--install', str(install_dir),
         '--config', 'Release'
     ]
     # Run cmake to generate the FMU
@@ -465,6 +478,10 @@ def build(
     ############################
     # Clean up
     ############################
+    # Copy the FMU
+    shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu")
+    # Remove the build folder
+    shutil.rmtree(build_dir)
     # Remove the target directory
     shutil.rmtree(target_path)
 

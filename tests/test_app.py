@@ -107,6 +107,9 @@ class TestApp(unittest.TestCase):
         )
         # Check that the FMU is present
         self.assertTrue(Path(f'{self.model_name}.fmu').exists())
+        # Validate
+        res = validate_fmu(fmu_path)
+        self.assertEqual(len(res), 0)
         # Cleanup FMU
         fmu_path.unlink()
 
@@ -115,15 +118,6 @@ class TestApp(unittest.TestCase):
 
     def test_number_of_outputs(self):
         pass
-
-    def test_validate_FMU(self):
-        # Set FMU path
-        fmu_path = Path(f"{self.model_name}.fmu")
-        # Validate
-        res = validate_fmu(fmu_path)
-        self.assertEqual(len(res), 0)
-        # Cleanup FMU
-        fmu_path.unlink()
 
     def test_FMU(self):
         # Set test folder
@@ -136,6 +130,9 @@ class TestApp(unittest.TestCase):
         )
         # Set FMU path
         fmu_path = Path(f"{self.model_name}.fmu")
+        # Validate
+        res = validate_fmu(fmu_path)
+        self.assertEqual(len(res), 0)
         # Read data
         signals = np.genfromtxt(test_folder / "input.csv",
                                 delimiter=",", names=True)

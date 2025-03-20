@@ -13,12 +13,12 @@ from onnx2fmu.app import ScalarVariable, Model, build
 class TestApp(unittest.TestCase):
 
     def setUp(self):
-        base_dir = Path(__file__).resolve().parent / 'example1'
+        self.base_dir = Path(__file__).resolve().parent / 'example1'
         self.model_name = 'example1'
-        self.model_path = base_dir / f'{self.model_name}.onnx'
+        self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
-            base_dir / f'{self.model_name}Description.json'
+            self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
 
@@ -120,8 +120,6 @@ class TestApp(unittest.TestCase):
         pass
 
     def test_FMU(self):
-        # Set test folder
-        test_folder = Path(f"tests/{self.model_name}")
         # Build the FMNU
         # Test the model build process. Remember to check for multiple OSs
         build(
@@ -134,7 +132,7 @@ class TestApp(unittest.TestCase):
         res = validate_fmu(fmu_path)
         self.assertEqual(len(res), 0)
         # Read data
-        signals = np.genfromtxt(test_folder / "input.csv",
+        signals = np.genfromtxt(self.base_dir / "input.csv",
                                 delimiter=",", names=True)
         # Test the FMU using fmpy and check output against benchmark
         res = simulate_fmu(
@@ -147,7 +145,7 @@ class TestApp(unittest.TestCase):
         res = np.vstack([res[field] for field in
                          res.dtype.names if field != 'time']).T
         # Load real output
-        out_real = np.genfromtxt(test_folder / "output.csv",
+        out_real = np.genfromtxt(self.base_dir / "output.csv",
                                  delimiter=",", names=True)
         out_real = np.vstack([out_real[field] for field in
                               out_real.dtype.names if field != 'time']).T

@@ -168,7 +168,7 @@ endif ()
 # Download the ONNX Runtime release only if the file does not exist
 if (NOT EXISTS ${ONNXRUNTIME_ARCHIVE_PATH})
     message(STATUS "Downloading ONNX Runtime from ${ONNXRUNTIME_URL}")
-    file(DOWNLOAD ${ONNXRUNTIME_URL} ${ONNXRUNTIME_ARCHIVE_PATH} SHOW_PROGRESS)
+    file(DOWNLOAD ${ONNXRUNTIME_URL} ${ONNXRUNTIME_ARCHIVE_PATH})
 else ()
     message(STATUS "ONNX Runtime archive already exists at ${ONNXRUNTIME_ARCHIVE_PATH}")
 endif ()

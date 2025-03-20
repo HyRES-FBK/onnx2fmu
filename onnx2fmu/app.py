@@ -496,9 +496,11 @@ def build(
         '--build', str(build_dir),
         '--config', cmake_config
     ]
+
     # Run cmake to generate the FMU
     logger.info(f'Call cmake {" ".join(cmake_args)}')
     subprocess.run(['cmake'] + cmake_args, check=True)
+    logger.info(f'CMake build cmake {" ".join(cmake_build_args)}')
     subprocess.run(['cmake'] + cmake_build_args, check=True)
 
     ############################

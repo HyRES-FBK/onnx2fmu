@@ -5,6 +5,7 @@ __pycache__
 *.fmu
 *.zip
 *_out.csv
+dist/
 
 # Python virtual environments
 .venv/

@@ -313,6 +313,9 @@ def complete_platform():
     return ['x86-windows', 'x86_64-windows', 'x86_64-linux', 'aarch64-linux',
             'x86_64-darwin', 'aarch64-darwin']
 
+def cmake_configurations():
+    return ['Debug', 'Release']
+
 
 @app.command()
 def build(
@@ -341,7 +344,12 @@ def build(
             "set the target to the platform where it is compiled.",
             autocompletion=complete_platform
         )
-    ] = ""
+    ] = "",
+    cmake_config: Annotated[
+        str,
+        typer.Option(help="The CMake build config.",
+                     autocompletion=cmake_configurations)
+    ] = "Release"
 ):
     """
     Build the FMU.
@@ -360,6 +368,8 @@ def build(
     - ``fmi_platform`` (str): One of 'x86-windows', 'x86_64-windows',
     'x86_64-linux', 'aarch64-linux', 'x86_64-darwin', 'aarch64-darwin'. If left
     blank, it builds for the current platform.
+
+    - ``cmake_config`` (str): The CMake build config.
     """
     # Cast to Path
     model_path = Path(model_path)
@@ -482,15 +492,14 @@ def build(
         cmake_args += ['-D', 'CMAKE_OSX_ARCHITECTURES=arm64']
 
     # Declare CMake build arguments
-    build_command = [
-        'cmake',
+    cmake_build_args = [
         '--build', str(build_dir),
-        '--config', 'Release'
+        '--config', cmake_config
     ]
     # Run cmake to generate the FMU
     logger.info(f'Call cmake {" ".join(cmake_args)}')
-    subprocess.run(['cmake'] + cmake_args)
-    subprocess.run(build_command)
+    subprocess.run(['cmake'] + cmake_args, check=True)
+    subprocess.run(['cmake'] + cmake_build_args, check=True)
 
     ############################
     # Clean up

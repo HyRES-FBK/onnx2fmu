@@ -63,9 +63,9 @@ jobs:
           pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
           pip install -e .
 
-      # - name: Python unit tests
-      #   run: |
-      #     python -m unittest tests.test_app
+      - name: Python unit tests
+        run: |
+          python -m unittest tests.test_app
 
       - name: Build example1 FMU (Windows)
         if: runner.os == 'Windows'

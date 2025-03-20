@@ -13,12 +13,12 @@ from onnx2fmu.app import ScalarVariable, Model, build
 class TestApp(unittest.TestCase):
 
     def setUp(self):
+        base_dir = Path(__file__).resolve().parent / 'example1'
         self.model_name = 'example1'
-        self.model_path = \
-            Path(f'tests/{self.model_name}/{self.model_name}.onnx')
+        self.model_path = base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
-            Path(f'tests/{self.model_name}/{self.model_name}Description.json')
+            base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
 

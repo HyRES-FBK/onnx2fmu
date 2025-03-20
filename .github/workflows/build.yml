@@ -42,6 +42,13 @@ jobs:
     runs-on: ${{ matrix.image }}
 
     steps:
+
+      - name: Updare aarch64 Linux runner
+        if: matrix.name == 'aarch64-linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc-aarch64-linux-gnu qemu-user
+
       - name: Check out repository
         uses: actions/checkout@v4
 

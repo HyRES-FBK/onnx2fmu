@@ -42,20 +42,20 @@ jobs:
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          onnx2fmu build \
-          tests/example1/example1.onnx \
-          tests/example1/example1Description.json \
-          --fmi-platform $fmi_platform \
+          onnx2fmu build `
+          tests/example1/example1.onnx `
+          tests/example1/example1Description.json `
+          --fmi-platform $fmi_platform `
           --cmake-config Debug
 
       - name: Build example2 FMU
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          onnx2fmu build \
-          tests/example2/example2.onnx \
-          tests/example2/example2Description.json \
-          --fmi-platform $fmi_platform \
+          onnx2fmu build `
+          tests/example2/example2.onnx `
+          tests/example2/example2Description.json `
+          --fmi-platform $fmi_platform `
           --cmake-config Debug
 
   build_and_test_linux:

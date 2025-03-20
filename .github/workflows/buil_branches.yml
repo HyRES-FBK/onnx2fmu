@@ -45,7 +45,7 @@ jobs:
           onnx2fmu build \
           tests/example1/example1.onnx \
           tests/example1/example1Description.json \
-          --fmi-platform $fmi_platform
+          --fmi-platform $fmi_platform \
           --cmake-config Debug
 
       - name: Build example2 FMU

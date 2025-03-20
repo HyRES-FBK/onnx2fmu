@@ -1,5 +1,4 @@
 import json
-import platform
 import unittest
 import numpy as np
 from onnx import load

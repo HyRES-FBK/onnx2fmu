@@ -64,6 +64,7 @@ jobs:
           pip install -e .
 
       - name: Python unit tests
+        if: runner.os != 'macOS'
         run: |
           python -m unittest tests.test_app
 

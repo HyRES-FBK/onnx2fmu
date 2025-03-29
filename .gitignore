@@ -5,9 +5,9 @@ __pycache__
 *.fmu
 *.zip
 *_out.csv
-/venv/
-tests/work/
+dist/
+
+# Python virtual environments
+.venv/
 /build/
-Dockerfile
-fmusim
 .vscode/

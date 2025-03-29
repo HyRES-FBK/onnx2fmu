@@ -7,14 +7,21 @@ name = "onnx2fmu"
 version = "0.0.1"
 description = "A tool for wrapping ONNX netwroks in FMUs."
 authors = [
-  { name = "Michele Urbani" },
+  { name = "Michele Urbani", email = "murbani@fbk.eu" },
 ]
-
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
 requires-python = "~=3.10"
+dependencies = [
+  "onnx",
+  "jinja2",
+  "cmake",
+  "numpy",
+  "loguru",
+  "typer"
+]
 
 [tool.black]
 line-length = 99

@@ -1,5 +1,4 @@
 import json
-import platform
 import unittest
 import numpy as np
 from onnx import load
@@ -13,12 +12,12 @@ from onnx2fmu.app import ScalarVariable, Model, build
 class TestApp(unittest.TestCase):
 
     def setUp(self):
+        self.base_dir = Path(__file__).resolve().parent / 'example1'
         self.model_name = 'example1'
-        self.model_path = \
-            Path(f'tests/{self.model_name}/{self.model_name}.onnx')
+        self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
-            Path(f'tests/{self.model_name}/{self.model_name}Description.json')
+            self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
 
@@ -98,13 +97,20 @@ class TestApp(unittest.TestCase):
             Model({}, self.model_description)
 
     def test_model_build(self):
+        # Set FMU path
+        fmu_path = Path(f"{self.model_name}.fmu")
         # Test the model build process. Remember to check for multiple OSs
         build(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
         )
         # Check that the FMU is present
-        self.assertTrue(Path(f'build/fmus/{self.model_name}.fmu').exists())
+        self.assertTrue(Path(f'{self.model_name}.fmu').exists())
+        # Validate
+        res = validate_fmu(fmu_path)
+        self.assertEqual(len(res), 0)
+        # Cleanup FMU
+        fmu_path.unlink()
 
     def test_number_of_inputs(self):
         pass
@@ -112,16 +118,7 @@ class TestApp(unittest.TestCase):
     def test_number_of_outputs(self):
         pass
 
-    def test_validate_FMU(self):
-        # Set FMU path
-        fmu_path = Path(f"build/fmus/{self.model_name}.fmu")
-        # Validate
-        res = validate_fmu(fmu_path)
-        self.assertEqual(len(res), 0)
-
     def test_FMU(self):
-        # Set test folder
-        test_folder = Path(f"tests/{self.model_name}")
         # Build the FMNU
         # Test the model build process. Remember to check for multiple OSs
         build(
@@ -129,9 +126,12 @@ class TestApp(unittest.TestCase):
             model_description_path=self.model_description_path,
         )
         # Set FMU path
-        fmu_path = Path(f"build/fmus/{self.model_name}.fmu")
+        fmu_path = Path(f"{self.model_name}.fmu")
+        # Validate
+        res = validate_fmu(fmu_path)
+        self.assertEqual(len(res), 0)
         # Read data
-        signals = np.genfromtxt(test_folder / "input.csv",
+        signals = np.genfromtxt(self.base_dir / "input.csv",
                                 delimiter=",", names=True)
         # Test the FMU using fmpy and check output against benchmark
         res = simulate_fmu(
@@ -144,7 +144,7 @@ class TestApp(unittest.TestCase):
         res = np.vstack([res[field] for field in
                          res.dtype.names if field != 'time']).T
         # Load real output
-        out_real = np.genfromtxt(test_folder / "output.csv",
+        out_real = np.genfromtxt(self.base_dir / "output.csv",
                                  delimiter=",", names=True)
         out_real = np.vstack([out_real[field] for field in
                               out_real.dtype.names if field != 'time']).T
@@ -157,3 +157,5 @@ class TestApp(unittest.TestCase):
         mse = np.sum(np.pow(res - out_real, 2))
         # Check that mse is lower than 1e-6
         self.assertLessEqual(mse, 1e-6)
+        # Cleanup FMU
+        fmu_path.unlink()

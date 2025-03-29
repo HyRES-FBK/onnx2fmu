@@ -94,11 +94,6 @@ if (${FMI_VERSION} LESS 3)
 ")
 endif ()
 
-# Check if a directory with the name of the model exists
-if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}")
-  message(FATAL_ERROR "Model directory not found: ${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}")
-endif ()
-
 set(TARGET_NAME ${MODEL_NAME})
 
 SET(HEADERS
@@ -137,14 +132,14 @@ set (LATEST_RELEASE_TAG "1.20.1")
 # Detect the operating system for onnxruntime download
 if (WIN32)
   set(ONNXRUNTIME_OS "win")
-  if (${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "AMD64|x86_64")
+  if (${FMI_ARCHITECTURE} MATCHES "AMD64|x86_64")
     set(FMI_ARCHITECTURE "x64")
   endif ()
 elseif (APPLE)
   set(ONNXRUNTIME_OS "osx")
 elseif (UNIX)
   set(ONNXRUNTIME_OS "linux")
-  if (${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "AMD64|x86_64")
+  if (${FMI_ARCHITECTURE} MATCHES "AMD64|x86_64")
     set(FMI_ARCHITECTURE "x64")
   endif ()
 else ()
@@ -173,7 +168,7 @@ endif ()
 # Download the ONNX Runtime release only if the file does not exist
 if (NOT EXISTS ${ONNXRUNTIME_ARCHIVE_PATH})
     message(STATUS "Downloading ONNX Runtime from ${ONNXRUNTIME_URL}")
-    file(DOWNLOAD ${ONNXRUNTIME_URL} ${ONNXRUNTIME_ARCHIVE_PATH} SHOW_PROGRESS)
+    file(DOWNLOAD ${ONNXRUNTIME_URL} ${ONNXRUNTIME_ARCHIVE_PATH})
 else ()
     message(STATUS "ONNX Runtime archive already exists at ${ONNXRUNTIME_ARCHIVE_PATH}")
 endif ()
@@ -358,7 +353,7 @@ endif()
 # create ZIP archive
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E tar
-  $<IF:$<CONFIG:Debug>,cfv,cf>
+  "cfv"
   ${CMAKE_CURRENT_BINARY_DIR}/fmus/${MODEL_NAME}.fmu --format=zip
   ${ARCHIVE_FILES}
   WORKING_DIRECTORY ${FMU_BUILD_DIR}

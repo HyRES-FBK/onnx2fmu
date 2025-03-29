@@ -1,3 +1,7 @@
+{% macro cleanName(name) -%}
+{{ name | replace(":", "") }}
+{%- endmacro %}
+
 #include "config.h"
 #include "model.h"
 #include "onnxruntime_c_api.h"
@@ -25,9 +29,6 @@
         } \
     } while (0);
 
-// Import Jinja2 macros
-{% from 'template/config.h' import cleanName %}
-
 void setStartValues(ModelInstance *comp) {
     UNUSED(comp);
 }
@@ -46,12 +47,12 @@ Status calculateValues(ModelInstance *comp) {
     OrtValue* {{ cleanName(input.name) }}_tensor;
 
     // Store the shape of the input tensor
-    const int64_t {{ cleanName(input.name) }}_shape[] = { {{ input.shape|join(", ") }} };
+    const size_t {{ cleanName(input.name) }}_shape[] = { {{ input.shape|join(", ") }} };
 
     // Determine the dimensions of the input tensor
-    const int64_t {{ cleanName(input.name) }}_dim = sizeof({{ cleanName(input.name) }}_shape) / sizeof({{ cleanName(input.name) }}_shape[0]);
-    int64_t {{ cleanName(input.name) }}_size = 1;
-    for (int64_t i = 0; i < {{ cleanName(input.name) }}_dim; ++i) {
+    const size_t {{ cleanName(input.name) }}_dim = sizeof({{ cleanName(input.name) }}_shape) / sizeof({{ cleanName(input.name) }}_shape[0]);
+    size_t {{ cleanName(input.name) }}_size = 1;
+    for (size_t i = 0; i < {{ cleanName(input.name) }}_dim; ++i) {
         {{ cleanName(input.name) }}_size *= {{ cleanName(input.name) }}_shape[i];
     }
 
@@ -72,7 +73,7 @@ Status calculateValues(ModelInstance *comp) {
             memory_info,
             {{ cleanName(input.name) }}_float,
             {{ cleanName(input.name) }}_size * sizeof(float),
-            {{ cleanName(input.name) }}_shape,
+            (const int64_t*){{ cleanName(input.name) }}_shape,
             {{ cleanName(input.name) }}_dim,
             ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
             &{{ cleanName(input.name) }}_tensor

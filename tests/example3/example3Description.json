@@ -1,0 +1,17 @@
+{
+    "name": "example3",
+    "description": "A simple RNN example.",
+    "FMIVersion": "2.0",
+    "input": [
+        {
+            "name": "input",
+            "description": "A scalar input to the model."
+        }
+    ],
+    "output": [
+        {
+            "name": "output",
+            "description": "The output array."
+        }
+    ]
+}

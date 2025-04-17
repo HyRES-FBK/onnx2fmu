@@ -161,7 +161,7 @@ class Model:
         self.GUID = str(uuid.uuid4())
 
         # Initialize value reference index for model description variables
-        self.vr = (i for i in range(1, 10000))
+        self.vr = (i for i in range(1, 100000))
 
         ############################
         # ONNX model health checks #

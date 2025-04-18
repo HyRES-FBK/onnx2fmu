@@ -525,9 +525,9 @@ def build(
     # Copy the FMU
     shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu", destination)
     # Remove the build folder
-    # shutil.rmtree(build_dir)
+    shutil.rmtree(build_dir)
     # Remove the target directory
-    # shutil.rmtree(target_path)
+    shutil.rmtree(target_path)
 
 
 if __name__ == "__main__":

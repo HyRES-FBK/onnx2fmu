@@ -38,7 +38,7 @@ jobs:
         run: |
           python -m unittest tests.test_app
 
-      - name: Build example2 FMU
+      - name: Build example2 FMI 2.0
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
@@ -46,6 +46,18 @@ jobs:
           tests/example2/example2.onnx `
           tests/example2/example2Description.json `
           --fmi-platform $fmi_platform `
+          --fmi-version 2.0 `
+          --cmake-config Debug
+
+      - name: Build example2 FMI 3.0
+        shell: pwsh
+        run: |
+          $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
+          onnx2fmu build `
+          tests/example2/example2.onnx `
+          tests/example2/example2Description.json `
+          --fmi-platform $fmi_platform `
+          --fmi-version 3.0 `
           --cmake-config Debug
 
   build_and_test_linux:
@@ -76,11 +88,22 @@ jobs:
         run: |
           python -m unittest tests.test_app
 
-      - name: Build example2 FMU
+      - name: Build example2 FMI 2.0
         shell: bash -l {0}
         run: |
           onnx2fmu build \
           tests/example2/example2.onnx \
           tests/example2/example2Description.json \
           --fmi-platform ${{ matrix.arch }}-${{ matrix.os }} \
+          --fmi-version 2.0 \
+          --cmake-config Debug
+
+      - name: Build example2 FMI 3.0
+        shell: bash -l {0}
+        run: |
+          onnx2fmu build \
+          tests/example2/example2.onnx \
+          tests/example2/example2Description.json \
+          --fmi-platform ${{ matrix.arch }}-${{ matrix.os }} \
+          --fmi-version 3.0 \
           --cmake-config Debug

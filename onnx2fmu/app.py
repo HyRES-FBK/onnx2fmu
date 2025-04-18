@@ -25,35 +25,35 @@ VARIABILITY = ["discrete", "continuous"]
 CAUSALITY = ["input", "output"]
 
 FMI2TYPES = {
-    TensorProto.FLOAT:  "Real",
-    TensorProto.DOUBLE: "Real",
-    TensorProto.INT4:   "Integer",
-    TensorProto.INT8:   "Integer",
-    TensorProto.INT16:  "Integer",
-    TensorProto.INT32:  "Integer",
-    TensorProto.INT64:  "Integer",
-    TensorProto.UINT8:  "Integer",
-    TensorProto.UINT16: "Integer",
-    TensorProto.UINT32: "Integer",
-    TensorProto.UINT64: "Integer",
-    TensorProto.BOOL:   "Boolean",
-    TensorProto.STRING: "String"
+    TensorProto.FLOAT:  {"FMIType": "Real",    "CType": "double"},
+    TensorProto.DOUBLE: {"FMIType": "Real",    "CType": "double"},
+    TensorProto.INT4:   {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT8:   {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT16:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT32:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT64:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT8:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT16: {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT32: {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT64: {"FMIType": "Integer", "CType": "int"},
+    TensorProto.BOOL:   {"FMIType": "Boolean", "CType": "bool"},
+    TensorProto.STRING: {"FMIType": "String", "CType": "char"},
 }
 
 FMI3TYPES = {
-    TensorProto.FLOAT:  "Float32",
-    TensorProto.DOUBLE: "Float64",
-    TensorProto.INT4:   "Int8",
-    TensorProto.INT8:   "Int8",
-    TensorProto.INT16:  "Int16",
-    TensorProto.INT32:  "Int32",
-    TensorProto.INT64:  "Int64",
-    TensorProto.UINT8:  "UInt8",
-    TensorProto.UINT16: "UInt16",
-    TensorProto.UINT32: "UInt32",
-    TensorProto.UINT64: "UInt64",
-    TensorProto.BOOL:   "Boolean",
-    TensorProto.STRING: "String"
+    TensorProto.FLOAT:  {"FMIType": "Float32", "CType": "float"},
+    TensorProto.DOUBLE: {"FMIType": "Float64", "CType": "double"},
+    TensorProto.INT4:   {"FMIType": "Int8",    "CType": "int"},
+    TensorProto.INT8:   {"FMIType": "Int8",    "CType": "int"},
+    TensorProto.INT16:  {"FMIType": "Int16",   "CType": "int"},
+    TensorProto.INT32:  {"FMIType": "Int32",   "CType": "int"},
+    TensorProto.INT64:  {"FMIType": "Int64",   "CType": "int"},
+    TensorProto.UINT8:  {"FMIType": "UInt8",   "CType": "int"},
+    TensorProto.UINT16: {"FMIType": "UInt16",  "CType": "int"},
+    TensorProto.UINT32: {"FMIType": "UInt32",  "CType": "int"},
+    TensorProto.UINT64: {"FMIType": "UInt64",  "CType": "int"},
+    TensorProto.BOOL:   {"FMIType": "Boolean", "CType": "bool"},
+    TensorProto.STRING: {"FMIType": "String",  "CType": "char"},
 }
 
 

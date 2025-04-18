@@ -33,7 +33,7 @@
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
     <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}">
-      <{{ scalar.vType }} {% if scalar.start %}start="{{ scalar.start }}"{% endif %}/>
+      <{{ scalar.vType.FMIType }} {% if scalar.start %}start="{{ scalar.start }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}

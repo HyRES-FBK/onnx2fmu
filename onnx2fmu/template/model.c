@@ -275,6 +275,62 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
     }
 }
 
+#if FMI_VERSION > 2
+Status getFloat32(ModelInstance *comp, ValueReference vr, float values[],
+                  size_t nValues, size_t *index) {
+
+    // Calculate values
+    calculateValues(comp);
+
+    switch (vr)
+    {
+        // Inputs
+        {%- for input in inputs %}
+        {%- for scalar in input.scalarValues %}
+        case vr_{{ cleanName(scalar.name) }}:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M({{ cleanName(scalar.name) }});
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
+        // Outputs
+        {%- for output in outputs %}
+        {%- for scalar in output.scalarValues %}
+        case vr_{{ cleanName(scalar.name) }}:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M({{ cleanName(scalar.name) }});
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
+    default:
+        // Compose message for log with value reference
+        logError(comp, "getFloat32: ValueReference %d not available.", vr);
+        return Error;
+    }
+}
+
+Status setFloat32(ModelInstance *comp, ValueReference vr, const float values[],
+                  size_t nValues, size_t *index) {
+    // Switch on the value reference
+    switch (vr)
+    {
+        // Inputs
+        {%- for input in inputs %}
+        {%- for scalar in input.scalarValues %}
+        case vr_{{ cleanName(scalar.name) }}:
+            ASSERT_NVALUES(1);
+            M({{ cleanName(scalar.name) }}) = values[(*index)++];
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
+    default:
+        // Compose message for log with value reference
+        logError(comp, "setFloat32: ValueReference %d not available.", vr);
+        return Error;
+    }
+}
+#endif
+
 Status eventUpdate(ModelInstance *comp) {
 
     comp->valuesOfContinuousStatesChanged   = false;

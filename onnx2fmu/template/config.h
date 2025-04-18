@@ -9,6 +9,10 @@
 
 #define GET_FLOAT64
 #define SET_FLOAT64
+#if FMI_VERSION > 2
+#define GET_FLOAT32
+#define SET_FLOAT32
+#endif
 
 #define FIXED_SOLVER_STEP 1
 #define DEFAULT_STOP_TIME 1
@@ -37,12 +41,12 @@ typedef struct {
     double time;
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    double {{ cleanName(scalar.name) }};
+    {{ scalar.vType.CType }} {{ cleanName(scalar.name) }};
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    double {{ cleanName(scalar.name) }};
+    {{ scalar.vType.CType }} {{ cleanName(scalar.name) }};
     {%- endfor %}
     {%- endfor %}
 } ModelData;

@@ -25,35 +25,35 @@ VARIABILITY = ["discrete", "continuous"]
 CAUSALITY = ["input", "output"]
 
 FMI2TYPES = {
-    TensorProto.FLOAT:  "Real",
-    TensorProto.DOUBLE: "Real",
-    TensorProto.INT4:   "Integer",
-    TensorProto.INT8:   "Integer",
-    TensorProto.INT16:  "Integer",
-    TensorProto.INT32:  "Integer",
-    TensorProto.INT64:  "Integer",
-    TensorProto.UINT8:  "Integer",
-    TensorProto.UINT16: "Integer",
-    TensorProto.UINT32: "Integer",
-    TensorProto.UINT64: "Integer",
-    TensorProto.BOOL:   "Boolean",
-    TensorProto.STRING: "String"
+    TensorProto.FLOAT:  {"FMIType": "Real",    "CType": "double"},
+    TensorProto.DOUBLE: {"FMIType": "Real",    "CType": "double"},
+    TensorProto.INT4:   {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT8:   {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT16:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT32:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.INT64:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT8:  {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT16: {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT32: {"FMIType": "Integer", "CType": "int"},
+    TensorProto.UINT64: {"FMIType": "Integer", "CType": "int"},
+    TensorProto.BOOL:   {"FMIType": "Boolean", "CType": "bool"},
+    TensorProto.STRING: {"FMIType": "String", "CType": "char"},
 }
 
 FMI3TYPES = {
-    TensorProto.FLOAT:  "Float32",
-    TensorProto.DOUBLE: "Float64",
-    TensorProto.INT4:   "Int8",
-    TensorProto.INT8:   "Int8",
-    TensorProto.INT16:  "Int16",
-    TensorProto.INT32:  "Int32",
-    TensorProto.INT64:  "Int64",
-    TensorProto.UINT8:  "UInt8",
-    TensorProto.UINT16: "UInt16",
-    TensorProto.UINT32: "UInt32",
-    TensorProto.UINT64: "UInt64",
-    TensorProto.BOOL:   "Boolean",
-    TensorProto.STRING: "String"
+    TensorProto.FLOAT:  {"FMIType": "Float32", "CType": "float"},
+    TensorProto.DOUBLE: {"FMIType": "Float64", "CType": "double"},
+    TensorProto.INT4:   {"FMIType": "Int8",    "CType": "int"},
+    TensorProto.INT8:   {"FMIType": "Int8",    "CType": "int"},
+    TensorProto.INT16:  {"FMIType": "Int16",   "CType": "int"},
+    TensorProto.INT32:  {"FMIType": "Int32",   "CType": "int"},
+    TensorProto.INT64:  {"FMIType": "Int64",   "CType": "int"},
+    TensorProto.UINT8:  {"FMIType": "UInt8",   "CType": "int"},
+    TensorProto.UINT16: {"FMIType": "UInt16",  "CType": "int"},
+    TensorProto.UINT32: {"FMIType": "UInt32",  "CType": "int"},
+    TensorProto.UINT64: {"FMIType": "UInt64",  "CType": "int"},
+    TensorProto.BOOL:   {"FMIType": "Boolean", "CType": "bool"},
+    TensorProto.STRING: {"FMIType": "String",  "CType": "char"},
 }
 
 
@@ -70,7 +70,7 @@ class ScalarVariable:
                  valueReference: int,
                  vType: TensorProto.DataType,
                  start: str = None,
-                 fmi_version: int = 2):
+                 fmi_version: str = "2.0"):
 
         # Mandatory arguments
         if not name:
@@ -103,17 +103,17 @@ class ScalarVariable:
         else:
             self.valueReference = valueReference
 
-        if fmi_version == 2:
+        if fmi_version == "2.0":
             if vType not in FMI2TYPES:
                 raise ValueError("vType not in FMI 2.0 allowed types.")
             else:
                 self.vType = FMI2TYPES[vType]
-        elif fmi_version == 3:
+        elif fmi_version == "3.0":
             if vType not in FMI3TYPES:
                 raise ValueError("vType not in FMI 3.0 allowed types.")
             else: self.vType = FMI3TYPES[vType]
         else:
-            raise ValueError("Wrong FMI version, can be only 2 or 3.")
+            raise ValueError("Wrong FMI version, must be one of 2.0 or 3.0.")
 
         if self.causality == 'input' and self.variability == 'continuous':
             if start:
@@ -138,7 +138,6 @@ class Model:
     The model factory class.
     """
 
-    FMI_VERSIONS = ["2.0", "3.0"]
     canGetAndSetFMUstate = True
     canSerializeFMUstate = True
     canNotUseMemoryManagementFunctions = True
@@ -149,8 +148,7 @@ class Model:
     startTime = 0
     stopTime = 1
 
-    def __init__(self, onnx_model: ModelProto, model_description: dict,
-                 fmi_version: int = 2):
+    def __init__(self, onnx_model: ModelProto, model_description: dict):
         """
         Initialize the model factory.
 
@@ -265,7 +263,7 @@ class Model:
                         causality=description.get('causality', entry),
                         valueReference=next(self.vr),
                         vType=node.type.tensor_type.elem_type,
-                        fmi_version=fmi_version
+                        fmi_version=self.FMIVersion,
                     ) for j in range(len(array_names))
                 ]
                 # Store indexes for easy access when generating templates
@@ -348,11 +346,11 @@ def build(
         typer.Option(help="The destination path.")
     ] = ".",
     fmi_version: Annotated[
-        int,
+        str,
         typer.Option(
             help="The FMI version, only 2 and 3 are supported. Default is 2."
         )
-    ] = 2,
+    ] = None,
     fmi_platform: Annotated[
         str,
         typer.Option(
@@ -402,8 +400,11 @@ def build(
     onnx_model = load(model_path)
     # Read model description
     model_description = json.loads(Path(model_description_path).read_text())
+    # CLI-provided FMI version takes over model description version
+    if fmi_version is not None:
+        model_description['FMIVersion'] = fmi_version
     # Initialize model handler
-    model = Model(onnx_model, model_description, fmi_version)
+    model = Model(onnx_model, model_description)
     # Generate context for the template
     context = model.generate_context()
 
@@ -459,8 +460,6 @@ def build(
     # Generate the FMU
     ############################
 
-    fmi_version = str(fmi_version)
-
     if fmi_platform in complete_platform():
         fmi_architecture, fmi_system = fmi_platform.split("-")
     else:
@@ -479,7 +478,7 @@ def build(
         '-S', str(target_path),
         '-B', str(build_dir),
         '-D', f'MODEL_NAME={model_path.stem}',
-        '-D', f'FMI_VERSION={fmi_version}',
+        '-D', f'FMI_VERSION={int(float(fmi_version))}',
     ]
 
     if fmi_architecture:

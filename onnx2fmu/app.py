@@ -21,29 +21,46 @@ app = typer.Typer()
 PARENT_DIR = resources.files("onnx2fmu")
 TEMPLATE_DIR = resources.files("onnx2fmu.template")
 
+VARIABILITY = ["discrete", "continuous"]
+CAUSALITY = ["input", "output"]
+
+FMI2TYPES = {
+    TensorProto.FLOAT:  "Real",
+    TensorProto.DOUBLE: "Real",
+    TensorProto.INT4:   "Integer",
+    TensorProto.INT8:   "Integer",
+    TensorProto.INT16:  "Integer",
+    TensorProto.INT32:  "Integer",
+    TensorProto.INT64:  "Integer",
+    TensorProto.UINT8:  "Integer",
+    TensorProto.UINT16: "Integer",
+    TensorProto.UINT32: "Integer",
+    TensorProto.UINT64: "Integer",
+    TensorProto.BOOL:   "Boolean",
+    TensorProto.STRING: "String"
+}
+
+FMI3TYPES = {
+    TensorProto.FLOAT:  "Float32",
+    TensorProto.DOUBLE: "Float64",
+    TensorProto.INT4:   "Int8",
+    TensorProto.INT8:   "Int8",
+    TensorProto.INT16:  "Int16",
+    TensorProto.INT32:  "Int32",
+    TensorProto.INT64:  "Int64",
+    TensorProto.UINT8:  "UInt8",
+    TensorProto.UINT16: "UInt16",
+    TensorProto.UINT32: "UInt32",
+    TensorProto.UINT64: "UInt64",
+    TensorProto.BOOL:   "Boolean",
+    TensorProto.STRING: "String"
+}
+
 
 class ScalarVariable:
     """
-    A 'ScalarVariable' entry of the model description for FMI 2.0.
+    A 'ScalarVariable' entry of the model description.
     """
-
-    VARIABILITY = ["constant", "fixed", "tunable", "discrete", "continuous"]
-    CAUSALITY = ["parameter", "calculatedParameter", "input", "output",
-                 "local", "independent"]
-    TYPES = {
-        TensorProto.FLOAT: "Real",
-        TensorProto.INT4: "Integer",
-        TensorProto.INT8: "Integer",
-        TensorProto.INT16: "Integer",
-        TensorProto.INT32: "Integer",
-        TensorProto.INT64: "Integer",
-        TensorProto.UINT8: "Integer",
-        TensorProto.UINT16: "Integer",
-        TensorProto.UINT32: "Integer",
-        TensorProto.UINT64: "Integer",
-        TensorProto.BOOL: "Boolean",
-        TensorProto.STRING: "String"
-    }
 
     def __init__(self,
                  name: str,
@@ -52,7 +69,8 @@ class ScalarVariable:
                  causality: str,
                  valueReference: int,
                  vType: TensorProto.DataType,
-                 start: str = None):
+                 start: str = None,
+                 fmi_version: int = 2):
 
         # Mandatory arguments
         if not name:
@@ -68,14 +86,14 @@ class ScalarVariable:
 
         if not variability:
             self.variability = 'discrete'
-        elif variability not in self.VARIABILITY:
+        elif variability not in VARIABILITY:
             raise ValueError(f"Variability {variability} is not valid.")
         else:
             self.variability = variability
 
         if not causality:
             raise ValueError("Causality is a required argument.")
-        elif causality not in self.CAUSALITY:
+        elif causality not in CAUSALITY:
             raise ValueError(f"Causality {causality} is not valid.")
         else:
             self.causality = causality
@@ -85,10 +103,17 @@ class ScalarVariable:
         else:
             self.valueReference = valueReference
 
-        if not vType:
-            self.vType = 'Real'
+        if fmi_version == 2:
+            if vType not in FMI2TYPES:
+                raise ValueError("vType not in FMI 2.0 allowed types.")
+            else:
+                self.vType = FMI2TYPES[vType]
+        elif fmi_version == 3:
+            if vType not in FMI3TYPES:
+                raise ValueError("vType not in FMI 3.0 allowed types.")
+            else: self.vType = FMI3TYPES[vType]
         else:
-            self.vType = self.TYPES[vType]
+            raise ValueError("Wrong FMI version, can be only 2 or 3.")
 
         if self.causality == 'input' and self.variability == 'continuous':
             if start:

@@ -153,7 +153,7 @@ In this example, the normalization parameters, which do not have to be
 optimized, are stored in the model using the `register_buffer` method, which
 detaches them from the computational graph.
 
-## ONNX model generation
+## 🔨 ONNX model generation
 
 ONNX2FMU provides two ways to build an FMU from an ONNX model.
 

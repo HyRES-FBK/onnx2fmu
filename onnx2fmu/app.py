@@ -149,7 +149,8 @@ class Model:
     startTime = 0
     stopTime = 1
 
-    def __init__(self, onnx_model: ModelProto, model_description: dict):
+    def __init__(self, onnx_model: ModelProto, model_description: dict,
+                 fmi_version: int = 2):
         """
         Initialize the model factory.
 
@@ -186,7 +187,7 @@ class Model:
         self.GUID = str(uuid.uuid4())
 
         # Initialize value reference index for model description variables
-        self.vr = (i for i in range(1, 10000))
+        self.vr = (i for i in range(2, 10000))
 
         ############################
         # ONNX model health checks #
@@ -229,14 +230,6 @@ class Model:
         ############################################
         # Variables extraction from the ONNX model #
         ############################################
-
-        # FMI 2.0 and 3.0 have different ways of handling model variables
-        if self.FMIVersion == "2.0":
-            self.fmi2GetVariables()
-        elif self.FMIVersion == "3.0":
-            self.fmi3GetVariables()
-
-    def fmi2GetVariables(self):
         entries = ['input', 'output']
         for entry in entries:
             setattr(self, entry, [])
@@ -272,13 +265,11 @@ class Model:
                         causality=description.get('causality', entry),
                         valueReference=next(self.vr),
                         vType=node.type.tensor_type.elem_type,
+                        fmi_version=fmi_version
                     ) for j in range(len(array_names))
                 ]
                 # Store indexes for easy access when generating templates
                 setattr(self, entry, getattr(self, entry) + [array])
-
-    def fmi3GetVariables(self):
-        pass
 
     def generate_context(self):
         # Initialize the context dictionary
@@ -412,7 +403,7 @@ def build(
     # Read model description
     model_description = json.loads(Path(model_description_path).read_text())
     # Initialize model handler
-    model = Model(onnx_model, model_description)
+    model = Model(onnx_model, model_description, fmi_version)
     # Generate context for the template
     context = model.generate_context()
 
@@ -534,9 +525,9 @@ def build(
     # Copy the FMU
     shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu", destination)
     # Remove the build folder
-    shutil.rmtree(build_dir)
+    # shutil.rmtree(build_dir)
     # Remove the target directory
-    shutil.rmtree(target_path)
+    # shutil.rmtree(target_path)
 
 
 if __name__ == "__main__":

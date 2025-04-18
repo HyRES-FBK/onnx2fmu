@@ -20,7 +20,6 @@
 typedef enum {
     // Always include time
     vr_time,
-#if FMI_VERSION < 3
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
     vr_{{ cleanName(scalar.name) }},
@@ -31,13 +30,11 @@ typedef enum {
     vr_{{ cleanName(scalar.name) }},
     {%- endfor %}
     {%- endfor %}
-#endif
 } ValueReference;
 
 typedef struct {
     // Always include time
     double time;
-#if FMI_VERSION < 3
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
     double {{ cleanName(scalar.name) }};
@@ -48,7 +45,6 @@ typedef struct {
     double {{ cleanName(scalar.name) }};
     {%- endfor %}
     {%- endfor %}
-#endif
 } ModelData;
 
 #endif /* config_h */

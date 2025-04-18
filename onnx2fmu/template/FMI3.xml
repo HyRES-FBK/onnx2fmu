@@ -27,12 +27,12 @@
     <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    <{{ scalar.vType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}" start="{{ scalar.start }}"/>
+    <{{ scalar.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}" start="{{ scalar.start }}"/>
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    <{{ scalar.vType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}"/>
+    <{{ scalar.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}"/>
     {%- endfor %}
     {%- endfor %}
   </ModelVariables>

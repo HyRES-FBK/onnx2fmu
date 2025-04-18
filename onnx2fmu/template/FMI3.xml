@@ -25,19 +25,14 @@
 
   <ModelVariables>
     <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
-    <UInt64 name="m" valueReference="1" description="Number of inputs" causality="structuralParameter" variability="tunable" start="3" min="0" max="5"/>
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    <{{ scalar.vType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}" start="{{ scalar.start }}">
-      <Dimension valueReference="1"/>
-    </{{ scalar.vType }}>
+    <{{ scalar.vType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}" start="{{ scalar.start }}"/>
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    <{{ scalar.vType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}">
-      <Dimension valueReference="1" />
-    </{{ scalar.vType }}>
+    <{{ scalar.vType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}"/>
     {%- endfor %}
     {%- endfor %}
   </ModelVariables>

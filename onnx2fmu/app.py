@@ -21,29 +21,46 @@ app = typer.Typer()
 PARENT_DIR = resources.files("onnx2fmu")
 TEMPLATE_DIR = resources.files("onnx2fmu.template")
 
+VARIABILITY = ["discrete", "continuous"]
+CAUSALITY = ["input", "output"]
+
+FMI2TYPES = {
+    TensorProto.FLOAT:  "Real",
+    TensorProto.DOUBLE: "Real",
+    TensorProto.INT4:   "Integer",
+    TensorProto.INT8:   "Integer",
+    TensorProto.INT16:  "Integer",
+    TensorProto.INT32:  "Integer",
+    TensorProto.INT64:  "Integer",
+    TensorProto.UINT8:  "Integer",
+    TensorProto.UINT16: "Integer",
+    TensorProto.UINT32: "Integer",
+    TensorProto.UINT64: "Integer",
+    TensorProto.BOOL:   "Boolean",
+    TensorProto.STRING: "String"
+}
+
+FMI3TYPES = {
+    TensorProto.FLOAT:  "Float32",
+    TensorProto.DOUBLE: "Float64",
+    TensorProto.INT4:   "Int8",
+    TensorProto.INT8:   "Int8",
+    TensorProto.INT16:  "Int16",
+    TensorProto.INT32:  "Int32",
+    TensorProto.INT64:  "Int64",
+    TensorProto.UINT8:  "UInt8",
+    TensorProto.UINT16: "UInt16",
+    TensorProto.UINT32: "UInt32",
+    TensorProto.UINT64: "UInt64",
+    TensorProto.BOOL:   "Boolean",
+    TensorProto.STRING: "String"
+}
+
 
 class ScalarVariable:
     """
-    A 'ScalarVariable' entry of the model description for FMI 2.0.
+    A 'ScalarVariable' entry of the model description.
     """
-
-    VARIABILITY = ["constant", "fixed", "tunable", "discrete", "continuous"]
-    CAUSALITY = ["parameter", "calculatedParameter", "input", "output",
-                 "local", "independent"]
-    TYPES = {
-        TensorProto.FLOAT: "Real",
-        TensorProto.INT4: "Integer",
-        TensorProto.INT8: "Integer",
-        TensorProto.INT16: "Integer",
-        TensorProto.INT32: "Integer",
-        TensorProto.INT64: "Integer",
-        TensorProto.UINT8: "Integer",
-        TensorProto.UINT16: "Integer",
-        TensorProto.UINT32: "Integer",
-        TensorProto.UINT64: "Integer",
-        TensorProto.BOOL: "Boolean",
-        TensorProto.STRING: "String"
-    }
 
     def __init__(self,
                  name: str,
@@ -52,7 +69,8 @@ class ScalarVariable:
                  causality: str,
                  valueReference: int,
                  vType: TensorProto.DataType,
-                 start: str = None):
+                 start: str = None,
+                 fmi_version: int = 2):
 
         # Mandatory arguments
         if not name:
@@ -68,14 +86,14 @@ class ScalarVariable:
 
         if not variability:
             self.variability = 'discrete'
-        elif variability not in self.VARIABILITY:
+        elif variability not in VARIABILITY:
             raise ValueError(f"Variability {variability} is not valid.")
         else:
             self.variability = variability
 
         if not causality:
             raise ValueError("Causality is a required argument.")
-        elif causality not in self.CAUSALITY:
+        elif causality not in CAUSALITY:
             raise ValueError(f"Causality {causality} is not valid.")
         else:
             self.causality = causality
@@ -85,10 +103,17 @@ class ScalarVariable:
         else:
             self.valueReference = valueReference
 
-        if not vType:
-            self.vType = 'Real'
+        if fmi_version == 2:
+            if vType not in FMI2TYPES:
+                raise ValueError("vType not in FMI 2.0 allowed types.")
+            else:
+                self.vType = FMI2TYPES[vType]
+        elif fmi_version == 3:
+            if vType not in FMI3TYPES:
+                raise ValueError("vType not in FMI 3.0 allowed types.")
+            else: self.vType = FMI3TYPES[vType]
         else:
-            self.vType = self.TYPES[vType]
+            raise ValueError("Wrong FMI version, can be only 2 or 3.")
 
         if self.causality == 'input' and self.variability == 'continuous':
             if start:
@@ -124,7 +149,8 @@ class Model:
     startTime = 0
     stopTime = 1
 
-    def __init__(self, onnx_model: ModelProto, model_description: dict):
+    def __init__(self, onnx_model: ModelProto, model_description: dict,
+                 fmi_version: int = 2):
         """
         Initialize the model factory.
 
@@ -204,14 +230,6 @@ class Model:
         ############################################
         # Variables extraction from the ONNX model #
         ############################################
-
-        # FMI 2.0 and 3.0 have different ways of handling model variables
-        if self.FMIVersion == "2.0":
-            self.fmi2GetVariables()
-        elif self.FMIVersion == "3.0":
-            self.fmi3GetVariables()
-
-    def fmi2GetVariables(self):
         entries = ['input', 'output']
         for entry in entries:
             setattr(self, entry, [])
@@ -247,13 +265,11 @@ class Model:
                         causality=description.get('causality', entry),
                         valueReference=next(self.vr),
                         vType=node.type.tensor_type.elem_type,
+                        fmi_version=fmi_version
                     ) for j in range(len(array_names))
                 ]
                 # Store indexes for easy access when generating templates
                 setattr(self, entry, getattr(self, entry) + [array])
-
-    def fmi3GetVariables(self):
-        pass
 
     def generate_context(self):
         # Initialize the context dictionary
@@ -387,7 +403,7 @@ def build(
     # Read model description
     model_description = json.loads(Path(model_description_path).read_text())
     # Initialize model handler
-    model = Model(onnx_model, model_description)
+    model = Model(onnx_model, model_description, fmi_version)
     # Generate context for the template
     context = model.generate_context()
 
@@ -509,9 +525,9 @@ def build(
     # Copy the FMU
     shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu", destination)
     # Remove the build folder
-    shutil.rmtree(build_dir)
+    # shutil.rmtree(build_dir)
     # Remove the target directory
-    shutil.rmtree(target_path)
+    # shutil.rmtree(target_path)
 
 
 if __name__ == "__main__":

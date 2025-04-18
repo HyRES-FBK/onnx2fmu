@@ -154,7 +154,7 @@ class TestApp(unittest.TestCase):
         # TODO: discover why the first row is repeated
         res = res[1:]
         # Compare results with the ground truth
-        mse = np.sum(np.pow(res - out_real, 2))
+        mse = np.sum(np.power(res - out_real, 2))
         # Check that mse is lower than 1e-6
         self.assertLessEqual(mse, 1e-6)
         # Cleanup FMU

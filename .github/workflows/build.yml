@@ -72,22 +72,22 @@ jobs:
         if: runner.os == 'Windows'
         shell: cmd
         run: |
-          onnx2fmu build `
-          tests/example2/example2.onnx `
-          tests/example2/example2Description.json `
-          --fmi-platform ${{ matrix.name }} `
-          --fmi-version 2.0 `
+          onnx2fmu build ^
+          tests/example2/example2.onnx ^
+          tests/example2/example2Description.json ^
+          --fmi-platform ${{ matrix.name }} ^
+          --fmi-version 2.0 ^
           --cmake-config Debug
 
       - name: Build example2 FMI 3.0 (Windows)
         if: runner.os == 'Windows'
         shell: cmd
         run: |
-          onnx2fmu build `
-          tests/example2/example2.onnx `
-          tests/example2/example2Description.json `
-          --fmi-platform ${{ matrix.name }} `
-          --fmi-version 3.0 `
+          onnx2fmu build ^
+          tests/example2/example2.onnx ^
+          tests/example2/example2Description.json ^
+          --fmi-platform ${{ matrix.name }} ^
+          --fmi-version 3.0 ^
           --cmake-config Debug
 
       - name: Build example2 FMI 2.0 (non-Windows)

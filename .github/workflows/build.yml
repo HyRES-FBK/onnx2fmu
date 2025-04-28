@@ -63,6 +63,11 @@ jobs:
           pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
           pip install -e .
 
+      - name: Install pywin32 (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          pip install pywin32
+
       - name: Python unit tests
         if: runner.os != 'macOS'
         run: |

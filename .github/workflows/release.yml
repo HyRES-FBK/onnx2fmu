@@ -39,7 +39,7 @@ jobs:
     - name: Publish to PyPI using flit
       env:
         FLIT_INDEX_URL: https://upload.pypi.org/legacy/
-        FLIT_USERNAME: ${{ secrets.FLIT_USERNAME }}
+        FLIT_USERNAME: __token__
         FLIT_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
         flit publish

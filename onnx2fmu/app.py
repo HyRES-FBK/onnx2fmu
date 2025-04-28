@@ -316,11 +316,11 @@ def find_version(file_path: str) -> str:
 def version():
     """Parse ONNX version from version.txt file."""
     # Check if pyproject.toml file exists
-    if not Path('version.txt').exists():
+    if not Path('pyproject.toml').exists():
         typer.echo("versiont.txt file not found.")
         raise typer.Exit(code=1)
     # Parse version from the config.py file using regex
-    typer.echo(f"ONNX2FMU {find_version('version.txt')}")
+    typer.echo(f"ONNX2FMU {find_version('pyproject.toml')}")
 
 
 def complete_platform():

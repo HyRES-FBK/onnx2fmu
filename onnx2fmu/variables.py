@@ -30,6 +30,7 @@ class VariableFactory:
 
         self._context_variables = [
             "name",
+            "nodeName",
             "shape",
             "description",
             "causality",
@@ -48,6 +49,7 @@ class VariableFactory:
             raise ValueError("Name is a required argument.")
         else:
             self.name = self.cleanName(name)
+            self.nodeName = name
 
     def cleanName(self, name: str):
         return re.sub(r'[^\w]', '', name)

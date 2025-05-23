@@ -44,7 +44,10 @@ class VariableFactory:
         if not name:
             raise ValueError("Name is a required argument.")
         else:
-            self.name = re.sub(r'[^\w]', '', name)
+            self.name = self.cleanName(name)
+
+    def cleanName(self, name: str):
+        return re.sub(r'[^\w]', '', name)
 
     def setShape(self, shape: tuple) -> None:
         if shape is None or shape == ():
@@ -99,6 +102,30 @@ class Input(VariableFactory):
     def __str__(self) -> str:
         return f"{self.__class__.__name__}" + \
             f"({self.name}, {self.variability})({self.start})"
+
+
+class Output(VariableFactory):
+    pass
+
+
+class Local(VariableFactory):
+
+    def __init__(self,
+                 name_in: str,
+                 name_out: str,
+                 shape: tuple = (1, ),
+                 description: str = "",
+                 variability: str = CONTINUOUS,
+                 fmiVersion: str = "2.0",
+                 vType: TensorProto.DataType = TensorProto.FLOAT
+                 ) -> None:
+        self.name_in = self.cleanName(name=name_in)
+        self.name_out = self.cleanName(name=name_out)
+        name = "_".join([self.name_in, self.name_out])
+        super().__init__(name=name, shape=shape, description=description,
+                         variability=variability, fmiVersion=fmiVersion,
+                         vType=vType)
+        self._context_variables += ["name_in", "name_out"]
 
 
 if __name__ == "__main__":

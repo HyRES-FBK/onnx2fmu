@@ -2,7 +2,7 @@ import unittest
 from onnx import TensorProto
 
 from onnx2fmu.config import FMI2TYPES, FMI3TYPES
-from onnx2fmu.variables import VariableFactory, Input
+from onnx2fmu.variables import VariableFactory, Input, Local
 
 
 class TestVariablesFactory(unittest.TestCase):
@@ -64,3 +64,19 @@ class TestInputVariable(unittest.TestCase):
             "Input(x, continuous)(2.0)",
             v.__str__()
         )
+
+
+class TestLocalVariable(unittest.TestCase):
+
+    def test_names(self):
+        v = Local(name_in="X.1", name_out="X:2")
+        self.assertEqual(v.name_in, "X1")
+        self.assertEqual(v.name_out, "X2")
+        self.assertEqual(v.name, "X1_X2")
+
+    def test_generate_context(self):
+        v = Local(name_in="X.1", name_out="X:2")
+        context = v.generate_context()
+        self.assertIn("name_in", context)
+        self.assertIn("name_out", context)
+        self.assertEqual(context["name"], "X1_X2")

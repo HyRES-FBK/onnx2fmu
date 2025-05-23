@@ -11,12 +11,14 @@ class VariableFactory:
 
     def __init__(self,
                  name: str,
+                 shape: tuple = (1, ),
                  description: str = "",
                  variability: str = CONTINUOUS,
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT,
                  ) -> None:
         self.setName(name=name)
+        self.setShape(shape=shape)
         self.description = description
         self.variability = variability
         self.setFmiVersion(fmiVersion=fmiVersion)
@@ -25,6 +27,7 @@ class VariableFactory:
 
         self._context_variables = [
             "name",
+            "shape",
             "description",
             "causality",
             "variability",
@@ -41,6 +44,11 @@ class VariableFactory:
             raise ValueError("Name is a required argument.")
         else:
             self.name = re.sub(r'[^\w]', '', name)
+
+    def setShape(self, shape: tuple) -> None:
+        if shape is None or shape == ():
+            raise ValueError(f"Shape is empty. {shape}")
+        self.shape = tuple(1 if dim == 0 else dim for dim in shape)
 
     def setFmiVersion(self, fmiVersion: str) -> None:
         if fmiVersion not in FMI_VERSIONS:

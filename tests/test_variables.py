@@ -18,6 +18,12 @@ class TestVariablesFactory(unittest.TestCase):
                 name=""
             )
 
+    def test_shape(self):
+        with self.assertRaises(ValueError):
+            VariableFactory(name="x", shape=())
+        v = VariableFactory(name="x", shape=(0, 3, 0, 4))
+        self.assertEqual(v.shape, (1, 3, 1, 4))
+
     def test_fmiVersion(self):
         with self.assertRaises(ValueError):
             VariableFactory(name="x", fmiVersion="1.0")

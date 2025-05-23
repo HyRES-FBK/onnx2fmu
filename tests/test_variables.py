@@ -2,7 +2,7 @@ import unittest
 from onnx import TensorProto
 
 from onnx2fmu.config import FMI2TYPES, FMI3TYPES
-from onnx2fmu.variables import VariableFactory
+from onnx2fmu.variables import VariableFactory, Input
 
 
 class TestVariablesFactory(unittest.TestCase):
@@ -54,3 +54,13 @@ class TestVariablesFactory(unittest.TestCase):
         }
         for k in v.generate_context():
             self.assertEqual(context[k], getattr(v, k))
+
+
+class TestInputVariable(unittest.TestCase):
+
+    def test_print(self):
+        v = Input(name="x", start=2.0)
+        self.assertEqual(
+            "Input(x, continuous)(2.0)",
+            v.__str__()
+        )

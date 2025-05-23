@@ -1,4 +1,5 @@
 import re
+from typing import Union
 from onnx import TensorProto
 
 from onnx2fmu.config import FMI2TYPES, FMI3TYPES, FMI_VERSIONS
@@ -70,6 +71,34 @@ class VariableFactory:
 
     def generate_context(self) -> dict[str, str]:
         return {k: getattr(self, k) for k in self._context_variables}
+
+
+class Input(VariableFactory):
+
+    def __init__(self,
+                 name: str,
+                 shape: tuple = (1, ),
+                 description: str = "",
+                 variability: str = CONTINUOUS,
+                 fmiVersion: str = "2.0",
+                 vType: TensorProto.DataType = TensorProto.FLOAT,
+                 start: Union[str, int, float] = "1.0"
+                 ) -> None:
+        super().__init__(
+            name=name, shape=shape, description=description,
+            variability=variability, fmiVersion=fmiVersion, vType=vType)
+        self.setStartValue(start)
+
+        self._context_variables += ["sart"]
+
+    def setStartValue(self, start: Union[str, float]):
+        if type(start) in [int, float]:
+            start = str(float(start))
+        self.start = start
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}" + \
+            f"({self.name}, {self.variability})({self.start})"
 
 
 if __name__ == "__main__":

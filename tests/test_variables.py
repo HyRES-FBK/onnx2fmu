@@ -72,13 +72,17 @@ class TestLocalVariable(unittest.TestCase):
 
     def test_names(self):
         v = Local(name_in="X.1", name_out="X:2")
-        self.assertEqual(v.name_in, "X1")
-        self.assertEqual(v.name_out, "X2")
+        self.assertEqual(v.nameIn, "X1")
+        self.assertEqual(v.nameOut, "X2")
         self.assertEqual(v.name, "X1_X2")
+        self.assertEqual(v.nodeNameIn, "X.1")
+        self.assertEqual(v.nodeNameOut, "X:2")
 
     def test_generate_context(self):
         v = Local(name_in="X.1", name_out="X:2")
         context = v.generateContext()
-        self.assertIn("name_in", context)
-        self.assertIn("name_out", context)
+        self.assertIn("nameIn", context)
+        self.assertIn("nameOut", context)
+        self.assertIn("nodeNameIn", context)
+        self.assertIn("nodeNameOut", context)
         self.assertEqual(context["name"], "X1_X2")

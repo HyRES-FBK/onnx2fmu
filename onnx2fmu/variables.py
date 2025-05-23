@@ -130,13 +130,16 @@ class Local(VariableFactory):
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT
                  ) -> None:
-        self.name_in = self.cleanName(name=name_in)
-        self.name_out = self.cleanName(name=name_out)
-        name = "_".join([self.name_in, self.name_out])
+        self.nameIn = self.cleanName(name=name_in)
+        self.nodeNameIn = name_in
+        self.nameOut = self.cleanName(name=name_out)
+        self.nodeNameOut = name_out
+        name = "_".join([self.nameIn, self.nameOut])
         super().__init__(name=name, shape=shape, description=description,
                          variability=variability, fmiVersion=fmiVersion,
                          vType=vType)
-        self._context_variables += ["name_in", "name_out"]
+        self._context_variables += ["nameIn", "nameOut", "nodeNameIn",
+                                    "nodeNameOut"]
 
 
 if __name__ == "__main__":

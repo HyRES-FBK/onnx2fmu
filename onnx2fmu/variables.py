@@ -25,6 +25,7 @@ class VariableFactory:
         self.setFmiVersion(fmiVersion=fmiVersion)
         self.setType(vType)
         self.setCausality()
+        self.scalarValues = []
 
         self._context_variables = [
             "name",
@@ -34,6 +35,7 @@ class VariableFactory:
             "variability",
             "fmiVersion",
             "vType",
+            "scalarValues"
         ]
 
     def __str__(self) -> str:

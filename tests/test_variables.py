@@ -31,7 +31,7 @@ class TestVariablesFactory(unittest.TestCase):
     def test_print(self):
         v = VariableFactory(name="x")
         self.assertEqual(
-            "VariableFactory(x, None, continuous)",
+            "VariableFactory(x, continuous)",
             v.__str__()
         )
 

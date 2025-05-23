@@ -34,7 +34,7 @@ class VariableFactory:
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}" + \
-            f"({self.name}, {self.causality}, {self.variability})"
+            f"({self.name}, {self.variability})"
 
     def setName(self, name: str) -> None:
         if not name:

@@ -45,6 +45,7 @@ class TestVariablesFactory(unittest.TestCase):
         v = VariableFactory(name="x")
         context = {
             "name": "x",
+            "shape": (1, ),
             "description": "",
             "causality": None,
             "variability": "continuous",

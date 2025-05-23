@@ -51,9 +51,9 @@ class TestVariablesFactory(unittest.TestCase):
             "variability": "continuous",
             "fmiVersion": "2.0",
             "vType": FMI2TYPES[TensorProto.FLOAT],
-            "scalarValues": [],
+            "scalarValues": [{"name": "x_0"}],
         }
-        for k in v.generate_context():
+        for k in v.generateContext():
             self.assertEqual(context[k], getattr(v, k))
 
 
@@ -77,7 +77,7 @@ class TestLocalVariable(unittest.TestCase):
 
     def test_generate_context(self):
         v = Local(name_in="X.1", name_out="X:2")
-        context = v.generate_context()
+        context = v.generateContext()
         self.assertIn("name_in", context)
         self.assertIn("name_out", context)
         self.assertEqual(context["name"], "X1_X2")

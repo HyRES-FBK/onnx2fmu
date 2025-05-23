@@ -1,4 +1,5 @@
 import re
+import numpy as np
 from typing import Union
 from onnx import TensorProto
 
@@ -25,7 +26,7 @@ class VariableFactory:
         self.setFmiVersion(fmiVersion=fmiVersion)
         self.setType(vType)
         self.setCausality()
-        self.scalarValues = []
+        self.initializeScalarValues()
 
         self._context_variables = [
             "name",
@@ -74,7 +75,13 @@ class VariableFactory:
         else:
             self.causality = self.__class__.__name__.lower()
 
-    def generate_context(self) -> dict[str, str]:
+    def initializeScalarValues(self) -> None:
+        self.scalarValues = [
+            {"name": self.name + "_" + "_".join([str(k) for k in idx])}
+            for idx in np.ndindex(self.shape)
+        ]
+
+    def generateContext(self) -> dict[str, str]:
         return {k: getattr(self, k) for k in self._context_variables}
 
 

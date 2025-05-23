@@ -101,7 +101,7 @@ class Input(VariableFactory):
             variability=variability, fmiVersion=fmiVersion, vType=vType)
         self.setStartValue(start)
 
-        self._context_variables += ["sart"]
+        self._context_variables += ["start"]
 
     def setStartValue(self, start: Union[str, float]):
         if type(start) in [int, float]:

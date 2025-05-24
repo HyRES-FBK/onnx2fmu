@@ -49,7 +49,7 @@ class TestApp(unittest.TestCase):
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
-            destination=target_path
+            target_folder=target_path
         )
         for file in files:
             self.assertTrue(
@@ -74,7 +74,7 @@ class TestApp(unittest.TestCase):
         generate(
             model_path=self.model_path,
             model_description_path=temp_model_description_path,
-            destination=target_path
+            target_folder=target_path
         )
         for file in files:
             self.assertTrue(
@@ -91,7 +91,7 @@ class TestApp(unittest.TestCase):
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
-            destination=target_path
+            target_folder=target_path
         )
         compile(
             target_folder=target_path,

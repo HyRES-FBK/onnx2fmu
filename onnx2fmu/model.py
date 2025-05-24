@@ -1,5 +1,6 @@
 import re
 import uuid
+from datetime import datetime
 from typing import Union, Optional
 
 from onnx2fmu.variables import Input, Output, Local
@@ -53,6 +54,35 @@ class Model:
             self.locals.append(context)
         else:
             raise ValueError(f"{variable} is not an admissible variable.")
+
+    def _missingInputOrOutput(self) -> bool:
+        return any([len(i) == 0 for i in [self.inputs, self.outputs]])
+
+    def generateContext(self) -> dict[str, Union[str, bool, int, list, None]]:
+        if self._missingInputOrOutput():
+            raise ValueError("Inputs or outputs list is empty.")
+        return {
+            'name': self.name,
+            'description': self.description,
+            'GUID': self.GUID,
+            'FMIVersion': self.fmiVersion,
+            'generationDateAndTime': datetime.now().isoformat(),
+            'canGetAndSetFMUstate': self.canGetAndSetFMUstate,
+            'canSerializeFMUstate': self.canSerializeFMUstate,
+            'canNotUseMemoryManagementFunctions': \
+                self.canNotUseMemoryManagementFunctions,
+            'canHandleVariableCommunicationStepSize': \
+                self.canHandleVariableCommunicationStepSize,
+            'providesIntermediateUpdate': self.providesIntermediateUpdate,
+            'canReturnEarlyAfterIntermediateUpdate': \
+                self.canReturnEarlyAfterIntermediateUpdate,
+            'fixedInternalStepSize': self.fixedInternalStepSize,
+            'startTime': self.startTime,
+            'stopTime': self.stopTime,
+            'inputs': self.inputs,
+            'outputs': self.outputs,
+            'locals': self.locals
+        }
 
 
 if __name__ == "__main__":

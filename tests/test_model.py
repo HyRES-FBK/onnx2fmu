@@ -23,7 +23,7 @@ class TestModel(unittest.TestCase):
             values += [scalar["valueReference"] for scalar in scalars]
         self.assertEqual(len(set(values)), len(values))
 
-    def test_add_variables(self):
+    def add_example_variables(self):
         v = Input(name="x", shape=(2, 3))
         self.model.addVariable(v)
         self.assertGreaterEqual(len(self.model.inputs), 1)
@@ -33,9 +33,18 @@ class TestModel(unittest.TestCase):
         v = Local(name_in="z1", name_out="z2", shape=(4, 5))
         self.model.addVariable(v)
         self.assertGreaterEqual(len(self.model.locals), 1)
+
+    def test_add_variables(self):
+        self.add_example_variables()
         values = []
         variables = self.model.inputs + self.model.outputs + self.model.locals
         for input in variables:
             scalars = input["scalarValues"]
             values += [scalar["valueReference"] for scalar in scalars]
         self.assertEqual(len(set(values)), len(values))
+
+    def test_generate_context(self):
+        with self.assertRaises(ValueError):
+            self.model.generateContext()
+        self.test_add_variables()
+        context = self.model.generateContext()

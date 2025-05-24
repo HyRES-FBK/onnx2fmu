@@ -368,6 +368,15 @@ Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
+        // Locals
+        {%- for local in locals %}
+        {%- for scalar in local.scalarValues %}
+        case vr_{{ scalar.name }}:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M({{ scalar.name }});
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
 #endif
     default:
         // Compose message for log with value reference
@@ -390,6 +399,15 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
         // Inputs
         {%- for input in inputs %}
         {%- for scalar in input.scalarValues %}
+        case vr_{{ scalar.name }}:
+            ASSERT_NVALUES(1);
+            M({{ scalar.name }}) = values[(*index)++];
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
+        // Locals
+        {%- for local in locals %}
+        {%- for scalar in local.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
             M({{ scalar.name }}) = values[(*index)++];
@@ -431,6 +449,15 @@ Status getFloat32(ModelInstance *comp, ValueReference vr, float values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
+        // Locals
+        {%- for local in locals %}
+        {%- for scalar in local.scalarValues %}
+        case vr_{{ scalar.name }}:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M({{ scalar.name }});
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
     default:
         // Compose message for log with value reference
         logError(comp, "getFloat32: ValueReference %d not available.", vr);
@@ -446,6 +473,15 @@ Status setFloat32(ModelInstance *comp, ValueReference vr, const float values[],
         // Inputs
         {%- for input in inputs %}
         {%- for scalar in input.scalarValues %}
+        case vr_{{ scalar.name }}:
+            ASSERT_NVALUES(1);
+            M({{ scalar.name }}) = values[(*index)++];
+            return OK;
+        {%- endfor %}
+        {%- endfor %}
+        // Locals
+        {%- for local in locals %}
+        {%- for scalar in local.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
             M({{ scalar.name }}) = values[(*index)++];

@@ -30,8 +30,11 @@ typedef enum {
     vr_{{ scalar.name }},
     {%- endfor %}
     {%- endfor %}
-    // The model should not reference local variables, they are used only
-    // in the function calculateValues
+    {%- for local in locals %}
+    {%- for scalar in local.scalarValues %}
+    vr_{{ scalar.name }},
+    {%- endfor %}
+    {%- endfor %}
 } ValueReference;
 
 typedef struct {

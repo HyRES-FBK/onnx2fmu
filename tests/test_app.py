@@ -1,6 +1,7 @@
 import json
 import unittest
 from onnx import load
+from pathlib import Path
 from shutil import rmtree
 from pathlib import Path
 
@@ -19,6 +20,12 @@ class TestApp(unittest.TestCase):
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
+        self.destination = Path(".")
+        self.fmu_path = self.destination / f"{self.model_name}.fmu"
+
+    def tearDown(self) -> None:
+        if self.fmu_path.exists():
+            self.fmu_path.unlink()
 
     def test_create_project_structure(self):
         target_path = Path("test_project_structure_target")
@@ -96,11 +103,12 @@ class TestApp(unittest.TestCase):
         compile(
             target_folder=target_path,
             model_description_path=self.model_description_path,
-            cmake_config="Debug"
+            cmake_config="Debug",
+            destination=self.destination
         )
-        fmu_path = destination / f"{self.model_name}.fmu"
-        self.assertTrue(fmu_path.exists())
-        fmu_path.unlink()
+        self.assertTrue(self.fmu_path.exists())
+        results = validate_fmu(self.fmu_path)
+        self.assertEqual(len(results), 0, results)
 
         # # Set FMU path
         # fmu_path = Path(f"{self.model_name}.fmu")

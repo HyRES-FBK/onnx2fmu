@@ -128,7 +128,9 @@ class Local(VariableFactory):
                  description: str = "",
                  variability: str = CONTINUOUS,
                  fmiVersion: str = "2.0",
-                 vType: TensorProto.DataType = TensorProto.FLOAT
+                 vType: TensorProto.DataType = TensorProto.FLOAT,
+                 start: str = "3.0",
+                 initial: str = "exact",
                  ) -> None:
         self.nameIn = self.cleanName(name=nameIn)
         self.nodeNameIn = nameIn
@@ -138,8 +140,15 @@ class Local(VariableFactory):
         super().__init__(name=name, shape=shape, description=description,
                          variability=variability, fmiVersion=fmiVersion,
                          vType=vType)
+        self.setStartValue(start=start)
+        self.initial = initial
         self._context_variables += ["nameIn", "nameOut", "nodeNameIn",
-                                    "nodeNameOut"]
+                                    "nodeNameOut", "start", "initial"]
+
+    def setStartValue(self, start: Union[str, float]):
+        if type(start) in [int, float]:
+            start = str(float(start))
+        self.start = start
 
 
 if __name__ == "__main__":

@@ -46,8 +46,8 @@
     {%- endfor %}
     {%- for local in locals %}
     {%- for scalar in local.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{{ local.description }}">
-      <Real />
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{{ local.description }}" initial="{{ local.initial }}">
+      <{{ local.vType.FMIType }} {% if local.start %}start="{{ local.start }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}

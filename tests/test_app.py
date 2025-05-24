@@ -1,10 +1,8 @@
 import json
 import unittest
-import numpy as np
 from onnx import load
+from shutil import rmtree
 from pathlib import Path
-from fmpy import simulate_fmu
-from fmpy.validation import validate_fmu
 
 from onnx2fmu.app import _find_version, _createFMUFolderStructure
 
@@ -23,16 +21,18 @@ class TestApp(unittest.TestCase):
         self.target_path = Path("target")
 
     def test_create_project_structure(self):
-        _createFMUFolderStructure(self.target_path, self.model_path)
+        target_path = Path("test_project_structure_target")
+        _createFMUFolderStructure(target_path, self.model_path)
         self.assertIn(
             "CMakeLists.txt",
-            [f.name for f in self.target_path.iterdir() if f.is_file()]
+            [f.name for f in target_path.iterdir() if f.is_file()]
         )
         for folder in [self.model_name, "include", "src"]:
             self.assertIn(
                 folder,
-                [f.name for f in self.target_path.iterdir() if not f.is_file()]
+                [f.name for f in target_path.iterdir() if not f.is_file()]
             )
+        rmtree(target_path)
 
     def test_version(self):
         pattern = r'^\d+\.\d+\.\d+$'

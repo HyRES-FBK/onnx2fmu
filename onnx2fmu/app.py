@@ -61,7 +61,6 @@ def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
     fmu_folder.mkdir(exist_ok=True)
     resources_folder = fmu_folder / "resources"
     resources_folder.mkdir(exist_ok=True)
-    print(model_path)
     shutil.copy(model_path, resources_folder)
     # Copy CMakeLists.txt to the target path
     resources.files('onnx2fmu')

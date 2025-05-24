@@ -16,11 +16,13 @@
     ],
     "locals": [
         {
-            "name": "X1",
+            "nameIn": "X",
+            "nameOut": "X1",
             "description": "The history of states from t-N to t."
         },
         {
-            "name": "U1",
+            "nameIn": "U",
+            "nameOut": "U1",
             "description": "The history of control variables frmo t-N to t-1."
         }
     ]

@@ -87,10 +87,10 @@ def generate(
     ],
     target_folder: Annotated[
         str,
-        typer.Option(help="The target folder path.")
+        typer.Argument(help="The target folder path.")
     ],
 ) -> None:
-    """Generate the FMU project folder structure."""
+    """Generate the FMU project folder structure in `target_folder`."""
     model_path, model_description_path, target_folder = _set_paths(
         model_path, model_description_path, target_folder
     )
@@ -184,7 +184,7 @@ def compile(
                      autocompletion=cmake_configurations)
     ] = "Release"
 ) -> None:
-    """Compile the project defined in `target_path`."""
+    """Compile the project defined in `target_folder`."""
     if type(target_folder) is str:
         target_folder = Path(target_folder)
     if type(model_description_path) is str:

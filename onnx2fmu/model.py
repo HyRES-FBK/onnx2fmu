@@ -1,6 +1,6 @@
 import re
-import numpy as np
-from typing import Union
+import uuid
+from typing import Union, Optional
 
 from onnx2fmu.variables import Input, Output, Local
 
@@ -22,10 +22,14 @@ class Model:
 
     def __init__(self,
                  name: str,
-                 fmiVersion: str = "2.0",
+                 fmiVersion: Optional[str] = "2.0",
+                 description: Optional[str] = "",
                  ) -> None:
         self.setName(name)
+        self.fmiVersion = fmiVersion
+        self.description = description
         self.vr_generator = (i for i in range(2**32))
+        self.GUID = str(uuid.uuid4())
         self.inputs = []
         self.outputs = []
         self.locals = []

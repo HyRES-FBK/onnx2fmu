@@ -32,14 +32,21 @@
     </ScalarVariable>
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}">
-      <{{ scalar.vType.FMIType }} {% if scalar.start %}start="{{ scalar.start }}"{% endif %}/>
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{{ input.description }}">
+      <{{ input.vType.FMIType }} {% if input.start %}start="{{ input.start }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ scalar.causality }}" variability="{{ scalar.variability }}" description="{{ scalar.description }}">
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ output.description }}">
+      <Real />
+    </ScalarVariable>
+    {%- endfor %}
+    {%- endfor %}
+    {%- for local in locals %}
+    {%- for scalar in local.scalarValues %}
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{{ local.description }}">
       <Real />
     </ScalarVariable>
     {%- endfor %}

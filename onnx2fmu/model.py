@@ -29,7 +29,7 @@ class Model:
         self.setName(name)
         self.fmiVersion = fmiVersion
         self.description = description
-        self.vr_generator = (i for i in range(2**32))
+        self.vr_generator = (i for i in range(1, 2**32))
         self.GUID = str(uuid.uuid4())
         self.inputs = []
         self.outputs = []

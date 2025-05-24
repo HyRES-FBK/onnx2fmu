@@ -159,11 +159,11 @@ def cmake_configurations():
 def compile(
     target_folder: Annotated[
         str,
-        typer.Option(help="The target folder path.")
+        typer.Argument(help="The target folder path.")
     ],
     model_description_path: Annotated[
         str,
-        typer.Option(help="The path to the model description file.")
+        typer.Argument(help="The path to the model description file.")
     ],
     destination: Annotated[
         str,
@@ -278,7 +278,7 @@ def build(
     ],
     target_folder: Annotated[
         str,
-        typer.Option(help="The target folder path.")
+        typer.Argument(help="The target folder path.")
     ],
     destination: Annotated[
         str,

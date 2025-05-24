@@ -4,7 +4,8 @@ from onnx import load
 from shutil import rmtree
 from pathlib import Path
 
-from onnx2fmu.app import _find_version, _createFMUFolderStructure, generate
+from onnx2fmu.app import (_find_version, _createFMUFolderStructure, generate,
+                          compile)
 
 
 class TestApp(unittest.TestCase):
@@ -85,7 +86,21 @@ class TestApp(unittest.TestCase):
         temp_model_description_path.unlink()
 
     def test_compile(self):
-        pass
+        target_path = Path("test_compile")
+        destination = Path(".")
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            destination=target_path
+        )
+        compile(
+            target_folder=target_path,
+            model_description_path=self.model_description_path,
+            cmake_config="Debug"
+        )
+        fmu_path = destination / f"{self.model_name}.fmu"
+        self.assertTrue(fmu_path.exists())
+        fmu_path.unlink()
 
         # # Set FMU path
         # fmu_path = Path(f"{self.model_name}.fmu")

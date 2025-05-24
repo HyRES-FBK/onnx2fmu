@@ -90,17 +90,9 @@ def generate(
         typer.Option(help="The destination path.")
     ],
 ):
-    if type(model_path) is str:
-        model_path = Path(model_path)
-        if not model_path.exists():
-            raise ValueError(f"Cannot find model at {model_path}.")
-    if type(model_description_path) is str:
-        model_description_path = Path(model_description_path)
-        if not model_description_path.exists():
-            raise ValueError(
-                f"Cannot find model description at {model_description_path}.")
-    if type(destination) is str:
-        destination = Path(destination)
+    model_path, model_description_path, destination = _set_paths(
+        model_path, model_description_path, destination
+    )
 
     onnx_model = load(model_path)
 
@@ -136,6 +128,23 @@ def generate(
         with open(core_dir, "w") as f:
             f.write(rendered)
 
+def _set_paths(
+        model_path: Union[str, Path],
+        model_description_path: Union[str, Path],
+        destination: Union[str, Path]):
+    if type(model_path) is str:
+        model_path = Path(model_path)
+        if not model_path.exists():
+            raise ValueError(f"Cannot find model at {model_path}.")
+    if type(model_description_path) is str:
+        model_description_path = Path(model_description_path)
+        if not model_description_path.exists():
+            raise ValueError(
+                f"Cannot find model description at {model_description_path}.")
+    if type(destination) is str:
+        destination = Path(destination)
+    return model_path,model_description_path,destination
+
 
 def complete_platform():
     return ['x86-windows', 'x86_64-windows', 'x86_64-linux', 'aarch64-linux',
@@ -147,24 +156,18 @@ def cmake_configurations():
 
 @app.command()
 def compile(
-    model_path: Annotated[
-        str,
-        typer.Argument(help="The path to the ONNX model file.")
+    target_folder: Annotated[
+        Union[str, Path],
+        typer.Option(help="The target folder path.")
     ],
     model_description_path: Annotated[
-        str,
-        typer.Argument(help="The path to the model description file.")
+        Union[str, Path],
+        typer.Option(help="The path to the model description file.")
     ],
     destination: Annotated[
-        str,
-        typer.Option(help="The destination path.")
+        Union[str, Path],
+        typer.Option(help="The path to the destination folder.")
     ] = ".",
-    fmi_version: Annotated[
-        str,
-        typer.Option(
-            help="The FMI version, only 2 and 3 are supported. Default is 2."
-        )
-    ] = None,
     fmi_platform: Annotated[
         str,
         typer.Option(
@@ -179,21 +182,18 @@ def compile(
                      autocompletion=cmake_configurations)
     ] = "Release"
 ):
-    ##############################
-    # Retrieve model information #
-    ##############################
-    model_path, destination, _, model_description = \
-        model_information(
-            model_path=model_path,
-            model_description_path=model_description_path,
-            destination=destination,
-            fmi_version=fmi_version
-        )
-    # Set target directory to the model name
-    target_path = Path(f"{model_path.stem}")
-    ####################
-    # Generate the FMU #
-    ####################
+    if type(target_folder) is str:
+        target_folder = Path(target_folder)
+    if type(model_description_path) is str:
+        model_description_path = Path(model_description_path)
+        if not model_description_path.exists():
+            raise ValueError(f"{model_description_path} does not exist.")
+
+    with open(model_description_path, "r") as f:
+        model_description = json.load(f)
+
+    model_name = model_description["name"]
+
     if fmi_platform in complete_platform():
         fmi_architecture, fmi_system = fmi_platform.split("-")
     else:
@@ -202,16 +202,16 @@ def compile(
         fmi_architecture = None
 
     # Create build dir
-    build_dir = target_path / "build"
+    build_dir = target_folder / Path("build")
 
     if not build_dir.exists():
         build_dir.mkdir(exist_ok=True)
 
     # Declare CMake arguments
     cmake_args = [
-        '-S', str(target_path),
+        '-S', str(target_folder),
         '-B', str(build_dir),
-        '-D', f'MODEL_NAME={model_path.stem}',
+        '-D', f'MODEL_NAME={model_name}',
         '-D', f'FMI_VERSION={int(float(model_description["FMIVersion"]))}',
     ]
 
@@ -256,11 +256,11 @@ def compile(
     # Clean up
     ############################
     # Copy the FMU
-    shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu", destination)
+    shutil.copy(build_dir / f"fmus/{model_name}.fmu", destination)
     # Remove the build folder
     shutil.rmtree(build_dir)
     # Remove the target directory
-    shutil.rmtree(target_path)
+    shutil.rmtree(target_folder)
 
 
 @app.command()

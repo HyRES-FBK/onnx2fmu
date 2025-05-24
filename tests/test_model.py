@@ -30,7 +30,7 @@ class TestModel(unittest.TestCase):
         v = Output(name="y", shape=(3, 4))
         self.model.addVariable(v)
         self.assertGreaterEqual(len(self.model.outputs), 1)
-        v = Local(name_in="z1", name_out="z2", shape=(4, 5))
+        v = Local(nameIn="z1", nameOut="z2", shape=(4, 5))
         self.model.addVariable(v)
         self.assertGreaterEqual(len(self.model.locals), 1)
 

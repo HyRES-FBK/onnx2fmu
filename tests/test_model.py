@@ -48,3 +48,6 @@ class TestModel(unittest.TestCase):
             self.model.generateContext()
         self.test_add_variables()
         context = self.model.generateContext()
+        self.assertIn("x", [var["name"] for var in context["inputs"]])
+        self.assertIn("y", [var["name"] for var in context["outputs"]])
+        self.assertIn("z1_z2", [var["name"] for var in context["locals"]])

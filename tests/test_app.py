@@ -4,7 +4,7 @@ from onnx import load
 from shutil import rmtree
 from pathlib import Path
 
-from onnx2fmu.app import _find_version, _createFMUFolderStructure
+from onnx2fmu.app import _find_version, _createFMUFolderStructure, generate
 
 
 class TestApp(unittest.TestCase):
@@ -18,7 +18,6 @@ class TestApp(unittest.TestCase):
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
-        self.target_path = Path("target")
 
     def test_create_project_structure(self):
         target_path = Path("test_project_structure_target")
@@ -38,37 +37,54 @@ class TestApp(unittest.TestCase):
         pattern = r'^\d+\.\d+\.\d+$'
         self.assertRegex(_find_version("pyproject.toml"), pattern)
 
-    def test_model_declaration(self):
-        model = Model(
-            onnx_model=self.model,
-            model_description=self.model_description
+    def test_generate_fmi2(self):
+        target_path = Path("test_generate_target_FMI2")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI2.xml",
+        ]
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            destination=target_path
         )
-        self.assertTrue(model)
-        # Check that model has a name
-        self.assertTrue(model.name)
-        # Check that model input is not empty
-        self.assertTrue(len(model.input) > 0)
-        # Check that model output is not empty
-        self.assertTrue(len(model.output) > 0)
-        # Check that model has a version
-        self.assertTrue(model.FMIVersion)
-        # Check that model version is in the list of valid values
-        self.assertIn(model.FMIVersion, FMI_VERSIONS)
-        # Check GUID length
-        self.assertEqual(len(model.GUID), 36)
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
 
-    def test_empty_model_declaration(self):
-        # Raise error if model description is empty
-        with self.assertRaises(AssertionError):
-            Model(self.model, {})
-        # Raise error if model is None
-        with self.assertRaises(AttributeError):
-            Model({}, self.model_description)
+    def test_generate_fmi3(self):
+        target_path = Path("test_generate_target_FMI3")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI3.xml",
+        ]
+        self.model_description["FMIVersion"] = "3.0"
+        temp_model_description_path = Path("modelDescription.json")
+        with open(temp_model_description_path, "w", encoding="utf-8") as f:
+            json.dump(self.model_description, f)
+        generate(
+            model_path=self.model_path,
+            model_description_path=temp_model_description_path,
+            destination=target_path
+        )
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+        temp_model_description_path.unlink()
 
-    def test_number_of_inputs(self):
-        pass
-
-    def test_number_of_outputs(self):
+    def test_compile(self):
         pass
 
         # # Set FMU path

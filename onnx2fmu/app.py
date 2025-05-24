@@ -1,18 +1,18 @@
 import re
-import uuid
 import json
 import typer
 import shutil
 import platform
 import subprocess
-import numpy as np
 from pathlib import Path
 from loguru import logger
 from typing import Union
 import importlib.resources as resources
 from typing_extensions import Annotated
-from onnx import load, TensorProto, ModelProto
+from onnx import load
 from jinja2 import Environment, BaseLoader
+
+from onnx2fmu.model_description import ModelDescription
 
 
 app = typer.Typer()
@@ -21,8 +21,6 @@ app = typer.Typer()
 PARENT_DIR = resources.files("onnx2fmu")
 TEMPLATE_DIR = resources.files("onnx2fmu.template")
 
-VARIABILITY = ["discrete", "continuous"]
-CAUSALITY = ["input", "output"]
 
 def _find_version(file_path: Union[str, Path]) -> str:
     version_pattern = re.compile(r'^version\s*=\s*[\'"]([^\'"]+)[\'"]',
@@ -80,57 +78,51 @@ def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
 @app.command()
 def generate(
     model_path: Annotated[
-        str,
+        Union[str, Path],
         typer.Argument(help="The path to the ONNX model file.")
     ],
     model_description_path: Annotated[
-        str,
+        Union[str, Path],
         typer.Argument(help="The path to the model description file.")
     ],
     destination: Annotated[
-        str,
+        Union[str, Path],
         typer.Option(help="The destination path.")
-    ] = ".",
-    fmi_version: Annotated[
-        str,
-        typer.Option(
-            help="The FMI version, only 2 and 3 are supported. Default is 2."
-        )
-    ] = None,
+    ],
 ):
-    ##############################
-    # Retrieve model information #
-    ##############################
-    model_path, _, onnx_model, model_description = \
-        model_information(
-            model_path=model_path,
-            model_description_path=model_description_path,
-            destination=destination,
-            fmi_version=fmi_version
-        )
-    # Initialize model handler
-    model = Model(onnx_model, model_description)
-    # Generate context for the template
-    context = model.generate_context()
+    if type(model_path) is str:
+        model_path = Path(model_path)
+        if not model_path.exists():
+            raise ValueError(f"Cannot find model at {model_path}.")
+    if type(model_description_path) is str:
+        model_description_path = Path(model_description_path)
+        if not model_description_path.exists():
+            raise ValueError(
+                f"Cannot find model description at {model_description_path}.")
+    if type(destination) is str:
+        destination = Path(destination)
 
-    #############################
-    # Generate the FMU template #
-    #############################
-    # Set target directory to the model name
-    target_path = Path(f"{model_path.stem}")
-    # Remove the target directory if it exists
-    if target_path.exists():
-        shutil.rmtree(target_path)
-    # Create the target directories
-    target_path.mkdir(exist_ok=True)
-    (target_path / f'{model_path.stem}').mkdir(exist_ok=True)
-    # Create a Jinja2 environment and set the current directory as the search
-    # path
+    onnx_model = load(model_path)
+
+    model_description = json.loads(Path(model_description_path).read_text())
+
+    model = ModelDescription(onnx_model, model_description)
+
+    context = model.generateContext()
+
+    _createFMUFolderStructure(destination=destination, model_path=model_path)
+
+    # Initialize Jinja2 environment
     env = Environment(loader=BaseLoader())
-    # Iterate over all the remaining templates
+
     for template_name in TEMPLATE_DIR.iterdir():
         # Skip directories and FMI files
         if not template_name.is_file():
+            continue
+        # Skip unmatching FMI model description
+        if (template_name.stem.startswith("FMI")) and \
+            (template_name.name !=
+             f"FMI{int(float(context['FMIVersion']))}.xml"):
             continue
         # Read the template content from the package resource
         with resources.as_file(template_name) as path:
@@ -140,26 +132,17 @@ def generate(
         # Render the template with the context
         rendered = template.render(context)
         # Write the rendered template to the target directory
-        core_dir = target_path / f"{model_path.stem}/{template_name.name}"
+        core_dir = destination / f"{model_path.stem}" / template_name.name
         with open(core_dir, "w") as f:
             f.write(rendered)
 
-    # Copy the model to the resources directory, do not change
-    model_target_path = target_path / f"{model_path.stem}/resources/model.onnx"
-    model_target_path.parent.mkdir(exist_ok=True)
-    # Copy the model to the target directory
-    shutil.copy(model_path, model_target_path)
-    # Copy CMakeLists.txt to the target path
-    shutil.copy(resources.files('onnx2fmu').joinpath('CMakeLists.txt'),
-                target_path)
-    # Copy src folder
-    src_folder = resources.files('onnx2fmu').joinpath('src')
-    with resources.as_file(src_folder) as path:
-        shutil.copytree(path, target_path / path.name, dirs_exist_ok=True)
-    # Copy include folder
-    include_folder = resources.files('onnx2fmu').joinpath('include')
-    with resources.as_file(include_folder) as path:
-        shutil.copytree(path, target_path / path.name, dirs_exist_ok=True)
+
+def complete_platform():
+    return ['x86-windows', 'x86_64-windows', 'x86_64-linux', 'aarch64-linux',
+            'x86_64-darwin', 'aarch64-darwin']
+
+def cmake_configurations():
+    return ['Debug', 'Release']
 
 
 @app.command()

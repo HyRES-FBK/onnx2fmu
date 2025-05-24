@@ -60,6 +60,10 @@ def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
     resources_folder = fmu_folder / "resources"
     resources_folder.mkdir(exist_ok=True)
     shutil.copy(model_path, resources_folder)
+    # The model must name `model.onnx`
+    onnx_model = resources_folder / model_path.name
+    if onnx_model.name != "model.onnx":
+        shutil.move(onnx_model, resources_folder / "model.onnx")
     # Copy CMakeLists.txt to the target path
     resources.files('onnx2fmu')
     cmakelists_path = resources.files('onnx2fmu').joinpath('CMakeLists.txt')
@@ -128,6 +132,7 @@ def generate(
         core_dir = target_folder / f"{model_path.stem}" / template_name.name
         with open(core_dir, "w") as f:
             f.write(rendered)
+
 
 def _set_paths(
         model_path: Union[str, Path],

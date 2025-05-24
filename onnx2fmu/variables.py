@@ -122,18 +122,18 @@ class Output(VariableFactory):
 class Local(VariableFactory):
 
     def __init__(self,
-                 name_in: str,
-                 name_out: str,
+                 nameIn: str,
+                 nameOut: str,
                  shape: tuple = (1, ),
                  description: str = "",
                  variability: str = CONTINUOUS,
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT
                  ) -> None:
-        self.nameIn = self.cleanName(name=name_in)
-        self.nodeNameIn = name_in
-        self.nameOut = self.cleanName(name=name_out)
-        self.nodeNameOut = name_out
+        self.nameIn = self.cleanName(name=nameIn)
+        self.nodeNameIn = nameIn
+        self.nameOut = self.cleanName(name=nameOut)
+        self.nodeNameOut = nameOut
         name = "_".join([self.nameIn, self.nameOut])
         super().__init__(name=name, shape=shape, description=description,
                          variability=variability, fmiVersion=fmiVersion,

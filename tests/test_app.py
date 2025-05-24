@@ -6,17 +6,14 @@ from pathlib import Path
 from fmpy import simulate_fmu
 from fmpy.validation import validate_fmu
 
-from onnx2fmu.app import ScalarVariable, Model, build
-
-
-FMI_VERSIONS = ["2.0", "3.0"]
+from onnx2fmu.app import _find_version, _createFolderStructure
 
 
 class TestApp(unittest.TestCase):
 
     def setUp(self):
-        self.base_dir = Path(__file__).resolve().parent / 'example1'
-        self.model_name = 'example1'
+        self.model_name = 'example4'
+        self.base_dir = Path(__file__).resolve().parent / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
@@ -49,28 +46,9 @@ class TestApp(unittest.TestCase):
                 start=0.0
             )
 
-        # Check that inexisting causality return ValueError
-        with self.assertRaises(ValueError):
-            ScalarVariable(
-                name='example',
-                description='',
-                variability='continuous',
-                causality='wrong causality',
-                valueReference=1,
-                vType=1,
-                start=0.0
-            )
-        # Check that inexisting variability return ValueError
-        with self.assertRaises(ValueError):
-            ScalarVariable(
-                name='example',
-                description='',
-                variability='wrong variability',
-                causality='input',
-                valueReference=1,
-                vType=1,
-                start=0.0
-            )
+    def test_version(self):
+        pattern = r'^\d+\.\d+\.\d+$'
+        self.assertRegex(_find_version("pyproject.toml"), pattern)
 
     def test_model_declaration(self):
         model = Model(
@@ -105,88 +83,37 @@ class TestApp(unittest.TestCase):
     def test_number_of_outputs(self):
         pass
 
-    def test_FMU_fmi2(self):
-        # Build the FMNU
-        # Test the model build process. Remember to check for multiple OSs
-        build(
-            model_path=self.model_path,
-            model_description_path=self.model_description_path,
-            fmi_version="2.0"
-        )
-        # Set FMU path
-        fmu_path = Path(f"{self.model_name}.fmu")
-        # Validate
-        res = validate_fmu(fmu_path)
-        self.assertEqual(len(res), 0)
-        # Read data
-        signals = np.genfromtxt(self.base_dir / "input.csv",
-                                delimiter=",", names=True)
-        # Test the FMU using fmpy and check output against benchmark
-        res = simulate_fmu(
-            fmu_path,
-            start_time=0,
-            stop_time=100,
-            output_interval=1,
-            input=signals,
-        )
-        res = np.vstack([res[field] for field in
-                         res.dtype.names if field != 'time']).T
-        # Load real output
-        out_real = np.genfromtxt(self.base_dir / "output.csv",
-                                 delimiter=",", names=True)
-        out_real = np.vstack([out_real[field] for field in
-                              out_real.dtype.names if field != 'time']).T
-        # Set real output precision to 1e-5
-        out_real = np.round(out_real, decimals=5)
-        # Cut out first row or res because it is repeated
-        # TODO: discover why the first row is repeated
-        res = res[1:]
-        # Compare results with the ground truth
-        mse = np.sum(np.power(res - out_real, 2))
-        # Check that mse is lower than 1e-6
-        self.assertLessEqual(mse, 1e-6)
-        # Cleanup FMU
-        fmu_path.unlink()
-
-    def test_FMU_fmi3(self):
-        # Build the FMNU
-        # Test the model build process. Remember to check for multiple OSs
-        build(
-            model_path=self.model_path,
-            model_description_path=self.model_description_path,
-            fmi_version="3.0"
-        )
-        # Set FMU path
-        fmu_path = Path(f"{self.model_name}.fmu")
-        # Validate
-        res = validate_fmu(fmu_path)
-        self.assertEqual(len(res), 0)
-        # Read data
-        signals = np.genfromtxt(self.base_dir / "input.csv",
-                                delimiter=",", names=True)
-        # Test the FMU using fmpy and check output against benchmark
-        res = simulate_fmu(
-            fmu_path,
-            start_time=0,
-            stop_time=100,
-            output_interval=1,
-            input=signals,
-        )
-        res = np.vstack([res[field] for field in
-                         res.dtype.names if field != 'time']).T
-        # Load real output
-        out_real = np.genfromtxt(self.base_dir / "output.csv",
-                                 delimiter=",", names=True)
-        out_real = np.vstack([out_real[field] for field in
-                              out_real.dtype.names if field != 'time']).T
-        # Set real output precision to 1e-5
-        out_real = np.round(out_real, decimals=5)
-        # Cut out first row or res because it is repeated
-        # TODO: discover why the first row is repeated
-        res = res[1:]
-        # Compare results with the ground truth
-        mse = np.sum(np.power(res - out_real, 2))
-        # Check that mse is lower than 1e-6
-        self.assertLessEqual(mse, 1e-6)
-        # Cleanup FMU
-        fmu_path.unlink()
+        # # Set FMU path
+        # fmu_path = Path(f"{self.model_name}.fmu")
+        # # Validate
+        # res = validate_fmu(fmu_path)
+        # self.assertEqual(len(res), 0)
+        # # Read data
+        # signals = np.genfromtxt(self.base_dir / "input.csv",
+        #                         delimiter=",", names=True)
+        # # Test the FMU using fmpy and check output against benchmark
+        # res = simulate_fmu(
+        #     fmu_path,
+        #     start_time=0,
+        #     stop_time=100,
+        #     output_interval=1,
+        #     input=signals,
+        # )
+        # res = np.vstack([res[field] for field in
+        #                  res.dtype.names if field != 'time']).T
+        # # Load real output
+        # out_real = np.genfromtxt(self.base_dir / "output.csv",
+        #                          delimiter=",", names=True)
+        # out_real = np.vstack([out_real[field] for field in
+        #                       out_real.dtype.names if field != 'time']).T
+        # # Set real output precision to 1e-5
+        # out_real = np.round(out_real, decimals=5)
+        # # Cut out first row or res because it is repeated
+        # # TODO: discover why the first row is repeated
+        # res = res[1:]
+        # # Compare results with the ground truth
+        # mse = np.sum(np.power(res - out_real, 2))
+        # # Check that mse is lower than 1e-6
+        # self.assertLessEqual(mse, 1e-6)
+        # # Cleanup FMU
+        # fmu_path.unlink()

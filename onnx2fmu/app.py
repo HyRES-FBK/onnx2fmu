@@ -78,20 +78,21 @@ def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
 @app.command()
 def generate(
     model_path: Annotated[
-        Union[str, Path],
+        str,
         typer.Argument(help="The path to the ONNX model file.")
     ],
     model_description_path: Annotated[
-        Union[str, Path],
+        str,
         typer.Argument(help="The path to the model description file.")
     ],
-    destination: Annotated[
-        Union[str, Path],
-        typer.Option(help="The destination path.")
+    target_folder: Annotated[
+        str,
+        typer.Option(help="The target folder path.")
     ],
-):
-    model_path, model_description_path, destination = _set_paths(
-        model_path, model_description_path, destination
+) -> None:
+    """Generate the FMU project folder structure."""
+    model_path, model_description_path, target_folder = _set_paths(
+        model_path, model_description_path, target_folder
     )
 
     onnx_model = load(model_path)
@@ -102,7 +103,7 @@ def generate(
 
     context = model.generateContext()
 
-    _createFMUFolderStructure(destination=destination, model_path=model_path)
+    _createFMUFolderStructure(destination=target_folder, model_path=model_path)
 
     # Initialize Jinja2 environment
     env = Environment(loader=BaseLoader())
@@ -124,7 +125,7 @@ def generate(
         # Render the template with the context
         rendered = template.render(context)
         # Write the rendered template to the target directory
-        core_dir = destination / f"{model_path.stem}" / template_name.name
+        core_dir = target_folder / f"{model_path.stem}" / template_name.name
         with open(core_dir, "w") as f:
             f.write(rendered)
 
@@ -157,22 +158,23 @@ def cmake_configurations():
 @app.command()
 def compile(
     target_folder: Annotated[
-        Union[str, Path],
+        str,
         typer.Option(help="The target folder path.")
     ],
     model_description_path: Annotated[
-        Union[str, Path],
+        str,
         typer.Option(help="The path to the model description file.")
     ],
     destination: Annotated[
-        Union[str, Path],
-        typer.Option(help="The path to the destination folder.")
+        str,
+        typer.Option(help="The destination folder where to copy the FMU.")
     ] = ".",
     fmi_platform: Annotated[
         str,
         typer.Option(
             help="The target platform to build for. If empty, the program" +
-            "set the target to the platform where it is compiled.",
+            "set the target to the platform where it is compiled. See --help" +
+            "for further options.",
             autocompletion=complete_platform
         )
     ] = "",
@@ -181,7 +183,8 @@ def compile(
         typer.Option(help="The CMake build config.",
                      autocompletion=cmake_configurations)
     ] = "Release"
-):
+) -> None:
+    """Compile the project defined in `target_path`."""
     if type(target_folder) is str:
         target_folder = Path(target_folder)
     if type(model_description_path) is str:
@@ -273,21 +276,20 @@ def build(
         str,
         typer.Argument(help="The path to the model description file.")
     ],
+    target_folder: Annotated[
+        str,
+        typer.Option(help="The target folder path.")
+    ],
     destination: Annotated[
         str,
-        typer.Option(help="The destination path.")
+        typer.Option(help="The destination folder where to copy the FMU.")
     ] = ".",
-    fmi_version: Annotated[
-        str,
-        typer.Option(
-            help="The FMI version, only 2 and 3 are supported. Default is 2."
-        )
-    ] = None,
     fmi_platform: Annotated[
         str,
         typer.Option(
             help="The target platform to build for. If empty, the program" +
-            "set the target to the platform where it is compiled.",
+            "set the target to the platform where it is compiled. See --help" +
+            "for further options.",
             autocompletion=complete_platform
         )
     ] = "",
@@ -296,41 +298,20 @@ def build(
         typer.Option(help="The CMake build config.",
                      autocompletion=cmake_configurations)
     ] = "Release"
-):
-    """
-    Build the FMU.
-
-    Parameters:
-    -----------
-
-    - ``model_path`` (str): The path to the model to be encapsulated in an FMU.
-
-    - ``model_description_path`` (str): The path to the model description file.
-
-    - ``destination`` (str): The destination path where to copy the FMU.
-
-    - ``fmi_version`` (int): The FMI version, only 2.0 and 3.0 are supported.
-
-    - ``fmi_platform`` (str): One of 'x86-windows', 'x86_64-windows',
-    'x86_64-linux', 'aarch64-linux', 'x86_64-darwin', 'aarch64-darwin'. If left
-    blank, it builds for the current platform.
-
-    - ``cmake_config`` (str): The CMake build config.
-    """
+) -> None:
+    """Build the FMU."""
     # Generate the FMU
     generate(
         model_path=model_path,
         model_description_path=model_description_path,
-        destination=destination,
-        fmi_version=fmi_version
+        target_folder=target_folder,
     )
 
     # Compile the FMU
     compile(
-        model_path=model_path,
+        target_folder=target_folder,
         model_description_path=model_description_path,
         destination=destination,
-        fmi_version=fmi_version,
         fmi_platform=fmi_platform,
         cmake_config=cmake_config
     )

@@ -34,6 +34,8 @@ typedef enum {
     vr_{{ cleanName(scalar.name) }},
     {%- endfor %}
     {%- endfor %}
+    // The model should not reference local variables, they are used only
+    // in the function calculateValues
 } ValueReference;
 
 typedef struct {
@@ -41,12 +43,17 @@ typedef struct {
     double time;
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    {{ scalar.vType.CType }} {{ cleanName(scalar.name) }};
+    {{ input.vType.CType }} {{ cleanName(scalar.name) }};
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    {{ scalar.vType.CType }} {{ cleanName(scalar.name) }};
+    {{ output.vType.CType }} {{ cleanName(scalar.name) }};
+    {%- endfor %}
+    {%- endfor %}
+    {%- for local in locals %}
+    {%- for scalar in local.scalarValues %}
+    {{ local.vType.CType }} {{ cleanName(scalar.name) }};
     {%- endfor %}
     {%- endfor %}
 } ModelData;

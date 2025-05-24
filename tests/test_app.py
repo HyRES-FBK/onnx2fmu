@@ -6,7 +6,7 @@ from pathlib import Path
 from fmpy import simulate_fmu
 from fmpy.validation import validate_fmu
 
-from onnx2fmu.app import _find_version, _createFolderStructure
+from onnx2fmu.app import _find_version, _createFMUFolderStructure
 
 
 class TestApp(unittest.TestCase):
@@ -20,30 +20,18 @@ class TestApp(unittest.TestCase):
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
+        self.target_path = Path("target")
 
-    def test_fmi2_scalar_variable(self):
-        # Check againts name containing non-alfanumeric characters
-        var = ScalarVariable(
-            name='example;:!|~',
-            description='',
-            variability='continuous',
-            causality='input',
-            valueReference=1,
-            vType=1,
-            start=0.0
+    def test_create_project_structure(self):
+        _createFMUFolderStructure(self.target_path, self.model_path)
+        self.assertIn(
+            "CMakeLists.txt",
+            [f.name for f in self.target_path.iterdir() if f.is_file()]
         )
-        self.assertTrue(var.name == 'example')
-
-        # Value referece cannot be zero
-        with self.assertRaises(ValueError):
-            var = ScalarVariable(
-                name='example',
-                description='',
-                variability='continuous',
-                causality='input',
-                valueReference=0,
-                vType=1,
-                start=0.0
+        for folder in [self.model_name, "include", "src"]:
+            self.assertIn(
+                folder,
+                [f.name for f in self.target_path.iterdir() if not f.is_file()]
             )
 
     def test_version(self):

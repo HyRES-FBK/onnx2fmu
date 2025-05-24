@@ -50,35 +50,32 @@ def version():
     typer.echo(f"ONNX2FMU {_find_version('pyproject.toml')}")
 
 
-def complete_platform():
-    return ['x86-windows', 'x86_64-windows', 'x86_64-linux', 'aarch64-linux',
-            'x86_64-darwin', 'aarch64-darwin']
-
-def cmake_configurations():
-    return ['Debug', 'Release']
-
-
-def model_information(model_path: str, model_description_path: str,
-                      destination: str, fmi_version: str):
-    ##############################
-    # Retrieve model information #
-    ##############################
-    # Cast to Path
-    model_path = Path(model_path)
-    destination = Path(destination)
-    # Check if the model file exists
-    if not model_path.exists():
-        logger.error(f"Model file {model_path} does not exist.")
-        raise typer.Exit(code=1)
-    # Read the model file
-    onnx_model = load(model_path)
-    # Read model description
-    model_description = json.loads(Path(model_description_path).read_text())
-    # CLI-provided FMI version takes over model description version
-    if fmi_version is not None:
-        model_description['FMIVersion'] = fmi_version
-
-    return model_path, destination, onnx_model, model_description
+def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
+    model_name = model_path.stem
+    # Remove the target directory if it exists
+    if destination.exists():
+        shutil.rmtree(destination)
+    # Create the target directories
+    destination.mkdir(exist_ok=True)
+    fmu_folder = destination / model_name
+    fmu_folder.mkdir(exist_ok=True)
+    resources_folder = fmu_folder / "resources"
+    resources_folder.mkdir(exist_ok=True)
+    print(model_path)
+    shutil.copy(model_path, resources_folder)
+    # Copy CMakeLists.txt to the target path
+    resources.files('onnx2fmu')
+    cmakelists_path = resources.files('onnx2fmu').joinpath('CMakeLists.txt')
+    with resources.as_file(cmakelists_path) as path:
+        shutil.copy(path, destination)
+    # Copy src folder
+    src_folder = resources.files('onnx2fmu').joinpath('src')
+    with resources.as_file(src_folder) as path:
+        shutil.copytree(path, destination / path.name, dirs_exist_ok=True)
+    # Copy include folder
+    include_folder = resources.files('onnx2fmu').joinpath('include')
+    with resources.as_file(include_folder) as path:
+        shutil.copytree(path, destination / path.name, dirs_exist_ok=True)
 
 
 @app.command()

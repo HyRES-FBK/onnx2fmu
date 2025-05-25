@@ -16,7 +16,7 @@ jobs:
         arch: [x86_64]
         os: [windows]
         python-version: ["3.10", "3.11", "3.12"]
-    runs-on: [self-hosted, windows]
+    runs-on: [self-hosted, Windows]
 
     steps:
       - name: Check out repository
@@ -58,7 +58,7 @@ jobs:
         arch: [x86_64]
         os: [linux]
         python-version: ["3.10", "3.11", "3.12"]
-    runs-on: [self-hosted, linux]
+    runs-on: [self-hosted, Linux]
 
     steps:
       - name: Check out repository

@@ -91,7 +91,7 @@ Status calculateValues(ModelInstance *comp) {
     // LOCAL variables
     {%- for local in locals %}
 
-    // Create {{ local.name }} tensor
+    // Create {{ local.nameIn }} tensor
     OrtValue* {{ local.nameIn }}_tensor;
 
     // Store the shape of the input tensor
@@ -233,6 +233,7 @@ Status calculateValues(ModelInstance *comp) {
             comp
         );
     assert ({{ local.nameOut }}_is_tensor);
+
     {%- endfor %}
 
     {%- for output in outputs %}
@@ -309,10 +310,9 @@ Status calculateValues(ModelInstance *comp) {
     {%- for scalar in local.scalarValues %}
     M({{ scalar.name }}) = {{ local.nameOut }}_tensor_data[{{ loop.index0 }}];
     {%- endfor %}
-
     {%- endfor %}
-    // Free tensors
 
+    // Free tensors
     {%- for local in locals %}
     comp->g_ort->ReleaseValue({{ local.nameOut }}_tensor);
     {%- endfor %}
@@ -339,9 +339,6 @@ Status calculateValues(ModelInstance *comp) {
 
 Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
                   size_t nValues, size_t *index) {
-
-    // Calculate values
-    calculateValues(comp);
 
     switch (vr)
     {
@@ -425,9 +422,6 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
 #if FMI_VERSION > 2
 Status getFloat32(ModelInstance *comp, ValueReference vr, float values[],
                   size_t nValues, size_t *index) {
-
-    // Calculate values
-    calculateValues(comp);
 
     switch (vr)
     {

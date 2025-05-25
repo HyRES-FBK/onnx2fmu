@@ -1,9 +1,12 @@
 import json
 import unittest
+import numpy as np
+import pandas as pd
 from onnx import load
 from pathlib import Path
 from shutil import rmtree
-from pathlib import Path
+from fmpy.validation import validate_fmu
+from fmpy.simulation import simulate_fmu
 
 from onnx2fmu.app import (_find_version, _createFMUFolderStructure, generate,
                           compile)
@@ -94,7 +97,6 @@ class TestApp(unittest.TestCase):
 
     def test_compile(self):
         target_path = Path("test_compile")
-        destination = Path(".")
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
@@ -110,37 +112,23 @@ class TestApp(unittest.TestCase):
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
 
-        # # Set FMU path
-        # fmu_path = Path(f"{self.model_name}.fmu")
-        # # Validate
-        # res = validate_fmu(fmu_path)
-        # self.assertEqual(len(res), 0)
-        # # Read data
-        # signals = np.genfromtxt(self.base_dir / "input.csv",
-        #                         delimiter=",", names=True)
-        # # Test the FMU using fmpy and check output against benchmark
-        # res = simulate_fmu(
-        #     fmu_path,
-        #     start_time=0,
-        #     stop_time=100,
-        #     output_interval=1,
-        #     input=signals,
-        # )
-        # res = np.vstack([res[field] for field in
-        #                  res.dtype.names if field != 'time']).T
-        # # Load real output
-        # out_real = np.genfromtxt(self.base_dir / "output.csv",
-        #                          delimiter=",", names=True)
-        # out_real = np.vstack([out_real[field] for field in
-        #                       out_real.dtype.names if field != 'time']).T
-        # # Set real output precision to 1e-5
-        # out_real = np.round(out_real, decimals=5)
-        # # Cut out first row or res because it is repeated
-        # # TODO: discover why the first row is repeated
-        # res = res[1:]
-        # # Compare results with the ground truth
-        # mse = np.sum(np.power(res - out_real, 2))
-        # # Check that mse is lower than 1e-6
-        # self.assertLessEqual(mse, 1e-6)
-        # # Cleanup FMU
-        # fmu_path.unlink()
+    def test_compile_and_simulate(self):
+        self.test_compile()
+        # Read input data
+        signals = np.genfromtxt(self.base_dir / "input.csv",
+                                delimiter=",", names=True)
+        # Test the FMU using fmpy and check output against benchmark
+        results = simulate_fmu(
+            self.fmu_path,
+            start_time=0,
+            stop_time=100,
+            output_interval=1,
+            step_size=1,
+            input=signals,
+        )
+        results = np.vstack([results[field] for field in
+                         results.dtype.names if field != 'time']).T
+        # Skip the first step, which is obtained before the first doStep
+        results = results[1:]
+        real_output = pd.read_csv(self.base_dir / "output.csv", index_col='time')
+        self.assertTrue(np.array_equal(results, real_output.values))

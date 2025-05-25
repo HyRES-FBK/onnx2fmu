@@ -86,3 +86,7 @@ class TestLocalVariable(unittest.TestCase):
         self.assertIn("nodeNameIn", context)
         self.assertIn("nodeNameOut", context)
         self.assertEqual(context["name"], "X1_X2")
+
+
+if __name__ == "__main__":
+    unittest.main()

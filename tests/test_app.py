@@ -132,3 +132,7 @@ class TestApp(unittest.TestCase):
         results = results[1:]
         real_output = pd.read_csv(self.base_dir / "output.csv", index_col='time')
         self.assertTrue(np.array_equal(results, real_output.values))
+
+
+if __name__ == "__main__":
+    unittest.main()

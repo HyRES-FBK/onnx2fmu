@@ -51,3 +51,7 @@ class TestModel(unittest.TestCase):
         self.assertIn("x", [var["name"] for var in context["inputs"]])
         self.assertIn("y", [var["name"] for var in context["outputs"]])
         self.assertIn("z1_z2", [var["name"] for var in context["locals"]])
+
+
+if __name__ == "__main__":
+    unittest.main()

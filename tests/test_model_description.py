@@ -63,3 +63,7 @@ class TestModelDescription(unittest.TestCase):
                 prod(shapes[node["nameIn"]]),
                 len(node["scalarValues"])
             )
+
+
+if __name__ == "__main__":
+    unittest.main()

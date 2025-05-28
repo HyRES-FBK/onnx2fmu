@@ -42,15 +42,15 @@ jobs:
           python -m unittest tests.test_app
 
       - name: Build example4 FMI 2.0
-        shell: cmd
+        shell: pwsh
         run: |
-          set fmi_platform=${{ matrix.arch }}-${{ matrix.os }}
-          onnx2fmu build ^
-            tests/example4/example4.onnx ^
-            tests/example4/example4Description.json ^
-            target ^
-            --fmi-platform %fmi_platform% ^
-            --cmake-config Debug
+          $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
+          onnx2fmu build `
+          tests/example4/example4.onnx `
+          tests/example4/example4Description.json `
+          target `
+          --fmi-platform $fmi_platform `
+          --cmake-config Debug
 
   build_and_test_linux:
     strategy:

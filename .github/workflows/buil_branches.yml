@@ -41,13 +41,13 @@ jobs:
           python -m unittest tests.test_model_description
           python -m unittest tests.test_app
 
-      - name: Build example2 FMI 2.0
+      - name: Build example4 FMI 2.0
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
           onnx2fmu build `
-          tests/example2/example2.onnx `
-          tests/example2/example2Description.json `
+          tests/example4/example4.onnx `
+          tests/example4/example4Description.json `
           target `
           --fmi-platform $fmi_platform `
           --cmake-config Debug
@@ -83,12 +83,12 @@ jobs:
           python -m unittest tests.test_model_description
           python -m unittest tests.test_app
 
-      - name: Build example2 FMI 2.0
+      - name: Build example4 FMI 2.0
         shell: bash -l {0}
         run: |
           onnx2fmu build \
-          tests/example2/example2.onnx \
-          tests/example2/example2Description.json \
+          tests/example4/example4.onnx \
+          tests/example4/example2Description.json \
           target \
           --fmi-platform ${{ matrix.arch }}-${{ matrix.os }} \
           --cmake-config Debug

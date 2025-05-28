@@ -32,21 +32,21 @@
     </ScalarVariable>
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{{ scalar.label }}">
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ input.description }}{% endif %}">
       <{{ input.vType.FMIType }} {% if input.start %}start="{{ input.start }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{{ scalar.label }}">
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ output.description }}{% endif %}">
       <Real />
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
     {%- for local in locals %}
     {%- for scalar in local.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{{ scalar.label }}" initial="{{ local.initial }}">
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}" initial="{{ local.initial }}">
       <{{ local.vType.FMIType }} {% if local.start %}start="{{ local.start }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}

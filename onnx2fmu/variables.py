@@ -107,11 +107,13 @@ class Input(VariableFactory):
                  variability: str = CONTINUOUS,
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT,
+                 labels: None | list[str] = None,
                  start: Union[str, int, float] = "1.0"
                  ) -> None:
         super().__init__(
             name=name, shape=shape, description=description,
-            variability=variability, fmiVersion=fmiVersion, vType=vType)
+            variability=variability, fmiVersion=fmiVersion, vType=vType,
+            labels=labels)
         self.setStartValue(start)
 
         self._context_variables += ["start"]
@@ -140,6 +142,7 @@ class Local(VariableFactory):
                  variability: str = CONTINUOUS,
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT,
+                 labels: None | list[str] = None,
                  start: str = "3.0",
                  initial: str = "exact",
                  ) -> None:
@@ -150,7 +153,7 @@ class Local(VariableFactory):
         name = "_".join([self.nameIn, self.nameOut])
         super().__init__(name=name, shape=shape, description=description,
                          variability=variability, fmiVersion=fmiVersion,
-                         vType=vType)
+                         vType=vType, labels=labels)
         self.setStartValue(start=start)
         self.initial = initial
         self._context_variables += ["nameIn", "nameOut", "nodeNameIn",

@@ -18,6 +18,7 @@ class VariableFactory:
                  variability: str = CONTINUOUS,
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT,
+                 labels: None | list[str] = None,
                  ) -> None:
         self.setName(name=name)
         self.setShape(shape=shape)
@@ -26,6 +27,7 @@ class VariableFactory:
         self.setFmiVersion(fmiVersion=fmiVersion)
         self.setType(vType)
         self.setCausality()
+        self.setLabels(labels=labels)
         self.initializeScalarValues()
 
         self._context_variables = [
@@ -37,7 +39,7 @@ class VariableFactory:
             "variability",
             "fmiVersion",
             "vType",
-            "scalarValues"
+            "scalarValues",
         ]
 
     def __str__(self) -> str:
@@ -77,10 +79,19 @@ class VariableFactory:
         else:
             self.causality = self.__class__.__name__.lower()
 
+    def setLabels(self, labels: None | list[str] = None) -> None:
+        if labels is None:
+            self.labels = []
+        elif isinstance(labels, list):
+            self.labels = labels
+        else:
+            raise TypeError(f"Labels must be a list, not {type(labels)}.")
+
     def initializeScalarValues(self) -> None:
         self.scalarValues = [
-            {"name": self.name + "_" + "_".join([str(k) for k in idx])}
-            for idx in np.ndindex(self.shape)
+            {"name": self.name + "_" + "_".join([str(k) for k in idx]),
+             "label": self.labels[i] if i < len(self.labels) else ""}
+            for i, idx in enumerate(np.ndindex(self.shape))
         ]
 
     def generateContext(self) -> dict[str, str]:

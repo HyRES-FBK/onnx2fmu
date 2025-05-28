@@ -2,13 +2,13 @@
     "name": "example3",
     "description": "A simple RNN example.",
     "FMIVersion": "2.0",
-    "input": [
+    "inputs": [
         {
             "name": "input",
             "description": "A scalar input to the model."
         }
     ],
-    "output": [
+    "outputs": [
         {
             "name": "output",
             "description": "The output array."

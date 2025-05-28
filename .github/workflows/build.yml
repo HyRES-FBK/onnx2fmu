@@ -90,7 +90,6 @@ jobs:
       - name: Build example4 FMI 2.0 (non-Windows)
         if: runner.os != 'Windows'
         shell: bash
-        env:
         run: |
           onnx2fmu build \
           tests/example4/example4.onnx \

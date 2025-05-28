@@ -71,48 +71,30 @@ jobs:
       - name: Python unit tests
         if: runner.os != 'macOS'
         run: |
+          python -m unittest tests.test_variables
+          python -m unittest tests.test_model
+          python -m unittest tests.test_model_description
           python -m unittest tests.test_app
 
-      - name: Build example2 FMI 2.0 (Windows)
+      - name: Build example4 FMI 2.0 (Windows)
         if: runner.os == 'Windows'
         shell: cmd
         run: |
           onnx2fmu build ^
-          tests/example2/example2.onnx ^
-          tests/example2/example2Description.json ^
+          tests/example4/example4.onnx ^
+          tests/example4/example4Description.json ^
+          target ^
           --fmi-platform ${{ matrix.name }} ^
-          --fmi-version 2.0 ^
           --cmake-config Debug
 
-      - name: Build example2 FMI 3.0 (Windows)
-        if: runner.os == 'Windows'
-        shell: cmd
-        run: |
-          onnx2fmu build ^
-          tests/example2/example2.onnx ^
-          tests/example2/example2Description.json ^
-          --fmi-platform ${{ matrix.name }} ^
-          --fmi-version 3.0 ^
-          --cmake-config Debug
-
-      - name: Build example2 FMI 2.0 (non-Windows)
+      - name: Build example4 FMI 2.0 (non-Windows)
         if: runner.os != 'Windows'
         shell: bash
+        env:
         run: |
           onnx2fmu build \
-          tests/example2/example2.onnx \
-          tests/example2/example2Description.json \
+          tests/example4/example4.onnx \
+          tests/example4/example4Description.json \
+          target \
           --fmi-platform ${{ matrix.name }} \
-          --fmi-version 2.0 \
-          --cmake-config Debug
-
-      - name: Build example2 FMI 3.0 (non-Windows)
-        if: runner.os != 'Windows'
-        shell: bash
-        run: |
-          onnx2fmu build \
-          tests/example2/example2.onnx \
-          tests/example2/example2Description.json \
-          --fmi-platform ${{ matrix.name }} \
-          --fmi-version 3.0 \
           --cmake-config Debug

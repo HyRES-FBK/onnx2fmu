@@ -1,4 +1,4 @@
-name: Build and test the project using self-hosted runners
+name: Build and test on self-hosted runners
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         arch: [x86_64]
         os: [windows]
         python-version: ["3.10", "3.11", "3.12"]
-    runs-on: [self-hosted, windows]
+    runs-on: [self-hosted, Windows]
 
     steps:
       - name: Check out repository
@@ -36,28 +36,20 @@ jobs:
 
       - name: Python unit tests
         run: |
+          python -m unittest tests.test_variables
+          python -m unittest tests.test_model
+          python -m unittest tests.test_model_description
           python -m unittest tests.test_app
 
-      - name: Build example2 FMI 2.0
+      - name: Build example4 FMI 2.0
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
           onnx2fmu build `
-          tests/example2/example2.onnx `
-          tests/example2/example2Description.json `
+          tests/example4/example4.onnx `
+          tests/example4/example4Description.json `
+          target `
           --fmi-platform $fmi_platform `
-          --fmi-version 2.0 `
-          --cmake-config Debug
-
-      - name: Build example2 FMI 3.0
-        shell: pwsh
-        run: |
-          $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          onnx2fmu build `
-          tests/example2/example2.onnx `
-          tests/example2/example2Description.json `
-          --fmi-platform $fmi_platform `
-          --fmi-version 3.0 `
           --cmake-config Debug
 
   build_and_test_linux:
@@ -66,7 +58,7 @@ jobs:
         arch: [x86_64]
         os: [linux]
         python-version: ["3.10", "3.11", "3.12"]
-    runs-on: [self-hosted, linux]
+    runs-on: [self-hosted, Linux]
 
     steps:
       - name: Check out repository
@@ -86,24 +78,17 @@ jobs:
 
       - name: Python unit tests
         run: |
+          python -m unittest tests.test_variables
+          python -m unittest tests.test_model
+          python -m unittest tests.test_model_description
           python -m unittest tests.test_app
 
-      - name: Build example2 FMI 2.0
+      - name: Build example4 FMI 2.0
         shell: bash -l {0}
         run: |
           onnx2fmu build \
-          tests/example2/example2.onnx \
-          tests/example2/example2Description.json \
+          tests/example4/example4.onnx \
+          tests/example4/example4Description.json \
+          target \
           --fmi-platform ${{ matrix.arch }}-${{ matrix.os }} \
-          --fmi-version 2.0 \
-          --cmake-config Debug
-
-      - name: Build example2 FMI 3.0
-        shell: bash -l {0}
-        run: |
-          onnx2fmu build \
-          tests/example2/example2.onnx \
-          tests/example2/example2Description.json \
-          --fmi-platform ${{ matrix.arch }}-${{ matrix.os }} \
-          --fmi-version 3.0 \
           --cmake-config Debug

@@ -83,8 +83,6 @@ if (APPLE)
 
 endif ()
 
-message("FMI_PLATFORM: " ${FMI_PLATFORM})
-
 if (${FMI_VERSION} LESS 3)
   file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/all.c" "#define FMI_VERSION ${FMI_VERSION}
 
@@ -158,12 +156,17 @@ endif ()
 # Set the URL to download ONNX Runtime
 set(ONNXRUNTIME_URL "https://github.com/microsoft/onnxruntime/releases/download/v${LATEST_RELEASE_TAG}/${ONNXRUNTIME_ARCHIVE}")
 
-# Path to the downloaded ONNX Runtime archive
+# Set a directory to cache the ONNX runtime archive
 if (WIN32)
-    set(ONNXRUNTIME_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME_ARCHIVE}")
+    set(ONNXRUNTIME_CACHE_DIR "$ENV{LOCALAPPDATA}/onnxruntime")
+    file(MAKE_DIRECTORY ${ONNXRUNTIME_CACHE_DIR})
 else ()
-    set(ONNXRUNTIME_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME_ARCHIVE}")
+    set(ONNXRUNTIME_CACHE_DIR "/tmp/onnxruntime")
+    file(MAKE_DIRECTORY ${ONNXRUNTIME_CACHE_DIR})
 endif ()
+
+# Path to the downloaded ONNX Runtime archive
+set(ONNXRUNTIME_ARCHIVE_PATH "${ONNXRUNTIME_CACHE_DIR}/${ONNXRUNTIME_ARCHIVE}")
 
 # Download the ONNX Runtime release only if the file does not exist
 if (NOT EXISTS ${ONNXRUNTIME_ARCHIVE_PATH})

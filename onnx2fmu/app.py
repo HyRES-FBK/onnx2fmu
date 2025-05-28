@@ -1,18 +1,18 @@
 import re
-import uuid
 import json
 import typer
 import shutil
 import platform
 import subprocess
-import numpy as np
 from pathlib import Path
 from loguru import logger
-from datetime import datetime
+from typing import Union
 import importlib.resources as resources
 from typing_extensions import Annotated
-from onnx import load, TensorProto, ModelProto
+from onnx import load
 from jinja2 import Environment, BaseLoader
+
+from onnx2fmu.model_description import ModelDescription
 
 
 app = typer.Typer()
@@ -21,283 +21,8 @@ app = typer.Typer()
 PARENT_DIR = resources.files("onnx2fmu")
 TEMPLATE_DIR = resources.files("onnx2fmu.template")
 
-VARIABILITY = ["discrete", "continuous"]
-CAUSALITY = ["input", "output"]
 
-FMI2TYPES = {
-    TensorProto.FLOAT:  {"FMIType": "Real",    "CType": "double"},
-    TensorProto.DOUBLE: {"FMIType": "Real",    "CType": "double"},
-    TensorProto.INT4:   {"FMIType": "Integer", "CType": "int"},
-    TensorProto.INT8:   {"FMIType": "Integer", "CType": "int"},
-    TensorProto.INT16:  {"FMIType": "Integer", "CType": "int"},
-    TensorProto.INT32:  {"FMIType": "Integer", "CType": "int"},
-    TensorProto.INT64:  {"FMIType": "Integer", "CType": "int"},
-    TensorProto.UINT8:  {"FMIType": "Integer", "CType": "int"},
-    TensorProto.UINT16: {"FMIType": "Integer", "CType": "int"},
-    TensorProto.UINT32: {"FMIType": "Integer", "CType": "int"},
-    TensorProto.UINT64: {"FMIType": "Integer", "CType": "int"},
-    TensorProto.BOOL:   {"FMIType": "Boolean", "CType": "bool"},
-    TensorProto.STRING: {"FMIType": "String", "CType": "char"},
-}
-
-FMI3TYPES = {
-    TensorProto.FLOAT:  {"FMIType": "Float32", "CType": "float"},
-    TensorProto.DOUBLE: {"FMIType": "Float64", "CType": "double"},
-    TensorProto.INT4:   {"FMIType": "Int8",    "CType": "int"},
-    TensorProto.INT8:   {"FMIType": "Int8",    "CType": "int"},
-    TensorProto.INT16:  {"FMIType": "Int16",   "CType": "int"},
-    TensorProto.INT32:  {"FMIType": "Int32",   "CType": "int"},
-    TensorProto.INT64:  {"FMIType": "Int64",   "CType": "int"},
-    TensorProto.UINT8:  {"FMIType": "UInt8",   "CType": "int"},
-    TensorProto.UINT16: {"FMIType": "UInt16",  "CType": "int"},
-    TensorProto.UINT32: {"FMIType": "UInt32",  "CType": "int"},
-    TensorProto.UINT64: {"FMIType": "UInt64",  "CType": "int"},
-    TensorProto.BOOL:   {"FMIType": "Boolean", "CType": "bool"},
-    TensorProto.STRING: {"FMIType": "String",  "CType": "char"},
-}
-
-
-class ScalarVariable:
-    """
-    A 'ScalarVariable' entry of the model description.
-    """
-
-    def __init__(self,
-                 name: str,
-                 description: str,
-                 variability: str,
-                 causality: str,
-                 valueReference: int,
-                 vType: TensorProto.DataType,
-                 start: str = None,
-                 fmi_version: str = "2.0"):
-
-        # Mandatory arguments
-        if not name:
-            raise ValueError("Name is a required argument.")
-        else:
-            self.name = re.sub(r'[^\w]', '', name)
-
-        # Optional arguments
-        if not description:
-            self.description = "Description of the array was not provided."
-        else:
-            self.description = description
-
-        if not variability:
-            self.variability = 'discrete'
-        elif variability not in VARIABILITY:
-            raise ValueError(f"Variability {variability} is not valid.")
-        else:
-            self.variability = variability
-
-        if not causality:
-            raise ValueError("Causality is a required argument.")
-        elif causality not in CAUSALITY:
-            raise ValueError(f"Causality {causality} is not valid.")
-        else:
-            self.causality = causality
-
-        if not valueReference:
-            raise ValueError("Value reference is a required argument.")
-        else:
-            self.valueReference = valueReference
-
-        if fmi_version == "2.0":
-            if vType not in FMI2TYPES:
-                raise ValueError("vType not in FMI 2.0 allowed types.")
-            else:
-                self.vType = FMI2TYPES[vType]
-        elif fmi_version == "3.0":
-            if vType not in FMI3TYPES:
-                raise ValueError("vType not in FMI 3.0 allowed types.")
-            else: self.vType = FMI3TYPES[vType]
-        else:
-            raise ValueError("Wrong FMI version, must be one of 2.0 or 3.0.")
-
-        if self.causality == 'input' and self.variability == 'continuous':
-            if start:
-                self.start = start
-            else:
-                self.start = 1.0
-
-    def generate_context(self):
-        context = {}
-        context['name'] = self.name
-        context['description'] = self.description
-        context['variability'] = self.variability
-        context['causality'] = self.causality
-        context['type'] = self.vType
-        if self.start is not None:
-            context['start'] = self.start
-        return context
-
-
-class Model:
-    """
-    The model factory class.
-    """
-
-    canGetAndSetFMUstate = True
-    canSerializeFMUstate = True
-    canNotUseMemoryManagementFunctions = True
-    canHandleVariableCommunicationStepSize = True
-    providesIntermediateUpdate = True
-    canReturnEarlyAfterIntermediateUpdate = True
-    fixedInternalStepSize = 1
-    startTime = 0
-    stopTime = 1
-
-    def __init__(self, onnx_model: ModelProto, model_description: dict):
-        """
-        Initialize the model factory.
-
-        Parameters:
-        -----------
-        - ``onnx_model`` (onnx.ModelProto): The ONNX model.
-        - ``model_description`` (dict): The model description.
-        """
-
-        #####################
-        # Model description #
-        #####################
-
-        self.model_description = model_description
-
-        if 'name' not in model_description:
-            self.name = "Model"
-        # Check if special characters are present in the model name
-        else:
-            self.name = model_description['name'].replace(" ", "_")\
-                .replace("-", "_").replace(".", "_").replace(":", "_")
-
-        if 'description' not in model_description:
-            self.description = "Description of the model was not provided."
-        else:
-            self.description = model_description['description']
-
-        if 'FMIVersion' not in model_description:
-            self.FMIVersion = "2.0"
-        else:
-            self.FMIVersion = model_description['FMIVersion']
-
-        # Generate model GUID
-        self.GUID = str(uuid.uuid4())
-
-        # Initialize value reference index for model description variables
-        self.vr = (i for i in range(1, 100000))
-
-        ############################
-        # ONNX model health checks #
-        ############################
-
-        self.onnx_model = onnx_model
-
-        # Check that the number of inputs in the model description matches the
-        # number of inputs in the ONNX model
-        assert \
-            (len(model_description.get('input', [])) ==
-             len(onnx_model.graph.input)), \
-            "The number of inputs in the model description does not match " + \
-            "the ONNX model."
-
-        # Check that the list of inputs in the model description is not empty
-        assert len(model_description.get('input', [])) > 0, \
-            "At least one input must be provided."
-
-        # Check that onnx node names and description names match
-        for i, node in enumerate(onnx_model.graph.input):
-            assert node.name == model_description['input'][i]['name']
-
-        # Check that the number of outputs in the model description matches the
-        # number of outputs in the ONNX model
-        assert \
-            (len(model_description.get('output', [])) ==
-             len(onnx_model.graph.output)), \
-            "The number of outputs in the model description does not match" + \
-            " the ONNX model."
-
-        # Check that the list of outputs in the model description is not empty
-        assert len(model_description.get('output', [])) > 0, \
-            "At least one output must be provided."
-
-        # Check that onnx node names and description names match
-        for i, node in enumerate(onnx_model.graph.output):
-            assert node.name == model_description['output'][i]['name']
-
-        ############################################
-        # Variables extraction from the ONNX model #
-        ############################################
-        entries = ['input', 'output']
-        for entry in entries:
-            setattr(self, entry, [])
-            nodes = getattr(self.onnx_model.graph, entry)
-            for i, node in enumerate(nodes):
-                description = self.model_description[entry][i]
-                array = {}
-                array["name"] = description.get('name', node.name)
-                # Retrieve tensor shape
-                array["shape"] = tuple(
-                    dim.dim_value for dim in node.type.tensor_type.shape.dim
-                )
-                # If tensor shape is empty, set it to 1
-                if not array["shape"]:
-                    array["shape"] = (1,)
-                # Define array names
-                array_names = [
-                    array['name'] + "_" + "_".join([str(k) for k in idx])
-                    for idx in np.ndindex(array['shape'])
-                ]
-                # Use names provided by the user if available
-                if 'names' in description:
-                    array["names"] = description["names"]
-                else:
-                    array["names"] = array_names
-                # Store the scalar variables
-                array["scalarValues"] = [
-                    ScalarVariable(
-                        name=array_names[j],
-                        description=array["names"][j],
-                        variability=description.get('variability',
-                                                    'continuous'),
-                        causality=description.get('causality', entry),
-                        valueReference=next(self.vr),
-                        vType=node.type.tensor_type.elem_type,
-                        fmi_version=self.FMIVersion,
-                    ) for j in range(len(array_names))
-                ]
-                # Store indexes for easy access when generating templates
-                setattr(self, entry, getattr(self, entry) + [array])
-
-    def generate_context(self):
-        # Initialize the context dictionary
-        context = {}
-        # Iterate over attributes and add model information
-        context['name'] = self.name
-        context['description'] = self.description
-        context['GUID'] = self.GUID
-        context['FMIVersion'] = self.FMIVersion
-        context['generationDateAndTime'] = datetime.now().isoformat()
-        context['canGetAndSetFMUstate'] = self.canGetAndSetFMUstate
-        context['canSerializeFMUstate'] = self.canSerializeFMUstate
-        context['canNotUseMemoryManagementFunctions'] = \
-            self.canNotUseMemoryManagementFunctions
-        context['canHandleVariableCommunicationStepSize'] = \
-            self.canHandleVariableCommunicationStepSize
-        context['providesIntermediateUpdate'] = self.providesIntermediateUpdate
-        context['canReturnEarlyAfterIntermediateUpdate'] = \
-            self.canReturnEarlyAfterIntermediateUpdate
-        context['fixedInternalStepSize'] = self.fixedInternalStepSize
-        context['startTime'] = self.startTime
-        context['stopTime'] = self.stopTime
-        # Add variables to the context
-        context['inputs'] = self.input
-        context['outputs'] = self.output
-        # Return the context
-        return context
-
-
-def find_version(file_path: str) -> str:
+def _find_version(file_path: Union[str, Path]) -> str:
     version_pattern = re.compile(r'^version\s*=\s*[\'"]([^\'"]+)[\'"]',
                                  re.MULTILINE)
     try:
@@ -317,41 +42,41 @@ def version():
     """Parse ONNX version from version.txt file."""
     # Check if pyproject.toml file exists
     if not Path('pyproject.toml').exists():
-        typer.echo("versiont.txt file not found.")
+        typer.echo("pyproject.toml file not found.")
         raise typer.Exit(code=1)
     # Parse version from the config.py file using regex
-    typer.echo(f"ONNX2FMU {find_version('pyproject.toml')}")
+    typer.echo(f"ONNX2FMU {_find_version('pyproject.toml')}")
 
 
-def complete_platform():
-    return ['x86-windows', 'x86_64-windows', 'x86_64-linux', 'aarch64-linux',
-            'x86_64-darwin', 'aarch64-darwin']
-
-def cmake_configurations():
-    return ['Debug', 'Release']
-
-
-def model_information(model_path: str, model_description_path: str,
-                      destination: str, fmi_version: str):
-    ##############################
-    # Retrieve model information #
-    ##############################
-    # Cast to Path
-    model_path = Path(model_path)
-    destination = Path(destination)
-    # Check if the model file exists
-    if not model_path.exists():
-        logger.error(f"Model file {model_path} does not exist.")
-        raise typer.Exit(code=1)
-    # Read the model file
-    onnx_model = load(model_path)
-    # Read model description
-    model_description = json.loads(Path(model_description_path).read_text())
-    # CLI-provided FMI version takes over model description version
-    if fmi_version is not None:
-        model_description['FMIVersion'] = fmi_version
-
-    return model_path, destination, onnx_model, model_description
+def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
+    model_name = model_path.stem
+    # Remove the target directory if it exists
+    if destination.exists():
+        shutil.rmtree(destination)
+    # Create the target directories
+    destination.mkdir(exist_ok=True)
+    fmu_folder = destination / model_name
+    fmu_folder.mkdir(exist_ok=True)
+    resources_folder = fmu_folder / "resources"
+    resources_folder.mkdir(exist_ok=True)
+    shutil.copy(model_path, resources_folder)
+    # The model must name `model.onnx`
+    onnx_model = resources_folder / model_path.name
+    if onnx_model.name != "model.onnx":
+        shutil.move(onnx_model, resources_folder / "model.onnx")
+    # Copy CMakeLists.txt to the target path
+    resources.files('onnx2fmu')
+    cmakelists_path = resources.files('onnx2fmu').joinpath('CMakeLists.txt')
+    with resources.as_file(cmakelists_path) as path:
+        shutil.copy(path, destination)
+    # Copy src folder
+    src_folder = resources.files('onnx2fmu').joinpath('src')
+    with resources.as_file(src_folder) as path:
+        shutil.copytree(path, destination / path.name, dirs_exist_ok=True)
+    # Copy include folder
+    include_folder = resources.files('onnx2fmu').joinpath('include')
+    with resources.as_file(include_folder) as path:
+        shutil.copytree(path, destination / path.name, dirs_exist_ok=True)
 
 
 @app.command()
@@ -364,50 +89,37 @@ def generate(
         str,
         typer.Argument(help="The path to the model description file.")
     ],
-    destination: Annotated[
+    target_folder: Annotated[
         str,
-        typer.Option(help="The destination path.")
-    ] = ".",
-    fmi_version: Annotated[
-        str,
-        typer.Option(
-            help="The FMI version, only 2 and 3 are supported. Default is 2."
-        )
-    ] = None,
-):
-    ##############################
-    # Retrieve model information #
-    ##############################
-    model_path, _, onnx_model, model_description = \
-        model_information(
-            model_path=model_path,
-            model_description_path=model_description_path,
-            destination=destination,
-            fmi_version=fmi_version
-        )
-    # Initialize model handler
-    model = Model(onnx_model, model_description)
-    # Generate context for the template
-    context = model.generate_context()
+        typer.Argument(help="The target folder path.")
+    ],
+) -> None:
+    """Generate the FMU project folder structure in `target_folder`."""
+    model_path, model_description_path, target_folder = _set_paths(
+        model_path, model_description_path, target_folder
+    )
 
-    #############################
-    # Generate the FMU template #
-    #############################
-    # Set target directory to the model name
-    target_path = Path(f"{model_path.stem}")
-    # Remove the target directory if it exists
-    if target_path.exists():
-        shutil.rmtree(target_path)
-    # Create the target directories
-    target_path.mkdir(exist_ok=True)
-    (target_path / f'{model_path.stem}').mkdir(exist_ok=True)
-    # Create a Jinja2 environment and set the current directory as the search
-    # path
+    onnx_model = load(model_path)
+
+    model_description = json.loads(Path(model_description_path).read_text())
+
+    model = ModelDescription(onnx_model, model_description)
+
+    context = model.generateContext()
+
+    _createFMUFolderStructure(destination=target_folder, model_path=model_path)
+
+    # Initialize Jinja2 environment
     env = Environment(loader=BaseLoader())
-    # Iterate over all the remaining templates
+
     for template_name in TEMPLATE_DIR.iterdir():
         # Skip directories and FMI files
         if not template_name.is_file():
+            continue
+        # Skip unmatching FMI model description
+        if (template_name.stem.startswith("FMI")) and \
+            (template_name.name !=
+             f"FMI{int(float(context['FMIVersion']))}.xml"):
             continue
         # Read the template content from the package resource
         with resources.as_file(template_name) as path:
@@ -417,33 +129,42 @@ def generate(
         # Render the template with the context
         rendered = template.render(context)
         # Write the rendered template to the target directory
-        core_dir = target_path / f"{model_path.stem}/{template_name.name}"
+        core_dir = target_folder / f"{model_path.stem}" / template_name.name
         with open(core_dir, "w") as f:
             f.write(rendered)
 
-    # Copy the model to the resources directory, do not change
-    model_target_path = target_path / f"{model_path.stem}/resources/model.onnx"
-    model_target_path.parent.mkdir(exist_ok=True)
-    # Copy the model to the target directory
-    shutil.copy(model_path, model_target_path)
-    # Copy CMakeLists.txt to the target path
-    shutil.copy(resources.files('onnx2fmu').joinpath('CMakeLists.txt'),
-                target_path)
-    # Copy src folder
-    src_folder = resources.files('onnx2fmu').joinpath('src')
-    with resources.as_file(src_folder) as path:
-        shutil.copytree(path, target_path / path.name, dirs_exist_ok=True)
-    # Copy include folder
-    include_folder = resources.files('onnx2fmu').joinpath('include')
-    with resources.as_file(include_folder) as path:
-        shutil.copytree(path, target_path / path.name, dirs_exist_ok=True)
+
+def _set_paths(
+        model_path: Union[str, Path],
+        model_description_path: Union[str, Path],
+        destination: Union[str, Path]):
+    if type(model_path) is str:
+        model_path = Path(model_path)
+        if not model_path.exists():
+            raise ValueError(f"Cannot find model at {model_path}.")
+    if type(model_description_path) is str:
+        model_description_path = Path(model_description_path)
+        if not model_description_path.exists():
+            raise ValueError(
+                f"Cannot find model description at {model_description_path}.")
+    if type(destination) is str:
+        destination = Path(destination)
+    return model_path,model_description_path,destination
+
+
+def complete_platform():
+    return ['x86-windows', 'x86_64-windows', 'x86_64-linux', 'aarch64-linux',
+            'x86_64-darwin', 'aarch64-darwin']
+
+def cmake_configurations():
+    return ['Debug', 'Release']
 
 
 @app.command()
 def compile(
-    model_path: Annotated[
+    target_folder: Annotated[
         str,
-        typer.Argument(help="The path to the ONNX model file.")
+        typer.Argument(help="The target folder path.")
     ],
     model_description_path: Annotated[
         str,
@@ -451,19 +172,14 @@ def compile(
     ],
     destination: Annotated[
         str,
-        typer.Option(help="The destination path.")
+        typer.Option(help="The destination folder where to copy the FMU.")
     ] = ".",
-    fmi_version: Annotated[
-        str,
-        typer.Option(
-            help="The FMI version, only 2 and 3 are supported. Default is 2."
-        )
-    ] = None,
     fmi_platform: Annotated[
         str,
         typer.Option(
             help="The target platform to build for. If empty, the program" +
-            "set the target to the platform where it is compiled.",
+            "set the target to the platform where it is compiled. See --help" +
+            "for further options.",
             autocompletion=complete_platform
         )
     ] = "",
@@ -472,22 +188,20 @@ def compile(
         typer.Option(help="The CMake build config.",
                      autocompletion=cmake_configurations)
     ] = "Release"
-):
-    ##############################
-    # Retrieve model information #
-    ##############################
-    model_path, destination, _, model_description = \
-        model_information(
-            model_path=model_path,
-            model_description_path=model_description_path,
-            destination=destination,
-            fmi_version=fmi_version
-        )
-    # Set target directory to the model name
-    target_path = Path(f"{model_path.stem}")
-    ####################
-    # Generate the FMU #
-    ####################
+) -> None:
+    """Compile the project defined in `target_folder`."""
+    if type(target_folder) is str:
+        target_folder = Path(target_folder)
+    if type(model_description_path) is str:
+        model_description_path = Path(model_description_path)
+        if not model_description_path.exists():
+            raise ValueError(f"{model_description_path} does not exist.")
+
+    with open(model_description_path, "r") as f:
+        model_description = json.load(f)
+
+    model_name = model_description["name"]
+
     if fmi_platform in complete_platform():
         fmi_architecture, fmi_system = fmi_platform.split("-")
     else:
@@ -496,16 +210,16 @@ def compile(
         fmi_architecture = None
 
     # Create build dir
-    build_dir = target_path / "build"
+    build_dir = target_folder / Path("build")
 
     if not build_dir.exists():
         build_dir.mkdir(exist_ok=True)
 
     # Declare CMake arguments
     cmake_args = [
-        '-S', str(target_path),
+        '-S', str(target_folder),
         '-B', str(build_dir),
-        '-D', f'MODEL_NAME={model_path.stem}',
+        '-D', f'MODEL_NAME={model_name}',
         '-D', f'FMI_VERSION={int(float(model_description["FMIVersion"]))}',
     ]
 
@@ -550,11 +264,11 @@ def compile(
     # Clean up
     ############################
     # Copy the FMU
-    shutil.copy(build_dir / f"fmus/{model_path.stem}.fmu", destination)
+    shutil.copy(build_dir / f"fmus/{model_name}.fmu", destination)
     # Remove the build folder
     shutil.rmtree(build_dir)
     # Remove the target directory
-    shutil.rmtree(target_path)
+    shutil.rmtree(target_folder)
 
 
 @app.command()
@@ -567,21 +281,20 @@ def build(
         str,
         typer.Argument(help="The path to the model description file.")
     ],
+    target_folder: Annotated[
+        str,
+        typer.Argument(help="The target folder path.")
+    ],
     destination: Annotated[
         str,
-        typer.Option(help="The destination path.")
+        typer.Option(help="The destination folder where to copy the FMU.")
     ] = ".",
-    fmi_version: Annotated[
-        str,
-        typer.Option(
-            help="The FMI version, only 2 and 3 are supported. Default is 2."
-        )
-    ] = None,
     fmi_platform: Annotated[
         str,
         typer.Option(
             help="The target platform to build for. If empty, the program" +
-            "set the target to the platform where it is compiled.",
+            "set the target to the platform where it is compiled. See --help" +
+            "for further options.",
             autocompletion=complete_platform
         )
     ] = "",
@@ -590,41 +303,20 @@ def build(
         typer.Option(help="The CMake build config.",
                      autocompletion=cmake_configurations)
     ] = "Release"
-):
-    """
-    Build the FMU.
-
-    Parameters:
-    -----------
-
-    - ``model_path`` (str): The path to the model to be encapsulated in an FMU.
-
-    - ``model_description_path`` (str): The path to the model description file.
-
-    - ``destination`` (str): The destination path where to copy the FMU.
-
-    - ``fmi_version`` (int): The FMI version, only 2.0 and 3.0 are supported.
-
-    - ``fmi_platform`` (str): One of 'x86-windows', 'x86_64-windows',
-    'x86_64-linux', 'aarch64-linux', 'x86_64-darwin', 'aarch64-darwin'. If left
-    blank, it builds for the current platform.
-
-    - ``cmake_config`` (str): The CMake build config.
-    """
+) -> None:
+    """Build the FMU."""
     # Generate the FMU
     generate(
         model_path=model_path,
         model_description_path=model_description_path,
-        destination=destination,
-        fmi_version=fmi_version
+        target_folder=target_folder,
     )
 
     # Compile the FMU
     compile(
-        model_path=model_path,
+        target_folder=target_folder,
         model_description_path=model_description_path,
         destination=destination,
-        fmi_version=fmi_version,
         fmi_platform=fmi_platform,
         cmake_config=cmake_config
     )

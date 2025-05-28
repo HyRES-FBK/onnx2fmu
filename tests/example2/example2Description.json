@@ -2,7 +2,7 @@
     "name": "example2",
     "description": "The model defines a simple example model with a scalar input and two vector inputs, one with 'local' variability and one with 'continuous' variability.",
     "FMIVersion": "2.0",
-    "input": [
+    "inputs": [
         {
             "name": "x_1",
             "description": "A scalar input to the model."
@@ -16,7 +16,7 @@
             "description": "A scalar input to the model."
         }
     ],
-    "output": [
+    "outputs": [
         {
             "name": "y",
             "description": "The output array."

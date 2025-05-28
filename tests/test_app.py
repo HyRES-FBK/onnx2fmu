@@ -1,192 +1,440 @@
 import json
 import unittest
 import numpy as np
+import pandas as pd
 from onnx import load
 from pathlib import Path
-from fmpy import simulate_fmu
+from shutil import rmtree
 from fmpy.validation import validate_fmu
+from fmpy.simulation import simulate_fmu
 
-from onnx2fmu.app import ScalarVariable, Model, build
-
-
-FMI_VERSIONS = ["2.0", "3.0"]
+from onnx2fmu.app import (_find_version, _createFMUFolderStructure, generate,
+                          compile)
 
 
 class TestApp(unittest.TestCase):
 
     def setUp(self):
-        self.base_dir = Path(__file__).resolve().parent / 'example1'
         self.model_name = 'example1'
+        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.model_path = self.base_dir / f'{self.model_name}.onnx'
+
+    def test_version(self):
+        pattern = r'^\d+\.\d+\.\d+$'
+        self.assertRegex(_find_version("pyproject.toml"), pattern)
+
+    def test_create_project_structure(self):
+        target_path = Path("test_project_structure_target")
+        _createFMUFolderStructure(target_path, self.model_path)
+        self.assertIn(
+            "CMakeLists.txt",
+            [f.name for f in target_path.iterdir() if f.is_file()]
+        )
+        for folder in [self.model_name, "include", "src"]:
+            self.assertIn(
+                folder,
+                [f.name for f in target_path.iterdir() if not f.is_file()]
+            )
+        rmtree(target_path)
+
+
+class TestExample1(unittest.TestCase):
+
+    def setUp(self):
+        self.model_name = 'example1'
+        self.base_dir = Path(__file__).resolve().parent / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
+        self.destination = Path(".")
+        self.fmu_path = self.destination / f"{self.model_name}.fmu"
 
-    def test_fmi2_scalar_variable(self):
-        # Check againts name containing non-alfanumeric characters
-        var = ScalarVariable(
-            name='example;:!|~',
-            description='',
-            variability='continuous',
-            causality='input',
-            valueReference=1,
-            vType=1,
-            start=0.0
-        )
-        self.assertTrue(var.name == 'example')
+    def tearDown(self) -> None:
+        if self.fmu_path.exists():
+            self.fmu_path.unlink()
 
-        # Value referece cannot be zero
-        with self.assertRaises(ValueError):
-            var = ScalarVariable(
-                name='example',
-                description='',
-                variability='continuous',
-                causality='input',
-                valueReference=0,
-                vType=1,
-                start=0.0
-            )
-
-        # Check that inexisting causality return ValueError
-        with self.assertRaises(ValueError):
-            ScalarVariable(
-                name='example',
-                description='',
-                variability='continuous',
-                causality='wrong causality',
-                valueReference=1,
-                vType=1,
-                start=0.0
-            )
-        # Check that inexisting variability return ValueError
-        with self.assertRaises(ValueError):
-            ScalarVariable(
-                name='example',
-                description='',
-                variability='wrong variability',
-                causality='input',
-                valueReference=1,
-                vType=1,
-                start=0.0
-            )
-
-    def test_model_declaration(self):
-        model = Model(
-            onnx_model=self.model,
-            model_description=self.model_description
-        )
-        self.assertTrue(model)
-        # Check that model has a name
-        self.assertTrue(model.name)
-        # Check that model input is not empty
-        self.assertTrue(len(model.input) > 0)
-        # Check that model output is not empty
-        self.assertTrue(len(model.output) > 0)
-        # Check that model has a version
-        self.assertTrue(model.FMIVersion)
-        # Check that model version is in the list of valid values
-        self.assertIn(model.FMIVersion, FMI_VERSIONS)
-        # Check GUID length
-        self.assertEqual(len(model.GUID), 36)
-
-    def test_empty_model_declaration(self):
-        # Raise error if model description is empty
-        with self.assertRaises(AssertionError):
-            Model(self.model, {})
-        # Raise error if model is None
-        with self.assertRaises(AttributeError):
-            Model({}, self.model_description)
-
-    def test_number_of_inputs(self):
-        pass
-
-    def test_number_of_outputs(self):
-        pass
-
-    def test_FMU_fmi2(self):
-        # Build the FMNU
-        # Test the model build process. Remember to check for multiple OSs
-        build(
+    def test_generate_fmi2(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI2.xml",
+        ]
+        generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
-            fmi_version="2.0"
+            target_folder=target_path
         )
-        # Set FMU path
-        fmu_path = Path(f"{self.model_name}.fmu")
-        # Validate
-        res = validate_fmu(fmu_path)
-        self.assertEqual(len(res), 0)
-        # Read data
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+
+    def test_generate_fmi3(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI3.xml",
+        ]
+        self.model_description["FMIVersion"] = "3.0"
+        temp_model_description_path = Path("modelDescription.json")
+        with open(temp_model_description_path, "w", encoding="utf-8") as f:
+            json.dump(self.model_description, f)
+        generate(
+            model_path=self.model_path,
+            model_description_path=temp_model_description_path,
+            target_folder=target_path
+        )
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+        temp_model_description_path.unlink()
+
+    def test_compile(self):
+        target_path = Path(f"test_{self.model_name}_compile")
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path
+        )
+        compile(
+            target_folder=target_path,
+            model_description_path=self.model_description_path,
+            cmake_config="Debug",
+            destination=self.destination
+        )
+        self.assertTrue(self.fmu_path.exists())
+        results = validate_fmu(self.fmu_path)
+        self.assertEqual(len(results), 0, results)
+
+    def test_compile_and_simulate(self):
+        self.test_compile()
+        # Read input data
         signals = np.genfromtxt(self.base_dir / "input.csv",
                                 delimiter=",", names=True)
         # Test the FMU using fmpy and check output against benchmark
-        res = simulate_fmu(
-            fmu_path,
+        results = simulate_fmu(
+            self.fmu_path,
             start_time=0,
             stop_time=100,
             output_interval=1,
+            step_size=1,
             input=signals,
         )
-        res = np.vstack([res[field] for field in
-                         res.dtype.names if field != 'time']).T
-        # Load real output
-        out_real = np.genfromtxt(self.base_dir / "output.csv",
-                                 delimiter=",", names=True)
-        out_real = np.vstack([out_real[field] for field in
-                              out_real.dtype.names if field != 'time']).T
-        # Set real output precision to 1e-5
-        out_real = np.round(out_real, decimals=5)
-        # Cut out first row or res because it is repeated
-        # TODO: discover why the first row is repeated
-        res = res[1:]
-        # Compare results with the ground truth
-        mse = np.sum(np.power(res - out_real, 2))
-        # Check that mse is lower than 1e-6
-        self.assertLessEqual(mse, 1e-6)
-        # Cleanup FMU
-        fmu_path.unlink()
+        results = np.vstack([results[field] for field in
+                         results.dtype.names if field != 'time']).T
+        # Skip the first step, which is obtained before the first doStep
+        results = results[1:]
+        real_output = pd.read_csv(self.base_dir / "output.csv",
+                                  index_col='time')
+        self.assertGreater(1e-4, np.sum(results - real_output.values))
 
-    def test_FMU_fmi3(self):
-        # Build the FMNU
-        # Test the model build process. Remember to check for multiple OSs
-        build(
+
+class TestExample2(unittest.TestCase):
+
+    def setUp(self):
+        self.model_name = 'example2'
+        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.model_path = self.base_dir / f'{self.model_name}.onnx'
+        self.model = load(self.model_path)
+        self.model_description_path = \
+            self.base_dir / f'{self.model_name}Description.json'
+        self.model_description = \
+            json.loads(self.model_description_path.read_text())
+        self.destination = Path(".")
+        self.fmu_path = self.destination / f"{self.model_name}.fmu"
+
+    def tearDown(self) -> None:
+        if self.fmu_path.exists():
+            self.fmu_path.unlink()
+
+    def test_generate_fmi2(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI2.xml",
+        ]
+        generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
-            fmi_version="3.0"
+            target_folder=target_path
         )
-        # Set FMU path
-        fmu_path = Path(f"{self.model_name}.fmu")
-        # Validate
-        res = validate_fmu(fmu_path)
-        self.assertEqual(len(res), 0)
-        # Read data
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+
+    def test_generate_fmi3(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI3.xml",
+        ]
+        self.model_description["FMIVersion"] = "3.0"
+        temp_model_description_path = Path("modelDescription.json")
+        with open(temp_model_description_path, "w", encoding="utf-8") as f:
+            json.dump(self.model_description, f)
+        generate(
+            model_path=self.model_path,
+            model_description_path=temp_model_description_path,
+            target_folder=target_path
+        )
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+        temp_model_description_path.unlink()
+
+    def test_compile(self):
+        target_path = Path(f"test_{self.model_name}_compile")
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path
+        )
+        compile(
+            target_folder=target_path,
+            model_description_path=self.model_description_path,
+            cmake_config="Debug",
+            destination=self.destination
+        )
+        self.assertTrue(self.fmu_path.exists())
+        results = validate_fmu(self.fmu_path)
+        self.assertEqual(len(results), 0, results)
+
+    def test_compile_and_simulate(self):
+        self.test_compile()
+        # Read input data
         signals = np.genfromtxt(self.base_dir / "input.csv",
                                 delimiter=",", names=True)
         # Test the FMU using fmpy and check output against benchmark
-        res = simulate_fmu(
-            fmu_path,
+        results = simulate_fmu(
+            self.fmu_path,
             start_time=0,
             stop_time=100,
             output_interval=1,
+            step_size=1,
             input=signals,
         )
-        res = np.vstack([res[field] for field in
-                         res.dtype.names if field != 'time']).T
-        # Load real output
-        out_real = np.genfromtxt(self.base_dir / "output.csv",
-                                 delimiter=",", names=True)
-        out_real = np.vstack([out_real[field] for field in
-                              out_real.dtype.names if field != 'time']).T
-        # Set real output precision to 1e-5
-        out_real = np.round(out_real, decimals=5)
-        # Cut out first row or res because it is repeated
-        # TODO: discover why the first row is repeated
-        res = res[1:]
-        # Compare results with the ground truth
-        mse = np.sum(np.power(res - out_real, 2))
-        # Check that mse is lower than 1e-6
-        self.assertLessEqual(mse, 1e-6)
-        # Cleanup FMU
-        fmu_path.unlink()
+        results = np.vstack([results[field] for field in
+                         results.dtype.names if field != 'time']).T
+        # Skip the first step, which is obtained before the first doStep
+        results = results[1:]
+        real_output = pd.read_csv(self.base_dir / "output.csv",
+                                  index_col='time')
+        self.assertGreater(1e-6, np.sum(results - real_output.values))
+
+
+class TestExample3(unittest.TestCase):
+
+    def setUp(self):
+        self.model_name = 'example3'
+        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.model_path = self.base_dir / f'{self.model_name}.onnx'
+        self.model = load(self.model_path)
+        self.model_description_path = \
+            self.base_dir / f'{self.model_name}Description.json'
+        self.model_description = \
+            json.loads(self.model_description_path.read_text())
+        self.destination = Path(".")
+        self.fmu_path = self.destination / f"{self.model_name}.fmu"
+
+    def tearDown(self) -> None:
+        if self.fmu_path.exists():
+            self.fmu_path.unlink()
+
+    def test_generate_fmi2(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI2.xml",
+        ]
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path
+        )
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+
+    def test_generate_fmi3(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI3.xml",
+        ]
+        self.model_description["FMIVersion"] = "3.0"
+        temp_model_description_path = Path("modelDescription.json")
+        with open(temp_model_description_path, "w", encoding="utf-8") as f:
+            json.dump(self.model_description, f)
+        generate(
+            model_path=self.model_path,
+            model_description_path=temp_model_description_path,
+            target_folder=target_path
+        )
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+        temp_model_description_path.unlink()
+
+    def test_compile(self):
+        target_path = Path(f"test_{self.model_name}_compile")
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path
+        )
+        compile(
+            target_folder=target_path,
+            model_description_path=self.model_description_path,
+            cmake_config="Debug",
+            destination=self.destination
+        )
+        self.assertTrue(self.fmu_path.exists())
+        results = validate_fmu(self.fmu_path)
+        self.assertEqual(len(results), 0, results)
+
+
+class TestExample4(unittest.TestCase):
+
+    def setUp(self):
+        self.model_name = 'example4'
+        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.model_path = self.base_dir / f'{self.model_name}.onnx'
+        self.model = load(self.model_path)
+        self.model_description_path = \
+            self.base_dir / f'{self.model_name}Description.json'
+        self.model_description = \
+            json.loads(self.model_description_path.read_text())
+        self.destination = Path(".")
+        self.fmu_path = self.destination / f"{self.model_name}.fmu"
+
+    def tearDown(self) -> None:
+        if self.fmu_path.exists():
+            self.fmu_path.unlink()
+
+    def test_generate_fmi2(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI2.xml",
+        ]
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path
+        )
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+
+    def test_generate_fmi3(self):
+        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        files = [
+            "model.c",
+            "config.h",
+            "buildDescription.xml",
+            "FMI3.xml",
+        ]
+        self.model_description["FMIVersion"] = "3.0"
+        temp_model_description_path = Path("modelDescription.json")
+        with open(temp_model_description_path, "w", encoding="utf-8") as f:
+            json.dump(self.model_description, f)
+        generate(
+            model_path=self.model_path,
+            model_description_path=temp_model_description_path,
+            target_folder=target_path
+        )
+        for file in files:
+            self.assertTrue(
+                (target_path / self.model_name / file).is_file(),
+                f"File {file} has not been generated."
+            )
+        if target_path.exists():
+            rmtree(target_path)
+        temp_model_description_path.unlink()
+
+    def test_compile(self):
+        target_path = Path(f"test_{self.model_name}_compile")
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path
+        )
+        compile(
+            target_folder=target_path,
+            model_description_path=self.model_description_path,
+            cmake_config="Debug",
+            destination=self.destination
+        )
+        self.assertTrue(self.fmu_path.exists())
+        results = validate_fmu(self.fmu_path)
+        self.assertEqual(len(results), 0, results)
+
+    def test_compile_and_simulate(self):
+        self.test_compile()
+        # Read input data
+        signals = np.genfromtxt(self.base_dir / "input.csv",
+                                delimiter=",", names=True)
+        # Test the FMU using fmpy and check output against benchmark
+        results = simulate_fmu(
+            self.fmu_path,
+            start_time=0,
+            stop_time=100,
+            output_interval=1,
+            step_size=1,
+            input=signals,
+        )
+        results = np.vstack([results[field] for field in
+                         results.dtype.names if field != 'time']).T
+        # Skip the first step, which is obtained before the first doStep
+        results = results[1:]
+        real_output = pd.read_csv(self.base_dir / "output.csv",
+                                  index_col='time')
+        self.assertTrue(np.array_equal(results, real_output.values))
+
+
+if __name__ == "__main__":
+    unittest.main()

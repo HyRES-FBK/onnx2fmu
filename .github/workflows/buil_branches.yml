@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv .venv
-          source .venv/bin/activate
+          .venv\Scripts\activate
           python -m pip install --upgrade pip
           pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
           pip install -e .

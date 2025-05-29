@@ -27,7 +27,7 @@
     <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    <{{ input.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ input.description }}{% endif %}" start="{{ input.start }}"/>
+    <{{ input.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ input.description }}{% endif %}" start="{{ scalar.start }}"/>
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
@@ -37,7 +37,7 @@
     {%- endfor %}
     {%- for local in locals %}
     {%- for scalar in local.scalarValues %}
-    <{{ local.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}"/>
+    <{{ local.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}" start="{{ scalar.start }}"/>
     {%- endfor %}
     {%- endfor %}
   </ModelVariables>

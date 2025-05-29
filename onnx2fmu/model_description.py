@@ -1,4 +1,4 @@
-from typing import Union
+import numpy as np
 from onnx import ModelProto, ValueInfoProto
 
 from onnx2fmu.model import Model
@@ -50,6 +50,42 @@ class ModelDescription:
             node_shape_in = self._readNodeShape(node_in)
             node_shape_out = self._readNodeShape(node_out)
             assert node_shape_in == node_shape_out
+
+    def _checkStartValuesBroadcastability(self, variable: dict) -> None:
+        if isinstance(variable["start"], (str, int, float)):
+            return
+        elif isinstance(variable["start"], list):
+            start = np.array(variable["start"])
+            node = self._findNode(variable["name"])
+            node_shape = self._readNodeShape(node)
+            if len(start.shape) > len(node_shape):
+                raise ValueError(
+                    f"Start values for entry {variable['name']} "
+                    f"have shape {start.shape}, but node shape is "
+                    f"{node_shape}. Start values must be "
+                    "broadcastable to the node shape."
+                )
+            else:
+                start_shape = \
+                    (1, ) * (len(node_shape) - len(start.shape)) + \
+                        start.shape
+                np.broadcast_shapes(start_shape, node_shape)
+        else:
+            raise TypeError(
+                f"Start values for variable {variable['name']} must be "
+                "a string, int, float or a list, not "
+                f"{type(variable['start'])}."
+            )
+
+    def _checkStartValueShapes(self) -> None:
+        """
+        Check that start values are either a scalar or a list of sclart, whose
+        shape allows broadcasting to the variable shape.
+        """
+        for entry in [INPUTS, OUTPUTS, LOCALS]:
+            for variable in self.model_description.get(entry, []):
+                if "start" in variable:
+                    self._checkStartValuesBroadcastability(variable=variable)
 
     def _findNode(self, nodeName: str) -> ValueInfoProto:
         entries = ["input", "output"]

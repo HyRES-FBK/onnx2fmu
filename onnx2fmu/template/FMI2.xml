@@ -33,7 +33,7 @@
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
     <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ input.description }}{% endif %}">
-      <{{ input.vType.FMIType }} {% if input.start %}start="{{ input.start }}"{% endif %}/>
+      <{{ input.vType.FMIType }} start="{{ scalar.start }}"/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
@@ -47,7 +47,7 @@
     {%- for local in locals %}
     {%- for scalar in local.scalarValues %}
     <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}" initial="{{ local.initial }}">
-      <{{ local.vType.FMIType }} {% if local.start %}start="{{ local.start }}"{% endif %}/>
+      <{{ local.vType.FMIType }} start="{{ scalar.start }}"/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}

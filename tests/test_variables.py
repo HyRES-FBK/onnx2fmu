@@ -52,7 +52,8 @@ class TestVariablesFactory(unittest.TestCase):
             "variability": "continuous",
             "fmiVersion": "2.0",
             "vType": FMI2TYPES[TensorProto.FLOAT],
-            "scalarValues": [{"name": "x_0", "label": ""}],
+            "scalarValues": [{"name": "x_0", "label": "", "start": "1.0"}],
+            "start": "1.0"
         }
         for k in v.generateContext():
             self.assertEqual(context[k], getattr(v, k))
@@ -61,7 +62,7 @@ class TestVariablesFactory(unittest.TestCase):
 class TestInputVariable(unittest.TestCase):
 
     def test_print(self):
-        v = Input(name="x", start=2.0)
+        v = Input(name="x", start="2.0")
         self.assertEqual(
             "Input(x, continuous)(2.0)",
             v.__str__()

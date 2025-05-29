@@ -26,7 +26,7 @@ class Model:
                  fmiVersion: Optional[str] = "2.0",
                  description: Optional[str] = "",
                  ) -> None:
-        self.setName(name)
+        self._setName(name)
         self.fmiVersion = fmiVersion
         self.description = description
         self.vr_generator = (i for i in range(1, 2**32))
@@ -35,7 +35,7 @@ class Model:
         self.outputs = []
         self.locals = []
 
-    def setName(self, name: str) -> None:
+    def _setName(self, name: str) -> None:
         self.name = re.sub(r'[^a-zA-Z0-9]', '', name)
 
     def _assignValueReferences(self, context: dict) -> dict:

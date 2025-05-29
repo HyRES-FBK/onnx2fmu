@@ -26,13 +26,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
+
+      - name: Restore cached virtualenv
+        uses: actions/cache/restore@v4
+        with:
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}
+          path: .venv
 
       - name: Install dependencies
         run: |
+          python -m venv .venv
+          .venv\Scripts\activate
           python -m pip install --upgrade pip
           pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
           pip install -e .
+          echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
+          echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
 
       - name: Python unit tests
         run: |
@@ -52,6 +61,12 @@ jobs:
           --fmi-platform $fmi_platform `
           --cmake-config Debug
 
+      - name: Save cached virtualenv
+        uses: actions/cache/save@v4
+        with:
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}
+          path: .venv
+
   build_and_test_linux:
     strategy:
       matrix:
@@ -70,11 +85,21 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
 
+      - name: Restore cached virtualenv
+        uses: actions/cache/restore@v4
+        with:
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}
+          path: .venv
+
       - name: Install dependencies
         run: |
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
           pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
           pip install -e .
+          echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
+          echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
 
       - name: Python unit tests
         run: |
@@ -92,3 +117,9 @@ jobs:
           target \
           --fmi-platform ${{ matrix.arch }}-${{ matrix.os }} \
           --cmake-config Debug
+
+      - name: Save cached virtualenv
+        uses: actions/cache/save@v4
+        with:
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}
+          path: .venv

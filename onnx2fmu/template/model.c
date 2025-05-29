@@ -26,7 +26,18 @@
     } while (0);
 
 void setStartValues(ModelInstance *comp) {
-    UNUSED(comp);
+    // Input variables
+    {%- for input in inputs %}
+    {%- for scalar in input.scalarValues %}
+    M({{ scalar.name }}) = {{ scalar.start }};
+    {%- endfor %}
+    {%- endfor %}
+    // Local variables
+    {%- for local in locals %}
+    {%- for scalar in local.scalarValues %}
+    M({{ scalar.name }}) = {{ scalar.start }};
+    {%- endfor %}
+    {%- endfor %}
 }
 
 Status calculateValues(ModelInstance *comp) {

@@ -9,7 +9,7 @@ from fmpy.validation import validate_fmu
 from fmpy.simulation import simulate_fmu
 
 from onnx2fmu.app import (_find_version, _createFMUFolderStructure, generate,
-                          compile)
+                          compile, build)
 
 
 class TestApp(unittest.TestCase):
@@ -414,7 +414,21 @@ class TestExample4(unittest.TestCase):
         self.assertEqual(len(results), 0, results)
 
     def test_compile_and_simulate(self):
-        self.test_compile()
+        target_path = Path(f"test_{self.model_name}_compile")
+        # The test is though without start values, so we set them to None
+        for entry in ["inputs", "outputs", "locals"]:
+            for variable in self.model_description.get(entry, []):
+                variable["start"] = "0.0"
+        temp_model_description_path = Path("modelDescription.json")
+        with open(temp_model_description_path, "w", encoding="utf-8") as f:
+            json.dump(self.model_description, f)
+        build(
+            model_path=self.model_path,
+            model_description_path=temp_model_description_path,
+            target_folder=target_path,
+            cmake_config="Debug",
+            destination=self.destination
+        )
         # Read input data
         signals = np.genfromtxt(self.base_dir / "input.csv",
                                 delimiter=",", names=True)

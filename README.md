@@ -1,14 +1,14 @@
 # ONNX2FMU: Encapsulate ONNX models in Functional Mock-up Units (FMUs)
 
-**What ONNX2FMU does?** It wraps an [ONNX](https://onnx.ai/) model into
-co-simulation FMUs and subsequently compiles it.
+**What do ONNX2FMU do?** It wraps [ONNX](https://onnx.ai/) models into
+co-simulation FMUs.
 
 ## 🚀 Get started
 
 - Python 3.10+
 - CMake 3.22+
-- A code compiler for the host platform, which could be one of linux, windows
-or macos.
+- A code compiler for the host platform, which could be one of Linux, Windows
+or MacOS.
 
 The default Windows CMake Generator is Visual Studio 2022.
 
@@ -18,34 +18,36 @@ pip install onnx2fmu
 ```
 in your shell.
 You don't need to install CMake because it will be installed with the Python
-package, but you need to install a C compiler.
+package, but you need to install a C compiler (e.g., Visual Studio in Windows,
+gcc in Linux, etc.)
 
 ## 📝 ONNX model declaration
 
-ONNX2FMU can handle models with multiple inputs and outputs as far as
-1. the model description lists all inputs and outputs, and node names are
-the same of the ONNX model;
-2. input and output nodes have no 0 dimension, i.e., they have shapes like
-`(N, )`, `(1, N)`, etc., with `N` being any tensor dimension.
+ONNX2FMU can handle models with multiple inputs, outputs, and local variables.
+These entries must be listed in the model description JSON file, and their
+names must match the name of a node in the ONNX model graph.
 
 ### Model description file
 
 A model description is declared in a JSON file and its schema includes the
 following global items:
 
-- `"name"` is the model name, which will also be the FMU archive name,
-- `"description"` provides a generic description of the model,
+- `"name"` is the model name, which will also be the FMU archive name;
+- `"description"` provides a generic description of the model;
 - `"FMIVersion"` is the FMI standard version for generatign the FMU code and
-the FMU binaries, which can be either `2.0` or `3.0`.
+the FMU binaries, which can be either `2.0` or `3.0`;
 - `"inputs"` and `"outputs"` are the lists of inputs and output nodes in the
-ONNX model.
+ONNX model;
+- `"locals"` are mapping between an input and an output node. Their behavior is
+explained in [A model with local variables](#a-model-with-local-variables).
 
 Each entry of the the inputs and output lists is characterized by the following
 schema:
 
 - `"name"` must match the name of one of the model nodes, whereas
-- `"names"` is the list of user-provided names for each of the node elements.
-The number of names must match the number of elements in a given entry.
+- `"labels"` is the list of user-provided names for each of the node elements.
+The number of names in the `"labels"` list must match the number of elements of
+a given entry.
 - `"description"` allows the user to attach a description to each of the
 arrays.
 
@@ -57,7 +59,7 @@ input nodes and one output node.
     "name": "example1",
     "description": "The model defines a simple example model with a scalar input and two vector inputs, one with 'local' variability and one with 'continuous' variability.",
     "FMIVersion": "2.0",
-    "input": [
+    "inputs": [
         {
             "name": "scalar_input",
             "description": "A scalar input to the model."
@@ -71,11 +73,11 @@ input nodes and one output node.
             "description": "Inputs have variability discrete by default."
         }
     ],
-    "output": [
+    "outputs": [
         {
             "name": "output",
             "description": "The output array.",
-            "names": [
+            "labels": [
                 "Class1",
                 "Class2",
                 ...
@@ -87,17 +89,10 @@ input nodes and one output node.
 
 ### Variability of model variables
 
-Only variables of type `input` and `output` can be added to the model.
-Input and output variables admit only `continuous` and `discrete` variability;
+Allowed variables types are `input`, `output`, and `local`.
+Admissible variabilities are `continuous` and `discrete`;
 the default choice is `continuous` if nothing is specified in the model
 description.
-
-State variables, which may usually be declare using variables with `local`
-causality, are not handled by ONNX2FMU. This is because there is no standard
-behaviour to rely on for their definition in the source code.
-In issue [#20](https://github.com/micheleurbani/onnx2fmu/issues/20), the use
-of `local` variables is discussed to map a network output to an input, which
-could be useful with recurrent networks.
 
 ### Model declaration: A PyTorch example
 
@@ -219,13 +214,6 @@ requires the ONNX model path and the model description path
 ```bash
 onnx2fmu build <model.onnx> <modelDescription.json> [OPTIONS]
 ```
-
-Useful options are:
-- `--fmi-version` to specify the model description version, which can be either
-2.0 or 3.0.
-- `--fmi-platform` to specify the target platform (OS-architecture pair) for
-cross compilation. To cross-compile an FMU, you need a compiler compatible with
-the target platform.
 
 ### Built-in functions
 

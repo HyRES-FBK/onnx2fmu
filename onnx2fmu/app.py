@@ -92,12 +92,12 @@ def generate(
     target_folder: Annotated[
         str,
         typer.Argument(help="The target folder path.")
-    ],
+    ] = "target",
 ) -> None:
     """Generate the FMU project folder structure in `target_folder`."""
     model_path, model_description_path, target_folder = _set_paths(
         model_path, model_description_path, target_folder
-    )
+    ) # type: ignore
 
     onnx_model = load(model_path)
 

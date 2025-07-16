@@ -8,6 +8,6 @@ __pycache__
 dist/
 
 # Python virtual environments
-.venv/
+.venv*/
 /build/
 .vscode/

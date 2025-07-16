@@ -12,8 +12,15 @@ authors = [
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Idependent",
+	    "Development Status :: 4 - Beta",
+	  "Topic :: Utilities",
+	  "Topic :: Scientific/Engineering",
 ]
-requires-python = "~=3.10"
+requires-python = ">=3.10"
 dependencies = [
   "onnx",
   "jinja2",
@@ -22,20 +29,6 @@ dependencies = [
   "loguru",
   "typer"
 ]
-
-[tool.black]
-line-length = 99
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.venv
-)/
-'''
-
-[tool.ruff.lint.isort]
-known_first_party = ["onnx2fmu"]
-force_sort_within_sections = true
 
 [project.scripts]
 onnx2fmu = "onnx2fmu.app:app"

@@ -1,4 +1,4 @@
 *data/
-input.csv
+input*.csv
 predict*
 true*

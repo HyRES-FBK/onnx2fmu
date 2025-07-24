@@ -48,7 +48,11 @@ jobs:
           python -m unittest tests.test_variables
           python -m unittest tests.test_model
           python -m unittest tests.test_model_description
-          python -m unittest tests.test_app
+          python -m unittest tests.test_app.TestApp
+          python -m unittest tests.test_app.TestExample1
+          python -m unittest tests.test_app.TestExample2
+          python -m unittest tests.test_app.TestExample3
+          python -m unittest tests.test_app.TestExample4
 
       - name: Build example4 FMI 2.0
         shell: pwsh
@@ -106,7 +110,11 @@ jobs:
           python -m unittest tests.test_variables
           python -m unittest tests.test_model
           python -m unittest tests.test_model_description
-          python -m unittest tests.test_app
+          python -m unittest tests.test_app.TestApp
+          python -m unittest tests.test_app.TestExample1
+          python -m unittest tests.test_app.TestExample2
+          python -m unittest tests.test_app.TestExample3
+          python -m unittest tests.test_app.TestExample4
 
       - name: Build example4 FMI 2.0
         shell: bash -l {0}

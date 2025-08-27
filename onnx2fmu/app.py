@@ -1,9 +1,9 @@
-import re
 import json
 import typer
 import shutil
 import platform
 import subprocess
+import importlib.metadata
 from pathlib import Path
 from loguru import logger
 from typing import Union
@@ -22,30 +22,11 @@ PARENT_DIR = resources.files("onnx2fmu")
 TEMPLATE_DIR = resources.files("onnx2fmu.template")
 
 
-def _find_version(file_path: Union[str, Path]) -> str:
-    version_pattern = re.compile(r'^version\s*=\s*[\'"]([^\'"]+)[\'"]',
-                                 re.MULTILINE)
-    try:
-        with open(file_path, 'r') as file:
-            content = file.read()
-            match = version_pattern.search(content)
-            if match:
-                return match.group(1)
-            else:
-                return "Version not found"
-    except FileNotFoundError:
-        return "File not found"
-
-
 @app.command()
 def version():
-    """Parse ONNX version from version.txt file."""
-    # Check if pyproject.toml file exists
-    if not Path('pyproject.toml').exists():
-        typer.echo("pyproject.toml file not found.")
-        raise typer.Exit(code=1)
-    # Parse version from the config.py file using regex
-    typer.echo(f"ONNX2FMU {_find_version('pyproject.toml')}")
+    version = importlib.metadata.version('onnx2fmu')
+    typer.echo(f"ONNX2FMU version {version}")
+    raise typer.Exit()
 
 
 def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
@@ -177,9 +158,9 @@ def compile(
     fmi_platform: Annotated[
         str,
         typer.Option(
-            help="The target platform to build for. If empty, the program" +
+            help="The target platform to build for. If empty, the program " +
             "set the target to the platform where it is compiled. See --help" +
-            "for further options.",
+            " for further options.",
             autocompletion=complete_platform
         )
     ] = "",
@@ -292,9 +273,9 @@ def build(
     fmi_platform: Annotated[
         str,
         typer.Option(
-            help="The target platform to build for. If empty, the program" +
+            help="The target platform to build for. If empty, the program " +
             "set the target to the platform where it is compiled. See --help" +
-            "for further options.",
+            " for further options.",
             autocompletion=complete_platform
         )
     ] = "",

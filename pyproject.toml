@@ -27,7 +27,9 @@ dependencies = [
   "cmake",
   "numpy",
   "loguru",
-  "typer"
+  "typer",
+  "pandas>=2.3.1",
+  "fmpy>=0.3.25",
 ]
 
 [project.scripts]

@@ -235,6 +235,12 @@ def compile(
         elif fmi_architecture == 'x86_64':
             cmake_args += ['-A', 'x64']
 
+        # Add /Wv:18 flag for MSVC
+        cmake_args += [
+            '-DCMAKE_C_FLAGS=/Wv:18',
+            '-DCMAKE_CXX_FLAGS=/Wv:18'
+        ]
+
     elif fmi_platform == 'aarch64-linux':
 
         toolchain_file = PARENT_DIR / 'aarch64-linux-toolchain.cmake'

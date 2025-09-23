@@ -34,8 +34,6 @@ class ModelDescription:
         output_nodes_names = [node.name for node
                               in self.onnx_model.graph.output]
         for input in self.model_description[INPUTS]:
-            print(input['name'])
-            print(input_nodes_names)
             assert input["name"] in input_nodes_names, \
                 f"'{input['name']}' is not one of the model input nodes {input_nodes_names}"
         for output in self.model_description[OUTPUTS]:

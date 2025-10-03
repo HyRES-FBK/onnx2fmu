@@ -8,8 +8,7 @@ from shutil import rmtree
 from fmpy.validation import validate_fmu
 from fmpy.simulation import simulate_fmu
 
-from onnx2fmu.app import (_find_version, _createFMUFolderStructure, generate,
-                          compile, build)
+from onnx2fmu.app import _createFMUFolderStructure, generate, compile, build
 
 
 class TestApp(unittest.TestCase):
@@ -18,10 +17,6 @@ class TestApp(unittest.TestCase):
         self.model_name = 'example1'
         self.base_dir = Path(__file__).resolve().parent / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
-
-    def test_version(self):
-        pattern = r'^\d+\.\d+\.\d+$'
-        self.assertRegex(_find_version("pyproject.toml"), pattern)
 
     def test_create_project_structure(self):
         target_path = Path("test_project_structure_target")

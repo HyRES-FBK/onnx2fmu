@@ -116,6 +116,7 @@ class ModelDescription:
         entries = zip([INPUTS, OUTPUTS, LOCALS], [Input, Output, Local])
         for entry, cls in entries:
             for kwargs in self.model_description.get(entry, []):
+                kwargs["fmiVersion"] = self.model_description["FMIVersion"]
                 if cls is Local:
                     kwargs["shape"] = shapes[kwargs["nameIn"]]
                 else:

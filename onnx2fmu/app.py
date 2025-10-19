@@ -88,7 +88,8 @@ def generate(
 
     context = model.generateContext()
 
-    _createFMUFolderStructure(destination=target_folder, model_path=model_path)
+    _createFMUFolderStructure(destination=Path(target_folder),
+                              model_path=Path(model_path))
 
     # Initialize Jinja2 environment
     env = Environment(loader=BaseLoader())
@@ -110,7 +111,7 @@ def generate(
         # Render the template with the context
         rendered = template.render(context)
         # Write the rendered template to the target directory
-        core_dir = target_folder / f"{model_path.stem}" / template_name.name
+        core_dir = Path(target_folder) / f"{model_path.stem}" / template_name.name
         with open(core_dir, "w") as f:
             f.write(rendered)
 

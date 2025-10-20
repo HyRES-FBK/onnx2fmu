@@ -57,7 +57,7 @@ jobs:
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          onnx2fmu build `
+          .venv\Scripts\python.exe -m onnx2fmu build `
           tests/example4/example4.onnx `
           tests/example4/example4Description.json `
           target `
@@ -68,7 +68,7 @@ jobs:
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          onnx2fmu build `
+          .venv\Scripts\python.exe -m onnx2fmu build `
           tests/example4/example4.onnx `
           tests/example4/example4DescriptionFMI3.json `
           target `

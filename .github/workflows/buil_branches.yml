@@ -57,7 +57,7 @@ jobs:
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          .venv\Scripts\python.exe -m onnx2fmu build `
+          .venv\Scripts\onnx2fmu.exe build `
           tests/example4/example4.onnx `
           tests/example4/example4Description.json `
           target `
@@ -68,7 +68,7 @@ jobs:
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          .venv\Scripts\python.exe -m onnx2fmu build `
+          .venv\Scripts\onnx2fmu.exe build `
           tests/example4/example4.onnx `
           tests/example4/example4DescriptionFMI3.json `
           target `
@@ -92,6 +92,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Install build essentials
+        run: sudo apt-get update && sudo apt-get install -y build-essential
 
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5

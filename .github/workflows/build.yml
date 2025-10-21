@@ -93,3 +93,25 @@ jobs:
           target \
           --fmi-platform ${{ matrix.name }} \
           --cmake-config Debug
+
+      - name: Build example4 FMI 3.0 (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          onnx2fmu build ^
+          tests/example4/example4.onnx ^
+          tests/example4/example4DescriptionFMI3.json ^
+          target ^
+          --fmi-platform ${{ matrix.name }} ^
+          --cmake-config Debug
+
+      - name: Build example4 FMI 3.0 (non-Windows)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          onnx2fmu build \
+          tests/example4/example4.onnx \
+          tests/example4/example4DescriptionFMI3.json \
+          target \
+          --fmi-platform ${{ matrix.name }} \
+          --cmake-config Debug

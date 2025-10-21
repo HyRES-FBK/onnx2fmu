@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "onnx2fmu"
-version = "0.2.4"
+version = "0.2.5"
 description = "A tool for wrapping ONNX netwroks in FMUs."
 authors = [
   { name = "Michele Urbani", email = "murbani@fbk.eu" },
@@ -31,6 +31,7 @@ dependencies = [
   "typer",
   "pandas>=2.3.1",
   "fmpy>=0.3.25",
+  "plotly>=6.3.1",
 ]
 
 [project.scripts]

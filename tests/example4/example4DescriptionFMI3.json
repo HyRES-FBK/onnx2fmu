@@ -1,0 +1,37 @@
+{
+    "name": "example4",
+    "description": "Example to test FMU with local variables.",
+    "FMIVersion": "3.0",
+    "inputs": [
+        {
+            "name": "u",
+            "description": "A vector of control variables at time t."
+        }
+    ],
+    "outputs": [
+        {
+            "name": "x",
+            "description": "The state of the system at time t+1."
+        }
+    ],
+    "locals": [
+        {
+            "nameIn": "X",
+            "nameOut": "X1",
+            "description": "The history of states from t-N to t.",
+            "start": 2.0
+        },
+        {
+            "nameIn": "U",
+            "nameOut": "U1",
+            "description": "The history of control variables frmo t-N to t-1.",
+            "start": [
+                10,
+                1.5,
+                0.5,
+                0.1,
+                0.05
+            ]
+        }
+    ]
+}

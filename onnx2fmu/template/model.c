@@ -29,13 +29,13 @@ void setStartValues(ModelInstance *comp) {
     // Input variables
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    M({{ scalar.name }}) = {{ scalar.start }};
+    M({{ scalar.name }}) = ({{ input.vType.CType }}) {{ scalar.start }};
     {%- endfor %}
     {%- endfor %}
     // Local variables
     {%- for local in locals %}
     {%- for scalar in local.scalarValues %}
-    M({{ scalar.name }}) = {{ scalar.start }};
+    M({{ scalar.name }}) = ({{ local.vType.CType }}) {{ scalar.start }};
     {%- endfor %}
     {%- endfor %}
 }

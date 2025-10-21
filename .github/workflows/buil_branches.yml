@@ -19,6 +19,12 @@ jobs:
     runs-on: [self-hosted, Windows]
 
     steps:
+      - name: Fix PATH to use Windows tar
+        if: runner.os == 'Windows'
+        run: |
+          echo "C:\Windows\System32" >> $env:GITHUB_PATH
+          echo "Fixed PATH for tar"
+
       - name: Check out repository
         uses: actions/checkout@v4
 

@@ -2,7 +2,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/HyRES-FBK/onnx2fmu/blob/33-examples/logos/onnx2fmu-logo-white-transparent.png?raw=true">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/HyRES-FBK/onnx2fmu/blob/33-examples/logos/onn2fmu-logo-black-transparent.png?raw=true">
-  <img alt="Description of the image" src="https://github.com/HyRES-FBK/onnx2fmu/blob/33-examples/logos/onnx2fmu-logo-bw.png?raw=true">
+  <img alt="Description of the image" src="https://github.com/HyRES-FBK/onnx2fmu/blob/33-examples/logos/onnx2fmu-logo-bw.png?raw=true" width="300">
 </picture>
 </p>
 

@@ -72,7 +72,7 @@ def generate(
     ],
     target_folder: Annotated[
         str,
-        typer.Argument(help="The target folder path.")
+        typer.Argument(help="The folder where the FMU files are generated.")
     ] = "target",
 ) -> None:
     """Generate the FMU project folder structure in `target_folder`."""
@@ -146,7 +146,7 @@ def cmake_configurations():
 def compile(
     target_folder: Annotated[
         str,
-        typer.Argument(help="The target folder path.")
+        typer.Argument(help="The folder containing the FMU files to be compiled.")
     ],
     model_description_path: Annotated[
         str,
@@ -271,7 +271,7 @@ def build(
     ],
     target_folder: Annotated[
         str,
-        typer.Argument(help="The target folder path.")
+        typer.Argument(help="The folder where the FMU files are generated and from which the FMU is compiled.")
     ],
     destination: Annotated[
         str,

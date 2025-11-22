@@ -15,7 +15,8 @@ class TestApp(unittest.TestCase):
 
     def setUp(self):
         self.model_name = 'example1'
-        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.base_dir = Path(__file__).resolve().parent.parent \
+            / "examples" / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
 
     def test_create_project_structure(self):
@@ -37,7 +38,8 @@ class TestExample1(unittest.TestCase):
 
     def setUp(self):
         self.model_name = 'example1'
-        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.base_dir = Path(__file__).resolve().parent.parent \
+            / "examples" / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
@@ -142,7 +144,8 @@ class TestExample2(unittest.TestCase):
 
     def setUp(self):
         self.model_name = 'example2'
-        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.base_dir = Path(__file__).resolve().parent.parent \
+            / "examples" / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
@@ -247,7 +250,8 @@ class TestExample3(unittest.TestCase):
 
     def setUp(self):
         self.model_name = 'example3'
-        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.base_dir = Path(__file__).resolve().parent.parent \
+            / "examples" / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \
@@ -330,7 +334,8 @@ class TestExample4(unittest.TestCase):
 
     def setUp(self):
         self.model_name = 'example4'
-        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.base_dir = Path(__file__).resolve().parent.parent \
+            / "examples" / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.model = load(self.model_path)
         self.model_description_path = \

@@ -1,1025 +1,0 @@
-pytorch2.7.1:ê–
-˛ 
-input
-x_min/Sub_output_0/Sub"Sub2” /tmp/ipykernel_17441/1427554997.py(13): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ç!
-/Sub_output_0
-onnx::Div_50/Div_output_0/Div"Div2” /tmp/ipykernel_17441/1427554997.py(13): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-É)/model/rnn/Constant_output_0/model/rnn/Constant"Constant*ò
-value*ã JÄ                                                                                                                                †2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(699): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ã(
-/Div_output_0/model/rnn/Transpose_output_0/model/rnn/Transpose"	Transpose*
-perm@@ @†2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-˛'
-/model/rnn/Transpose_output_0/model/rnn/Shape_output_0/model/rnn/Shape"Shape2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-Ü(/model/rnn/Constant_1_output_0/model/rnn/Constant_1"Constant*
-value*J       †2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ù(
-/model/rnn/Shape_output_0
-/model/rnn/Constant_1_output_0/model/rnn/Gather_output_0/model/rnn/Gather"Gather2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-Ionnx::Unsqueeze_27Constant_15"Constant*
-value*J        †2 
-\
-/model/rnn/Gather_output_0
-onnx::Unsqueeze_27onnx::Concat_28Unsqueeze_16"	Unsqueeze2 
-à(/model/rnn/Constant_2_output_0/model/rnn/Constant_2"Constant*
-value*J        †2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-Fonnx::Concat_55Constant_18"Constant*
-value*J       †2 
-±(
-onnx::Concat_55
-onnx::Concat_28
-/model/rnn/Constant_2_output_0/model/rnn/Concat_output_0/model/rnn/Concat"Concat*
-axis †2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ú(
-/model/rnn/Constant_output_0
-/model/rnn/Concat_output_0/model/rnn/Expand_output_0/model/rnn/Expand"Expand2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-Ö)
-/model/rnn/Transpose_output_0
-onnx::RNN_52
-onnx::RNN_53
-onnx::RNN_54
- 
-/model/rnn/Expand_output_0/model/rnn/RNN_output_0/model/rnn/RNN_output_1/model/rnn/RNN"RNN*
-activationsJTanh†*
-hidden_size †2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-à(/model/rnn/Constant_3_output_0/model/rnn/Constant_3"Constant*
-value*J       †2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-û(
-/model/rnn/RNN_output_0
-/model/rnn/Constant_3_output_0/model/rnn/Squeeze_output_0/model/rnn/Squeeze"Squeeze2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ù(
-/model/rnn/Squeeze_output_0/model/rnn/Transpose_1_output_0/model/rnn/Transpose_1"	Transpose*
-perm@@ @†2®'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/rnn.py(716): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(9): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ò(
-/model/rnn/Transpose_1_output_0
-onnx::MatMul_56/model/fc1/MatMul_output_0/model/fc1/MatMul"MatMul2¨'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/linear.py(125): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(10): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-â(
-model.fc1.bias
-/model/fc1/MatMul_output_0/model/fc1/Add_output_0/model/fc1/Add"Add2¨'/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/linear.py(125): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1384327362.py(10): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-Q/model/Constant_output_0/model/Constant"Constant*
-value*Jˇˇˇˇˇˇˇˇ†2 
-”$
-/model/fc1/Add_output_0
-/model/Constant_output_0/model/Gather_output_0/model/Gather"Gather*
-axis†2·#/tmp/ipykernel_17441/1384327362.py(11): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-π$/model/Constant_1_output_0/model/Constant_1"Constant*
-value*J       †2·#/tmp/ipykernel_17441/1384327362.py(11): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
- $
-/model/Gather_output_0
-/model/Constant_1_output_0/model/Squeeze_output_0/model/Squeeze"Squeeze2·#/tmp/ipykernel_17441/1384327362.py(11): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/tmp/ipykernel_17441/1427554997.py(14): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ó!
-/model/Squeeze_output_0
-onnx::Mul_57/Mul_output_0/Mul"Mul2” /tmp/ipykernel_17441/1427554997.py(15): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-ˇ 
-/Mul_output_0
-y_minoutput/Add"Add2” /tmp/ipykernel_17441/1427554997.py(15): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1741): _slow_forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(129): wrapper
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(138): forward
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1762): _call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/nn/modules/module.py(1751): _wrapped_call_impl
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/jit/_trace.py(1501): _get_trace_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(878): _trace_and_get_graph_from_model
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(971): _create_jit_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1087): _model_to_graph
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(1467): _export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/utils.py(529): export
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/torch/onnx/__init__.py(396): export
-/tmp/ipykernel_17441/535126675.py(18): <module>
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3579): run_code
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3519): run_ast_nodes
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3336): run_cell_async
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/async_helpers.py(128): _pseudo_sync_runner
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3132): _run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/IPython/core/interactiveshell.py(3077): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/zmqshell.py(549): run_cell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(449): do_execute
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(778): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/ipkernel.py(362): execute_request
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(437): dispatch_shell
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(534): process_one
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelbase.py(545): dispatch_queue
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/events.py(80): _run
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(1909): _run_once
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/asyncio/base_events.py(603): run_forever
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/tornado/platform/asyncio.py(211): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel/kernelapp.py(739): start
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/traitlets/config/application.py(1075): launch_instance
-/home/michele/onnx2fmu/.venv-notebooks/lib/python3.10/site-packages/ipykernel_launcher.py(18): <module>
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(86): _run_code
-/home/michele/.local/share/uv/python/cpython-3.10.18-linux-x86_64-gnu/lib/python3.10/runpy.py(196): _run_module_as_main
-
-main_graph*Bx_minJ  ÎƒÔSµ√*By_minJÔSµ√*Bmodel.fc1.biasJü:™ª*Bonnx::Div_50J ÄwEËìBD*ô Bonnx::RNN_52JÄÜù<gÿlº‰¨Ò=k◊,æ5PÂ=øﬁ=≈Ωz æ/Óæ÷ﬁº.8=€ÔÒ=`9ù=ﬂ≥="ë;>.K>™˚Öª¨x2æ¨5ΩCΩp–Ω éÍ=∂/§=âiï=ŸÀ	>œ∫ñ=*‘£=‡c>˜VSΩÁ ù=0«æ•ê≥ΩiøáºÏõ6Ω∆=KEæ’¬=3ÜºËäD>ı8˝;«¿≤=ƒÃ¯=p®l=§Ë <√<Næ-`c=ΩC`>≠ﬂö=‰´Ñ=êM¨=™ Gæ>ù±\>˛1Ñ=∏º$Û¨<ıC¢Ωl∑∫•ÒK=aø®Ω9«ºÖaæí˘¨=*ô   Bonnx::RNN_53JÄ æ>0ÈÅ=ó¢—=V[Jæ™2-æÂT®Ωdõ¬Ω◊È¯=öÂÔ=jÒ4>Aì
-æ¸qΩ>ˇI⁄=ãÚ>¬Ì=|(=±Kº=“?æU≈‰=`3ÃΩ¿„ª‹f>'åZ>∞
->ÁfΩE7>||uΩ–¨ùºçfH>Nh8=ìH>a‹Ω=ZnΩ’5÷ºX"<<ßoΩ%À)ΩE%Ê=ƒ	Æ<˜˛L>œﬂØΩ®Ã>‚üâΩòzØ9óÓ◊ΩÀw¢ºÿ`Ï=®m[ΩÇ.âΩ√´=ôbêΩ†•Å=Ïæ∑u6>∑ß!>Û æﬂq:;‚íæø√º÷WÂ=œ@`æö§=i∏ò=Ì=ôugæ{âPΩycÎΩ∏Pp=r4"æäëŒ=t∏öΩƒLù<˛PF>,
-Iæ5x{>πiæz_=æπa/>ÿ+ßΩ®`>ô$æ∏ÕΩôòΩ‡‹ü<Óvæ|¸ >nÿóº®5€ºZz={À$=tÏæ€JΩk∏Ω?µJ>b$À=äœ£ª€=˘Ω∆£ æﬁ»WΩaõ=+L¯=ßºïº∞1zΩ≠vYΩ2∂=Üú˘Ωk˛˚Ω|˚æΩrãÆª˘<0>√eæ=œL >–Å√=l™><…ï’Ω¶hp=´¬Y=t∞ΩH-P=ôµ=âÎÆ=Hï=ø$º=„uƒΩkØΩUaT;úô4=3<æ£æ>ÒuΩc¡ñΩ$‡ºËÕæ:k={Ê=Øc;ª2L¿Ωã< >`=QíµΩÎÍ§=©∂Ø=p:≤=uu>=å|÷<‚@F>7Ê<z{6æ≥g˚<?'Ωî’∞=(4ÈΩn‰›=Î1—=,$•<Õ.Ù=û">7ËÙΩä÷Ωv<rΩˆºs>ç@N=πüßΩ±	u>Ç§Ω‰˙r=±ŒæäÇ==4AΩ(ÃΩ|˙tº1Ûy<_≠	>§mÄæÍ >ßaæ—∫œ¸x<`Ï>FﬁΩr\èΩK<«Eº∑gΩnd\>À›=.°ΩÎÃΩ⁄¨÷<z‰kær'Öºrd >¬Ì*=˛T&>ı.úº“ñ€Ω 7∫=¥µ	æÅöπªçvÛΩ^6¬ºÇÅΩÿ6«=9t˘ª¥"#ææÆf=~‚ö;ø÷>ÎëN>DÈ~=ïô>çHÇ;(òÄ=0«>ú-==Ic´<8ñfæïåØΩ¶aã=◊t÷;Ê√Mæ›ŒÌΩPèΩ%_<÷P=kÏ@æ:$ùºÅ≥>!rm=N∑ÆΩú+Ω®¬“ºæ1á"Ω…õ=ŒÚﬂΩí'>æ_7‹<‚	ÄΩË/æ9Æºo¬=ôK5>#£>;ËΩAË2>º0¨=≠øä='DπΩÆÚ≠<ªµΩ+
-ÄºBøæ˜o˛Ω–∏ÄΩ8˘	æÜ‘æg◊-=?|>TÎ<O∂6=ZVœΩz.Ω=êØGæ∑">iäeΩÚ3ö=◊Ê°Ω!>1ª>èæÜ	æﬁ|åΩMÚ6>8‰|=>Ãæ4g3>ÈnìΩˇòªˆ∏Å=G◊ΩK3=6J—=Öµ">Z§=>?+æN#æ∑Q«º]EdΩ+Ö=q´â=ü/ΩNˇã=ÎñòΩ3€>t#=æ.G˙=bçúΩº¨Ù=|TÚ=Âï=§¨Œ=ŒÓá=f˝ΩÀ9'æı¿ºzh,>õ≈Ô==Z)æÓ∏
-æ∂/Ä<◊ê√=Å…‡ΩÒÙP>∑’=ô◊À<SZ¨=1ã=¡¿‚∫/õΩ=òΩ~gTæÃ¯CΩQ>D®ÌΩ∫tΩC:∞<Ú9>ê≠“ΩÌ©πΩ<Õ™=3iL=«◊æµõ>“ñ>I)Wærc:>E˝™ºÚî^=Ø„Ω"1ΩÈå•Ωé2™Ω„!€Ω}&*<kíπ=„1Ä=∫õ˘º†/>+»ç=õ˙*>ø”Ωù§úΩûƒºP{œ<ët >:
->ãv=ã+ÈΩ[>¶ß’ºfd´=…ŒÂªô%/ºSò!Ω˙VF>tMæΩÏΩ¸âΩ‡*LºÀ#ºda‘ΩúZ;æ»°ü=ô% >^«Ω„¿CæWíΩ\eBΩ&&£ΩÕÓΩND>V—Ω∑Ωº3=Å∫…ΩA"æå˜
->#ßçΩEgæd1Ô<√¢==æ-zºZº=√“AæWr≥=E‹ΩØèºü4*ææ÷Ω‚DcΩ‚z=~?æÓD=çá=Eƒ=ë©ü=È|Ω;»=ÖπK>r˙ÀΩ:É¡;Ëö‡Ωı‚ô=\ ºt|>1›=∑€=è¬ƒΩ(÷¨ºìU>V~#=#4…=π¢H=;÷>…EæŒ˝/>°zô=¥”]æE˙">$Ã$>VÒªê4æUk∞=®ƒ=˝50>Ω˘≈Ω„ÔÜΩ√5>ß‚,æØ. =GÎ=çœ ΩÅ”Å=Ï≥Á=RyƒΩi¿È<Å£Çº∏Ë=ÇÈÁ=€˚|ΩÎ]8ΩÂıˆ=®Î∫Ωç∆ŸΩÈ¶Ã<JÿH=Ï¨'>˚îæ9T‹ºíh∂=’\C=“Ö#>SeA=[æk;£=7<∆Ω“öùΩ+æ)E>º±>]œΩ$_JΩ∑„›<ì∆0>@¢ºJ±I=WÆCæ‘πÜΩ∆o?>:!>Îä:=’)æåâΩ0zIªŸr=GM>G=æ¡œ=P‰’Ω`™ô<´Ωà÷ºΩcÜ=%0æŸÂH>	a>2–´=¶É'æxówΩC<$æ;˚ô<Bdæ“ÄE>õWˆΩüÑÒ=WÎΩ¥R™Ω˘æËâ=[ÔÉΩd ÊΩOû˝ΩÊYæ‡/<Xæ¡Ωoõ¨ΩD>öÑZæ°D‹ºøúı=ﬂ≈Ü=§õ];÷….>n_Îº5ÏÃ=l∆dºõSËºV*ΩƒUL> òáπ/7¨ΩÇÈºΩ”Ù‚ΩC_>w`<æˆ|>`Ô€;‚'æäúD>Ùa>[˛<∫(™=2H>ﬁ:¢ΩwF.>`¨qΩ"’Ω®Ω=^Ó"º·q‹=(.=á˜ˆ=fR]<Ù∆Ÿ=¿â≈Ω†v!ΩÏ:æ˙¶`æRÃ›=†È3ΩåW¿=†mA=<|ΩΩåN&=°H$æµ˛pªÕ7ÚºŒ∫ΩT¸î<‹˘≥=LËΩò*¸º:h æ¿¢uΩa‡ß=¨Ã?ª?Y»=ªÿ¡ºπ‘	ΩAU>)UìΩnWá<3@´='&Ω-Ô=a &æQã<æ+H>Ógˆ=!Ê∑Ω2¥->5‰[=ﬂ‡æú·>
-–≤Ωø>≠È>=R/∏;¬¯Ú=ﬁÁ„ΩP
-<æﬁòo=#Ωæ=PÌ,>—BåΩe\HΩFAæhJ¿Ω®Ãí=PD>ILΩÒm…=“Ú>JoÆΩ:¬ØΩ~ﬁ·ΩŸÅ
-æñÉ∫=ÕmΩ=Õ©#æÿq>¿ò@>tæ"≠TΩoôQ=©w˜ª˚∂+æAŒb=cçŒΩI}è=Ú≤æ∞=!®ΩvhÃºÅø=kA´==TﬁΩì”Ωá˚OæÆ3>éõ™ª¸*ÿºÜ˝B>ıoç=⁄TFΩÓŒ˛=¶pc>Å±9<Úﬂ…ºÉn\Ω¡X≈=Ë2»º
-C≤ΩÚdj>ßŒªõÔåΩx{∂=æç‘=;Áæ]FΩıÑ=*ëî<Ù·LΩıS=!¸ΩGè9=]… æ hùΩNîΩ”∞ÒΩá0>ÛW4>Rô‹Ωˇ⁄ÜºZ“•=t”mΩ¸ =j >@ÄÙΩ∆a˛=Vä¶<•ÍªΩ¡L>Í⁄d=z+QΩ[˜ =nü=óBœ=ùûüº·{óΩ∑±ªºt≥Gæd|Ω7’	æXpÒ<$Læeá=Ω˚å[Ωıpæ∆¶ΩÚﬁ>æ&=sÖ<´>ù.æk=ò$&>’Ωıê:>Wù=˘>ŒS=¸¥Ω£˚£º"¿£ΩÔJêΩ∑∫<	m¶ºˆ˙Mºb∏,æ·n>£PÏ=Áq>sŒæ"ÎÕ=M9>Ê≥ÕΩ‚õ;Ω°==≈l~º’9≤ºk˛˚Ωñ:¡Õ¬=éØ$æ2æ®<≈c=ñ»Ù=∫&ÀΩ}<.>,óΩÜç«Ωﬂe>¬ÈØ<˙2’=˙x=Ñ `Ω:dé=€≤íΩ¢“\ΩqTâæÌ\>Ω®ÿªªøΩ(Ñæ"={Ω8>Ö>ËH~<4fΩp≥Ω—†˚ºXwX>ú_æ·=ƒºX0æ	∑?>ÛO’Ω¿]ΩıÊ+æö7>m:æ€:æAó=ì(∂=≠hΩ§`=vı,>Îj">h…æ∫Fw=zÁ>Á≥æê
-MΩÍ0º7BæìªÔΩföˆª “,æÉ@>¡©C>æPSæ¬=>Äàê=|ŒŸΩÒëÎΩ?]T>Åé<bæ°="¯¸ΩH[»º¶…îΩ/Øm<=éÕºIúî=“Ç4>E«™Ω©>ÿ}Í=ï∑æH"<Ù†¸=ø?V=õ◊¡Ω8±J>lÆv<à2>i>FÛΩtVv=(≠˚Ω·jzΩvP>@8á=H>uó8æÛ€=>2∑(æ7ÄΩ0öBæÎV<}™⁄º§	>+≥æøÅæ¨ >ÏüævıΩ◊A•=6L"Ω‹ΩÚF >97;§r%æπPG>UtæOæ)c=ü‘”Ω˘ßü=Õ(∏<ÌP§<◊a6Ω8ÀΩí∆÷=`r‡=W!†=q–#>}Ωm∞“=ü"àΩ|ëΩÕ,æé˝=>Æ)ΩâDG=”;Ω|,Ω/a>≈<L◊c>¯.˚Ω8>Ó<o®1æ˜ùΩ!Ó¸=‰Y>sU0ΩÛ2æ¥M¶Ω¬æÒß<ƒÔ^ΩåÂTæ √∫=Kß1=ek=nﬁ[Ω˘˜#æ¯rÀ=q¡G=&dº(w§Ωﬂ>∆=˙ëw=*c:>[/È=BS*Ω@j˛=ÚÊΩûÌ=S&YæK0£=5='>ïë<äWÎΩâ˜.æ†bQ=
-[æ’¥%=]OÔΩ√}_=êEû=n˙ΩüÃÔ=áÏ÷ΩÌ-Ö<2Àº=Üª‰=cI”=ΩPΩÁ=;∑®æW[ª⁄c=WB^æ2‰"ΩÉ∆>WÊ> õΩ ´SºW“OæWU[<É˜˙º#S>˝ñ=é£MΩ√&‚º√HÖ=óo>>LËΩy5qΩ[èßΩIœnΩ[‹‹;'FSΩÈ Ω2†ª`úŸΩ∂Ñ=ªP≠=1íDæJ‚Ω=ÎŒ¬Ω3≤ ∫SÉ$=‡∫<æIÌêΩÚæXœ˝=ﬂW®<íà«<%JΩìoæˇr(>ú`Ö=3B⁄=øhŒºÄIªº$¶Ωny¬Ω›◊>ziZæ®x±ΩêÑ*>E‰<u”;ºˆîΩdeΩkuöΩsZ>˝ë“=óL€=Í◊ >x;’=y1=ìA:ΩÛΩΩ(B¯Ω.5æÕqªäÙæÖNæGC=_òñΩ;∫º
-9ôº¶bíΩ
-"Jæúé"æˆÓ>ß™æï]™=ú`≥=ü>ﬂ≈=îRæ§å–==PuΩ1Ωb€;ıÛÃºZæU’∑=€)ˆ;o/æøòL=ˇ>◊Ω=y>*ó@Bonnx::RNN_54JÄ˙⁄6>%ÓΩF>˘ΩçMÓ=ô3ÏΩıÁæùõ-=¡3ÑΩUå >◊1%>ïæS√rºnŸ{<oë >Vu¯=ÔÕÊΩÌÁdΩ m,æ‚ö¸=Wà5>≥~>ú2´<€ÛΩ≠S-=ü7=|7Ω„µmΩæ∏ΩKÓ>ÜÕ=‡“˝ΩûÄ±Ω@®∏;c”æ˙è?>ˇd0º>)'>Î!æaê˙=PΩL=
-ı==∆É=Fæq;Ã >o∞?=^˜ã<w' >˘,Ω/X>§Ñ<˝™æ£‹>©ªæöHÇΩ^«íΩ[l√Ω˙Ïú=t#>èKæé´æ!$∏=n<,=ê˘O=y∆<æ*ö Bonnx::MatMul_56JÄ¡DO>_Wí=!á<Oãbæ)∫M>Ω¿=Ô2‚ºÌ™3=ÀèΩÕ+>⁄ıkΩ˚ç'>!™ΩVËßºÈΩiìæl©=˛jæëHﬂ=5Sb=∞ ﬁ=˝Æ=EÔ>Ú
-çº·Ne>ˆúhΩöÕ¬=]™æ”âÔ=≠ïwºn;=¨!¢Ω*Bonnx::Mul_57JËìBDZ
-input
-
-
-»
-b
-output
-
-
-B

@@ -1,3 +1,11 @@
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./logos/onn2fmu-logo-white-transparent.png">
+  <source media="(prefers-color-scheme: light)" srcset="./logos/onnx2fmu-logo-black-transparent.png">
+  <img alt="Description of the image" src="./logos/onnx2fmu-logo-bw.png">
+</picture>
+</p>
+
 # ONNX2FMU: Encapsulate ONNX models in Functional Mock-up Units (FMUs)
 
 **What do ONNX2FMU do?** It wraps [ONNX](https://onnx.ai/) models into

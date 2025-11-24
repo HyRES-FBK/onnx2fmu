@@ -77,8 +77,8 @@ jobs:
         shell: cmd
         run: |
           onnx2fmu build ^
-          tests/example4/example4.onnx ^
-          tests/example4/example4Description.json ^
+          examples/example4/example4.onnx ^
+          examples/example4/example4Description.json ^
           target ^
           --fmi-platform ${{ matrix.name }} ^
           --cmake-config Debug
@@ -88,8 +88,8 @@ jobs:
         shell: bash
         run: |
           onnx2fmu build \
-          tests/example4/example4.onnx \
-          tests/example4/example4Description.json \
+          examples/example4/example4.onnx \
+          examples/example4/example4Description.json \
           target \
           --fmi-platform ${{ matrix.name }} \
           --cmake-config Debug
@@ -99,8 +99,8 @@ jobs:
         shell: cmd
         run: |
           onnx2fmu build ^
-          tests/example4/example4.onnx ^
-          tests/example4/example4DescriptionFMI3.json ^
+          examples/example4/example4.onnx ^
+          examples/example4/example4DescriptionFMI3.json ^
           target ^
           --fmi-platform ${{ matrix.name }} ^
           --cmake-config Debug
@@ -110,8 +110,8 @@ jobs:
         shell: bash
         run: |
           onnx2fmu build \
-          tests/example4/example4.onnx \
-          tests/example4/example4DescriptionFMI3.json \
+          examples/example4/example4.onnx \
+          examples/example4/example4DescriptionFMI3.json \
           target \
           --fmi-platform ${{ matrix.name }} \
           --cmake-config Debug

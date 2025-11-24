@@ -120,7 +120,7 @@ class TestExample1(unittest.TestCase):
     def test_compile_and_simulate(self):
         self.test_compile()
         # Read input data
-        signals = np.genfromtxt(self.base_dir / "input.csv",
+        signals = np.genfromtxt(self.base_dir / "Example1_in.csv",
                                 delimiter=",", names=True)
         # Test the FMU using fmpy and check output against benchmark
         results = simulate_fmu(
@@ -135,7 +135,7 @@ class TestExample1(unittest.TestCase):
                          results.dtype.names if field != 'time']).T
         # Skip the first step, which is obtained before the first doStep
         results = results[1:]
-        real_output = pd.read_csv(self.base_dir / "output.csv",
+        real_output = pd.read_csv(self.base_dir / "Example1_ref.csv",
                                   index_col='time')
         self.assertGreater(1e-4, np.sum(results - real_output.values))
 
@@ -226,7 +226,7 @@ class TestExample2(unittest.TestCase):
     def test_compile_and_simulate(self):
         self.test_compile()
         # Read input data
-        signals = np.genfromtxt(self.base_dir / "input.csv",
+        signals = np.genfromtxt(self.base_dir / "Example2_in.csv",
                                 delimiter=",", names=True)
         # Test the FMU using fmpy and check output against benchmark
         results = simulate_fmu(
@@ -241,7 +241,7 @@ class TestExample2(unittest.TestCase):
                          results.dtype.names if field != 'time']).T
         # Skip the first step, which is obtained before the first doStep
         results = results[1:]
-        real_output = pd.read_csv(self.base_dir / "output.csv",
+        real_output = pd.read_csv(self.base_dir / "Example2_ref.csv",
                                   index_col='time')
         self.assertGreater(1e-6, np.sum(results - real_output.values))
 
@@ -430,7 +430,7 @@ class TestExample4(unittest.TestCase):
             destination=self.destination
         )
         # Read input data
-        signals = np.genfromtxt(self.base_dir / "input.csv",
+        signals = np.genfromtxt(self.base_dir / "Example4_in.csv",
                                 delimiter=",", names=True)
         # Test the FMU using fmpy and check output against benchmark
         results = simulate_fmu(
@@ -445,7 +445,7 @@ class TestExample4(unittest.TestCase):
                          results.dtype.names if field != 'time']).T
         # Skip the first step, which is obtained before the first doStep
         results = results[1:]
-        real_output = pd.read_csv(self.base_dir / "output.csv",
+        real_output = pd.read_csv(self.base_dir / "Example4_ref.csv",
                                   index_col='time')
         self.assertTrue(np.array_equal(results, real_output.values))
 

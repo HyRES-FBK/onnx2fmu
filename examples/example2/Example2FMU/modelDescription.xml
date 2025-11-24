@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="example2"
+  description="The model defines a simple example model with a scalar input and two vector inputs, one with 'local' variability and one with 'continuous' variability."
+  generationTool="ONNX2FMU"
+  guid="033442eb-0c6b-4e93-89f7-62c604ac94c7"
+  numberOfEventIndicators="0"
+  generationDateAndTime="2025-11-23T22:05:43.072217">
+
+  <CoSimulation
+    modelIdentifier="example2"
+    canHandleVariableCommunicationStepSize="true"
+    canNotUseMemoryManagementFunctions="true"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true">
+    <SourceFiles>
+      <File name="all.c"/>
+    </SourceFiles>
+  </CoSimulation>
+
+  <LogCategories>
+    <Category name="logEvents" description="Log events"/>
+    <Category name="logStatusError" description="Log error messages"/>
+  </LogCategories>
+
+  <DefaultExperiment startTime="0" stopTime="1"/>
+
+  <ModelVariables>
+    <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
+      <Real/>
+    </ScalarVariable>
+    <ScalarVariable name="x_1_0" valueReference="1" causality="input" variability="continuous" description="A scalar input to the model.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="x_2_0" valueReference="2" causality="input" variability="continuous" description="A scalar input to the model.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="x_3_0" valueReference="3" causality="input" variability="continuous" description="A scalar input to the model.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="y_0" valueReference="4" causality="output" variability="continuous" description="The output array.">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="y_1" valueReference="5" causality="output" variability="continuous" description="The output array.">
+      <Real />
+    </ScalarVariable>
+  </ModelVariables>
+
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="5"/>
+      <Unknown index="6"/>
+    </Outputs>
+    <InitialUnknowns>
+      <Unknown index="5"/>
+      <Unknown index="6"/>
+    </InitialUnknowns>
+  </ModelStructure>
+
+</fmiModelDescription>

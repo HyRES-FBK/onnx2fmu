@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="example1"
+  description="The model defines a simple example model with a scalar input and two vector inputs, one with 'local' variability and one with 'continuous' variability."
+  generationTool="ONNX2FMU"
+  guid="9563bf3f-4a18-43e7-a9d2-24a94036317a"
+  numberOfEventIndicators="0"
+  generationDateAndTime="2025-11-23T22:04:29.510440">
+
+  <CoSimulation
+    modelIdentifier="example1"
+    canHandleVariableCommunicationStepSize="true"
+    canNotUseMemoryManagementFunctions="true"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true">
+    <SourceFiles>
+      <File name="all.c"/>
+    </SourceFiles>
+  </CoSimulation>
+
+  <LogCategories>
+    <Category name="logEvents" description="Log events"/>
+    <Category name="logStatusError" description="Log error messages"/>
+  </LogCategories>
+
+  <DefaultExperiment startTime="0" stopTime="1"/>
+
+  <ModelVariables>
+    <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
+      <Real/>
+    </ScalarVariable>
+    <ScalarVariable name="scalar_input_0" valueReference="1" causality="input" variability="continuous" description="A scalar input to the model.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_0" valueReference="2" causality="input" variability="continuous" description="A vector of input variables with variability discrete.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_1" valueReference="3" causality="input" variability="continuous" description="A vector of input variables with variability discrete.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_2" valueReference="4" causality="input" variability="continuous" description="A vector of input variables with variability discrete.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_3" valueReference="5" causality="input" variability="continuous" description="A vector of input variables with variability discrete.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_discrete_0" valueReference="6" causality="input" variability="continuous" description="Inputs have variability discrete by default.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_discrete_1" valueReference="7" causality="input" variability="continuous" description="Inputs have variability discrete by default.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_discrete_2" valueReference="8" causality="input" variability="continuous" description="Inputs have variability discrete by default.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_discrete_3" valueReference="9" causality="input" variability="continuous" description="Inputs have variability discrete by default.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="vector_input_discrete_4" valueReference="10" causality="input" variability="continuous" description="Inputs have variability discrete by default.">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="output_0" valueReference="11" causality="output" variability="continuous" description="Class1">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_1" valueReference="12" causality="output" variability="continuous" description="Class2">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_2" valueReference="13" causality="output" variability="continuous" description="Class3">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_3" valueReference="14" causality="output" variability="continuous" description="Class4">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_4" valueReference="15" causality="output" variability="continuous" description="Class5">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_5" valueReference="16" causality="output" variability="continuous" description="Class6">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_6" valueReference="17" causality="output" variability="continuous" description="Class7">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_7" valueReference="18" causality="output" variability="continuous" description="Class8">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_8" valueReference="19" causality="output" variability="continuous" description="Class9">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="output_9" valueReference="20" causality="output" variability="continuous" description="Class10">
+      <Real />
+    </ScalarVariable>
+  </ModelVariables>
+
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="12"/>
+      <Unknown index="13"/>
+      <Unknown index="14"/>
+      <Unknown index="15"/>
+      <Unknown index="16"/>
+      <Unknown index="17"/>
+      <Unknown index="18"/>
+      <Unknown index="19"/>
+      <Unknown index="20"/>
+      <Unknown index="21"/>
+    </Outputs>
+    <InitialUnknowns>
+      <Unknown index="12"/>
+      <Unknown index="13"/>
+      <Unknown index="14"/>
+      <Unknown index="15"/>
+      <Unknown index="16"/>
+      <Unknown index="17"/>
+      <Unknown index="18"/>
+      <Unknown index="19"/>
+      <Unknown index="20"/>
+      <Unknown index="21"/>
+    </InitialUnknowns>
+  </ModelStructure>
+
+</fmiModelDescription>

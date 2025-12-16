@@ -357,7 +357,6 @@ Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
         ASSERT_NVALUES(1);
         values[(*index)++] = M(time);
         return OK;
-#if FMI_VERSION < 3
         // Inputs
         {%- for input in inputs %}
         {%- for scalar in input.scalarValues %}
@@ -385,7 +384,6 @@ Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-#endif
     default:
         // Compose message for log with value reference
         logError(comp, "getFloat64: ValueReference %d not available.", vr);
@@ -403,7 +401,6 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
             ASSERT_NVALUES(1);
             M(time) = values[(*index)++];
             return OK;
-#if FMI_VERSION < 3
         // Inputs
         {%- for input in inputs %}
         {%- for scalar in input.scalarValues %}
@@ -422,7 +419,6 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-#endif
     default:
         // Compose message for log with value reference
         logError(comp, "setFloat64: ValueReference %d not available.", vr);

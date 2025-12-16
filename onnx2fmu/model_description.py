@@ -54,7 +54,7 @@ class ModelDescription:
             node_shape_in = self._readNodeShape(node_in)
             node_shape_out = self._readNodeShape(node_out)
             assert node_shape_in == node_shape_out, \
-                f"Local variable {var["nameIn"]} shape {node_shape_in} and {var["nameOut"]} shape {node_shape_out} are not consistent."
+                f"Local variable {var['nameIn']} shape {node_shape_in} and {var['nameOut']} shape {node_shape_out} are not consistent."
 
     def _checkStartValuesBroadcastability(self, variable: dict) -> None:
         if isinstance(variable["start"], (str, int, float)):

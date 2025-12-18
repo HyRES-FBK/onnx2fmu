@@ -11,7 +11,8 @@ class TestModelDescription(unittest.TestCase):
 
     def setUp(self) -> None:
         self.model_name = 'example4'
-        self.base_dir = Path(__file__).resolve().parent / self.model_name
+        self.base_dir = Path(__file__).resolve().parent.parent \
+            / "examples" / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
         self.onnx_model = load(self.model_path)
         self.model_description_path = \

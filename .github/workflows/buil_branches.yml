@@ -19,6 +19,12 @@ jobs:
     runs-on: [self-hosted, Windows]
 
     steps:
+      - name: Fix PATH to use Windows tar
+        if: runner.os == 'Windows'
+        run: |
+          echo "C:\Windows\System32" >> $env:GITHUB_PATH
+          echo "Fixed PATH for tar"
+
       - name: Check out repository
         uses: actions/checkout@v4
 
@@ -34,33 +40,43 @@ jobs:
           path: .venv
 
       - name: Install dependencies
+        shell: pwsh
         run: |
           python -m venv .venv
-          .venv\Scripts\activate
-          python -m pip install --upgrade pip
-          pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
-          pip install -e .
-          echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
-          echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
+          .venv\Scripts\python.exe -m pip install --upgrade pip
+          .venv\Scripts\python.exe -m pip install numpy pandas onnx jinja2 loguru typer fmpy cmake
+          .venv\Scripts\python.exe -m pip install -e .
 
       - name: Python unit tests
+        shell: pwsh
         run: |
-          python -m unittest tests.test_variables
-          python -m unittest tests.test_model
-          python -m unittest tests.test_model_description
-          python -m unittest tests.test_app.TestApp
-          python -m unittest tests.test_app.TestExample1
-          python -m unittest tests.test_app.TestExample2
-          python -m unittest tests.test_app.TestExample3
-          python -m unittest tests.test_app.TestExample4
+          .venv\Scripts\python.exe -m unittest tests.test_variables
+          .venv\Scripts\python.exe -m unittest tests.test_model
+          .venv\Scripts\python.exe -m unittest tests.test_model_description
+          .venv\Scripts\python.exe -m unittest tests.test_app.TestApp
+          .venv\Scripts\python.exe -m unittest tests.test_app.TestExample1
+          .venv\Scripts\python.exe -m unittest tests.test_app.TestExample2
+          .venv\Scripts\python.exe -m unittest tests.test_app.TestExample3
+          .venv\Scripts\python.exe -m unittest tests.test_app.TestExample4
 
       - name: Build example4 FMI 2.0
         shell: pwsh
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
-          onnx2fmu build `
+          .venv\Scripts\onnx2fmu.exe build `
           tests/example4/example4.onnx `
           tests/example4/example4Description.json `
+          target `
+          --fmi-platform $fmi_platform `
+          --cmake-config Debug
+
+      - name: Build example4 FMI 3.0
+        shell: pwsh
+        run: |
+          $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
+          .venv\Scripts\onnx2fmu.exe build `
+          tests/example4/example4.onnx `
+          tests/example4/example4DescriptionFMI3.json `
           target `
           --fmi-platform $fmi_platform `
           --cmake-config Debug

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="example4"
+  description="Example to test FMU with local variables."
+  generationTool="ONNX2FMU"
+  guid="1753ebf7-99f8-40fb-9a3e-ac7534368c4a"
+  numberOfEventIndicators="0"
+  generationDateAndTime="2025-11-24T10:29:41.873791">
+
+  <CoSimulation
+    modelIdentifier="example4"
+    canHandleVariableCommunicationStepSize="true"
+    canNotUseMemoryManagementFunctions="true"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true">
+    <SourceFiles>
+      <File name="all.c"/>
+    </SourceFiles>
+  </CoSimulation>
+
+  <LogCategories>
+    <Category name="logEvents" description="Log events"/>
+    <Category name="logStatusError" description="Log error messages"/>
+  </LogCategories>
+
+  <DefaultExperiment startTime="0" stopTime="1"/>
+
+  <ModelVariables>
+    <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
+      <Real/>
+    </ScalarVariable>
+    <ScalarVariable name="u_0_0" valueReference="1" causality="input" variability="continuous" description="A vector of control variables at time t.">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="u_0_1" valueReference="2" causality="input" variability="continuous" description="A vector of control variables at time t.">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="u_0_2" valueReference="3" causality="input" variability="continuous" description="A vector of control variables at time t.">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="u_0_3" valueReference="4" causality="input" variability="continuous" description="A vector of control variables at time t.">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="u_0_4" valueReference="5" causality="input" variability="continuous" description="A vector of control variables at time t.">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="x_0_0" valueReference="6" causality="output" variability="continuous" description="The state of the system at time t+1.">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="x_0_1" valueReference="7" causality="output" variability="continuous" description="The state of the system at time t+1.">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="x_0_2" valueReference="8" causality="output" variability="continuous" description="The state of the system at time t+1.">
+      <Real />
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_0_0" valueReference="9" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_0_1" valueReference="10" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_0_2" valueReference="11" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_1_0" valueReference="12" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_1_1" valueReference="13" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_1_2" valueReference="14" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_2_0" valueReference="15" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_2_1" valueReference="16" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_2_2" valueReference="17" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_3_0" valueReference="18" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_3_1" valueReference="19" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_3_2" valueReference="20" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_4_0" valueReference="21" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_4_1" valueReference="22" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_4_2" valueReference="23" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_5_0" valueReference="24" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_5_1" valueReference="25" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_5_2" valueReference="26" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_6_0" valueReference="27" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_6_1" valueReference="28" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_6_2" valueReference="29" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_7_0" valueReference="30" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_7_1" valueReference="31" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_7_2" valueReference="32" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_8_0" valueReference="33" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_8_1" valueReference="34" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_8_2" valueReference="35" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_9_0" valueReference="36" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_9_1" valueReference="37" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="X_X1_9_2" valueReference="38" causality="local" variability="continuous" description="The history of states from t-N to t." initial="exact">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_0_0" valueReference="39" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_0_1" valueReference="40" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_0_2" valueReference="41" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_0_3" valueReference="42" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_0_4" valueReference="43" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_1_0" valueReference="44" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_1_1" valueReference="45" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_1_2" valueReference="46" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_1_3" valueReference="47" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_1_4" valueReference="48" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_2_0" valueReference="49" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_2_1" valueReference="50" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_2_2" valueReference="51" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_2_3" valueReference="52" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_2_4" valueReference="53" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_3_0" valueReference="54" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_3_1" valueReference="55" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_3_2" valueReference="56" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_3_3" valueReference="57" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_3_4" valueReference="58" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_4_0" valueReference="59" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_4_1" valueReference="60" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_4_2" valueReference="61" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_4_3" valueReference="62" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_4_4" valueReference="63" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_5_0" valueReference="64" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_5_1" valueReference="65" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_5_2" valueReference="66" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_5_3" valueReference="67" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_5_4" valueReference="68" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_6_0" valueReference="69" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_6_1" valueReference="70" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_6_2" valueReference="71" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_6_3" valueReference="72" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_6_4" valueReference="73" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_7_0" valueReference="74" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_7_1" valueReference="75" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_7_2" valueReference="76" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_7_3" valueReference="77" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_7_4" valueReference="78" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_8_0" valueReference="79" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_8_1" valueReference="80" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_8_2" valueReference="81" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_8_3" valueReference="82" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable name="U_U1_8_4" valueReference="83" causality="local" variability="continuous" description="The history of control variables frmo t-N to t-1." initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+  </ModelVariables>
+
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="7"/>
+      <Unknown index="8"/>
+      <Unknown index="9"/>
+    </Outputs>
+    <InitialUnknowns>
+      <Unknown index="7"/>
+      <Unknown index="8"/>
+      <Unknown index="9"/>
+    </InitialUnknowns>
+  </ModelStructure>
+
+</fmiModelDescription>

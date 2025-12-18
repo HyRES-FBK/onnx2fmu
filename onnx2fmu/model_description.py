@@ -53,7 +53,8 @@ class ModelDescription:
             node_out = self._findNode(var["nameOut"])
             node_shape_in = self._readNodeShape(node_in)
             node_shape_out = self._readNodeShape(node_out)
-            assert node_shape_in == node_shape_out
+            assert node_shape_in == node_shape_out, \
+                f"Local variable {var['nameIn']} shape {node_shape_in} and {var['nameOut']} shape {node_shape_out} are not consistent."
 
     def _checkStartValuesBroadcastability(self, variable: dict) -> None:
         if isinstance(variable["start"], (str, int, float)):
@@ -116,6 +117,7 @@ class ModelDescription:
         entries = zip([INPUTS, OUTPUTS, LOCALS], [Input, Output, Local])
         for entry, cls in entries:
             for kwargs in self.model_description.get(entry, []):
+                kwargs["fmiVersion"] = self.model_description["FMIVersion"]
                 if cls is Local:
                     kwargs["shape"] = shapes[kwargs["nameIn"]]
                 else:

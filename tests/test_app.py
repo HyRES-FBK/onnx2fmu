@@ -21,7 +21,7 @@ class TestApp(unittest.TestCase):
 
     def test_create_project_structure(self):
         target_path = Path("test_project_structure_target")
-        _createFMUFolderStructure(target_path, self.model_path)
+        _createFMUFolderStructure(target_path, self.model_path, self.model_name)
         self.assertIn(
             "CMakeLists.txt",
             [f.name for f in target_path.iterdir() if f.is_file()]

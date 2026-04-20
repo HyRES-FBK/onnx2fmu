@@ -29,8 +29,8 @@ def version():
     raise typer.Exit()
 
 
-def _createFMUFolderStructure(destination: Path, model_path: Path) -> None:
-    model_name = model_path.stem
+def _createFMUFolderStructure(destination: Path, model_path: Path,
+                              model_name: str) -> None:
     # Remove the target directory if it exists
     if destination.exists():
         shutil.rmtree(destination)
@@ -88,8 +88,10 @@ def generate(
 
     context = model.generateContext()
 
+    model_name = context['name']
     _createFMUFolderStructure(destination=Path(target_folder),
-                              model_path=Path(model_path))
+                              model_path=Path(model_path),
+                              model_name=model_name)
 
     # Initialize Jinja2 environment
     env = Environment(loader=BaseLoader())
@@ -111,7 +113,7 @@ def generate(
         # Render the template with the context
         rendered = template.render(context)
         # Write the rendered template to the target directory
-        core_dir = Path(target_folder) / f"{model_path.stem}" / template_name.name
+        core_dir = Path(target_folder) / f"{model_name}" / template_name.name
         with open(core_dir, "w") as f:
             f.write(rendered)
 

@@ -47,7 +47,7 @@ class TestExample1(unittest.TestCase):
         self.model_description = \
             json.loads(self.model_description_path.read_text())
         self.destination = Path(".")
-        self.fmu_path = self.destination / f"{self.model_name}.fmu"
+        self.fmu_path = self.destination / f"{self.model_description['name']}.fmu"
 
     def tearDown(self) -> None:
         if self.fmu_path.exists():
@@ -68,7 +68,7 @@ class TestExample1(unittest.TestCase):
         )
         for file in files:
             self.assertTrue(
-                (target_path / self.model_name / file).is_file(),
+                (target_path / self.model_description['name'] / file).is_file(),
                 f"File {file} has not been generated."
             )
         if target_path.exists():
@@ -93,7 +93,7 @@ class TestExample1(unittest.TestCase):
         )
         for file in files:
             self.assertTrue(
-                (target_path / self.model_name / file).is_file(),
+                (target_path / self.model_description['name'] / file).is_file(),
                 f"File {file} has not been generated."
             )
         if target_path.exists():

@@ -184,6 +184,7 @@ def compile(
     with open(model_description_path, "r") as f:
         model_description = json.load(f)
 
+    # Take the model description's name for the model
     model_name = model_description["name"]
 
     if fmi_platform in complete_platform():

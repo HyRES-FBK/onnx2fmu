@@ -413,6 +413,25 @@ class TestExample4(unittest.TestCase):
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
 
+    def test_compile_fmi3(self):
+        target_path = Path(f"test_{self.model_name}_compile")
+        # Change the model description path to the file specific for the FMI 3.0
+        self.model_description_path = self.base_dir / f"{self.model_name}DescriptionFMI3.json"
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path,
+        )
+        compile(
+            target_folder=target_path,
+            model_description_path=self.model_description_path,
+            cmake_config="Debug",
+            destination=self.destination,
+        )
+        self.assertTrue(self.fmu_path.exists())
+        results = validate_fmu(self.fmu_path)
+        self.assertEqual(len(results), 0, results)
+
     def test_compile_and_simulate(self):
         target_path = Path(f"test_{self.model_name}_compile")
         # The test is though without start values, so we set them to None

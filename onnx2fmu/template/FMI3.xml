@@ -37,7 +37,7 @@
     {%- endfor %}
     {%- for local in locals %}
     {%- for scalar in local.scalarValues %}
-    <{{ local.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}" start="{{ scalar.start }}"/>
+    <{{ local.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}"/>
     {%- endfor %}
     {%- endfor %}
   </ModelVariables>

@@ -64,8 +64,8 @@ jobs:
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
           .venv\Scripts\onnx2fmu.exe build `
-          tests/example4/example4.onnx `
-          tests/example4/example4Description.json `
+          examples/example4/example4.onnx `
+          examples/example4/example4Description.json `
           target `
           --fmi-platform $fmi_platform `
           --cmake-config Debug
@@ -75,8 +75,8 @@ jobs:
         run: |
           $fmi_platform = "${{ matrix.arch }}-${{ matrix.os }}"
           .venv\Scripts\onnx2fmu.exe build `
-          tests/example4/example4.onnx `
-          tests/example4/example4DescriptionFMI3.json `
+          examples/example4/example4.onnx `
+          examples/example4/example4DescriptionFMI3.json `
           target `
           --fmi-platform $fmi_platform `
           --cmake-config Debug
@@ -136,8 +136,8 @@ jobs:
         shell: bash -l {0}
         run: |
           onnx2fmu build \
-          tests/example4/example4.onnx \
-          tests/example4/example4Description.json \
+          examples/example4/example4.onnx \
+          examples/example4/example4Description.json \
           target \
           --fmi-platform ${{ matrix.arch }}-${{ matrix.os }} \
           --cmake-config Debug

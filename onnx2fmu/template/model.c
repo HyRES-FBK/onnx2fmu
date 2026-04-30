@@ -406,7 +406,7 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
         {%- for scalar in input.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
-            M({{ scalar.name }}) = values[(*index)++];
+            M({{ scalar.name }}) = (float)values[(*index)++];
             return OK;
         {%- endfor %}
         {%- endfor %}
@@ -415,7 +415,7 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
         {%- for scalar in local.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
-            M({{ scalar.name }}) = values[(*index)++];
+            M({{ scalar.name }}) = (float)values[(*index)++];
             return OK;
         {%- endfor %}
         {%- endfor %}

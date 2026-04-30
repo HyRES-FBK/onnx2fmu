@@ -21,7 +21,7 @@ class TestApp(unittest.TestCase):
 
     def test_create_project_structure(self):
         target_path = Path("test_project_structure_target")
-        _createFMUFolderStructure(target_path, self.model_path)
+        _createFMUFolderStructure(target_path, self.model_path, self.model_name)
         self.assertIn(
             "CMakeLists.txt",
             [f.name for f in target_path.iterdir() if f.is_file()]
@@ -47,7 +47,7 @@ class TestExample1(unittest.TestCase):
         self.model_description = \
             json.loads(self.model_description_path.read_text())
         self.destination = Path(".")
-        self.fmu_path = self.destination / f"{self.model_name}.fmu"
+        self.fmu_path = self.destination / f"{self.model_description['name']}.fmu"
 
     def tearDown(self) -> None:
         if self.fmu_path.exists():
@@ -68,7 +68,7 @@ class TestExample1(unittest.TestCase):
         )
         for file in files:
             self.assertTrue(
-                (target_path / self.model_name / file).is_file(),
+                (target_path / self.model_description['name'] / file).is_file(),
                 f"File {file} has not been generated."
             )
         if target_path.exists():
@@ -93,7 +93,7 @@ class TestExample1(unittest.TestCase):
         )
         for file in files:
             self.assertTrue(
-                (target_path / self.model_name / file).is_file(),
+                (target_path / self.model_description['name'] / file).is_file(),
                 f"File {file} has not been generated."
             )
         if target_path.exists():
@@ -408,6 +408,25 @@ class TestExample4(unittest.TestCase):
             model_description_path=self.model_description_path,
             cmake_config="Debug",
             destination=self.destination
+        )
+        self.assertTrue(self.fmu_path.exists())
+        results = validate_fmu(self.fmu_path)
+        self.assertEqual(len(results), 0, results)
+
+    def test_compile_fmi3(self):
+        target_path = Path(f"test_{self.model_name}_compile")
+        # Change the model description path to the file specific for the FMI 3.0
+        self.model_description_path = self.base_dir / f"{self.model_name}DescriptionFMI3.json"
+        generate(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=target_path,
+        )
+        compile(
+            target_folder=target_path,
+            model_description_path=self.model_description_path,
+            cmake_config="Debug",
+            destination=self.destination,
         )
         self.assertTrue(self.fmu_path.exists())
         results = validate_fmu(self.fmu_path)

@@ -208,6 +208,10 @@ def compile(
         '-D', f'FMI_VERSION={int(float(model_description["FMIVersion"]))}',
     ]
 
+    onnx_runtime_version = model_description.get("onnxRuntimeVersion", None)
+    if onnx_runtime_version:
+        cmake_args += ['-D', f'LATEST_RELEASE_TAG={onnx_runtime_version}']
+
     if fmi_architecture:
         cmake_args += ['-D', f'FMI_ARCHITECTURE={fmi_architecture}']
 

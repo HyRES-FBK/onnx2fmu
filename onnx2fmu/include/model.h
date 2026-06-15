@@ -136,6 +136,7 @@ typedef struct {
     bool isDirtyValues;
 
     ModelData modelData;
+    ModelBuffers modelBuffers;
 
     // internal solver steps
     uint64_t nSteps;
@@ -179,6 +180,9 @@ Status configurate(ModelInstance* comp);
 Status reset(ModelInstance* comp);
 
 void setStartValues(ModelInstance* comp);
+
+Status initModel(ModelInstance *comp);
+void   freeModel(ModelInstance *comp);
 
 Status calculateValues(ModelInstance *comp);
 

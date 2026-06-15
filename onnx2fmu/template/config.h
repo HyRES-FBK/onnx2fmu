@@ -1,6 +1,8 @@
 #ifndef config_h
 #define config_h
 
+#include "onnxruntime_c_api.h"
+
 // define class name and unique id
 #define MODEL_IDENTIFIER {{ name }}
 #define INSTANTIATION_TOKEN "{{ GUID }}"
@@ -56,6 +58,18 @@ typedef struct {
     {%- endfor %}
     {%- endfor %}
 } ModelData;
+
+typedef struct {
+    OrtMemoryInfo* memory_info;
+    {%- for input in inputs %}
+    float* {{ input.name }}_float;
+    OrtValue* {{ input.name }}_tensor;
+    {%- endfor %}
+    {%- for local in locals %}
+    float* {{ local.nameIn }}_float;
+    OrtValue* {{ local.nameIn }}_tensor;
+    {%- endfor %}
+} ModelBuffers;
 
 #endif /* config_h */
 

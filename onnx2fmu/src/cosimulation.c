@@ -112,6 +112,11 @@ ModelInstance *createModelInstance(
     createOrtSessionOptions(comp);
     createOrtSession(comp->env, resourceLocation, comp->session_options, comp);
 
+    if (initModel(comp) != OK) {
+        freeModelInstance(comp);
+        return NULL;
+    }
+
     return comp;
 }
 
@@ -130,6 +135,8 @@ void freeModelInstance(ModelInstance *comp) {
     if (comp->x) free(comp->x);
 
     if (comp->dx) free(comp->dx);
+
+    freeModel(comp);
 
     if (comp->env) freeOrtEnv(comp->env, comp);
 

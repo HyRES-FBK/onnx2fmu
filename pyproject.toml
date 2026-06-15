@@ -31,11 +31,11 @@ dependencies = [
   "typer",
 ]
 
-[project.scripts]
-onnx2fmu = "onnx2fmu.app:app"
-
-[dependency-groups]
-dev = [
+[project.optional-dependencies]
+# Tools needed to run the tests and the examples (PyTorch models, notebooks,
+# FMU validation/simulation). Installed via `pip install ".[extra]"` or
+# `uv sync --all-extras`.
+extra = [
     "fmpy>=0.3.25",
     "ipykernel>=7.1.0",
     "onnxscript>=0.5.6",
@@ -44,3 +44,6 @@ dev = [
     "pyside6>=6.10.1",
     "torch>=2.9.1",
 ]
+
+[project.scripts]
+onnx2fmu = "onnx2fmu.app:app"

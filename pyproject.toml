@@ -47,3 +47,13 @@ extra = [
 
 [project.scripts]
 onnx2fmu = "onnx2fmu.app:app"
+
+[tool.flit.sdist]
+exclude = [
+    "examples/*/Example*FMU/",
+    "examples/**/*.fmu",
+    "examples/**/*.onnx",
+    "examples/**/*.so",
+    "examples/**/*.so.*",
+    "logos/",
+]

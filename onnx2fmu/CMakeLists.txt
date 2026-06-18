@@ -125,7 +125,7 @@ SET(SOURCES
 )
 
 # Manually set the latest release tag
-set (LATEST_RELEASE_TAG "1.20.1")
+set (LATEST_RELEASE_TAG "1.21.0")
 
 # Detect the operating system for onnxruntime download
 if (WIN32)

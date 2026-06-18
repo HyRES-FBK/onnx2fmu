@@ -36,7 +36,7 @@ class Model:
         self.locals = []
 
     def _setName(self, name: str) -> None:
-        self.name = re.sub(r'[^a-zA-Z0-9]', '', name)
+        self.name = re.sub(r'[^a-zA-Z0-9_]', '', name)
 
     def _assignValueReferences(self, context: dict) -> dict:
         for scalar in context["scalarValues"]:

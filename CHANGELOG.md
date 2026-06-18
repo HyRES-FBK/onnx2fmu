@@ -5,6 +5,20 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2026-06-18
+
+### Changed
+
+- ONNX Runtime pinned version updated to 1.21.0.
+- macOS CI runner migrated from the deprecated `macos-13` (Intel) runner to
+  `macos-15` (Apple Silicon / ARM64).
+
+### Fixed
+
+- `test_compile_and_simulate` updated to call the correctly renamed method.
+
+[0.3.2]: https://github.com/HyRES-FBK/onnx2fmu/compare/v0.3.1...v0.3.2
+
 ## [0.3.1] - 2026-06-18
 
 ### Fixed

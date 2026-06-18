@@ -26,9 +26,9 @@ jobs:
             image: ubuntu-22.04
             arch: x86_64
             python-version: "3.10"
-          - name: x86_64-darwin
-            image: macos-13
-            arch: x86_64
+          - name: aarch64-darwin
+            image: macos-15
+            arch: aarch64
             python-version: "3.10"
     runs-on: ${{ matrix.image }}
 

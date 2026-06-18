@@ -139,7 +139,7 @@ class TestExample1(unittest.TestCase):
         self.assertEqual(len(results), 0, results)
 
     def test_compile_and_simulate(self):
-        self.test_compile()
+        self.test_compile_fmi2()
         # Read input data
         signals = np.genfromtxt(self.base_dir / "Example1_in.csv",
                                 delimiter=",", names=True)

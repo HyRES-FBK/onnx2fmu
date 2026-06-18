@@ -14,6 +14,10 @@ class TestModel(unittest.TestCase):
     def test_name(self):
         self.assertEqual(self.model.name, "exampleModel")
 
+    def test_name_with_underscore(self):
+        model = Model(name="my_model")
+        self.assertEqual(model.name, "my_model")
+
     def test_add_variable(self):
         v = Input(name="x", shape=(2, 3))
         self.model.addVariable(v)

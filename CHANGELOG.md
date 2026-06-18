@@ -5,6 +5,21 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-06-18
+
+### Fixed
+
+- Model names containing underscores now correctly produce a matching
+  folder, `modelIdentifier`, and DLL name. Previously `Model._setName`
+  stripped underscores (regex `[^a-zA-Z0-9]`), causing `generate()` to
+  create a sanitized folder (e.g. `mymodel/`) while `compile()` passed
+  the raw JSON name to CMake (e.g. `my_model`). CMake could not find the
+  source files and, when a build did succeed, the DLL name diverged from
+  `modelIdentifier` so the FMU simulator could not load it at runtime.
+  Underscores are now preserved in both `Model._setName` and `compile()`.
+
+[0.3.1]: https://github.com/HyRES-FBK/onnx2fmu/compare/v0.3.0...v0.3.1
+
 ## [0.3.0] - 2026-06-15
 
 ### Changed

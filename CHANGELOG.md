@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2026-06-18
+
+### Fixed
+
+- Excluded large binary artifacts (prebuilt FMUs, ONNX Runtime shared
+  libraries, ONNX models, logos) from the PyPI sdist via
+  `[tool.flit.sdist]` exclude patterns. The sdist previously exceeded
+  PyPI's 60 MB upload limit, causing the release to fail.
+
+[0.3.3]: https://github.com/HyRES-FBK/onnx2fmu/compare/v0.3.2...v0.3.3
+
 ## [0.3.2] - 2026-06-18
 
 ### Changed

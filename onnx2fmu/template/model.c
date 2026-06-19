@@ -40,128 +40,130 @@ void setStartValues(ModelInstance *comp) {
     {%- endfor %}
 }
 
-Status calculateValues(ModelInstance *comp) {
+Status initModel(ModelInstance *comp) {
 
-    // Do I need memory info?
-    OrtMemoryInfo* memory_info;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->CreateCpuMemoryInfo(
-            OrtArenaAllocator, OrtMemTypeDefault, &memory_info
+            OrtArenaAllocator, OrtMemTypeDefault, &comp->modelBuffers.memory_info
         ),
         comp);
+
     {%- for input in inputs %}
 
-    // Create {{ input.name }} tensor
-    OrtValue* {{ input.name }}_tensor;
-
-    // Store the shape of the input tensor
+    // Allocate persistent buffer for {{ input.name }}
     const size_t {{ input.name }}_shape[] = { {{ input.shape|join(", ") }} };
-
-    // Determine the dimensions of the input tensor
     const size_t {{ input.name }}_dim = sizeof({{ input.name }}_shape) / sizeof({{ input.name }}_shape[0]);
     size_t {{ input.name }}_size = 1;
     for (size_t i = 0; i < {{ input.name }}_dim; ++i) {
         {{ input.name }}_size *= {{ input.name }}_shape[i];
     }
-
-    // Store values in the flattened array
-    float* {{ input.name }}_float = (float*)malloc({{ input.name }}_size * sizeof(float));
-    if ({{ input.name }}_float == NULL) {
+    comp->modelBuffers.{{ input.name }}_float = (float*)calloc({{ input.name }}_size, sizeof(float));
+    if (comp->modelBuffers.{{ input.name }}_float == NULL) {
         logError(comp, "Failed to allocate memory for {{ input.name }}_float");
         return Error;
     }
-
-    // Flatten the input array
-    {%- for scalar in input.scalarValues %}
-    {{ input.name }}_float[{{ loop.index0 }}] = (float)M({{ scalar.name }});
-    {%- endfor %}
-
     ORT_ABORT_ON_ERROR(
         comp->g_ort->CreateTensorWithDataAsOrtValue(
-            memory_info,
-            {{ input.name }}_float,
+            comp->modelBuffers.memory_info,
+            comp->modelBuffers.{{ input.name }}_float,
             {{ input.name }}_size * sizeof(float),
             (const int64_t*){{ input.name }}_shape,
             {{ input.name }}_dim,
             ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
-            &{{ input.name }}_tensor
+            &comp->modelBuffers.{{ input.name }}_tensor
         ),
         comp);
 
     int {{ input.name }}_is_tensor;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->IsTensor(
-            {{ input.name }}_tensor,
+            comp->modelBuffers.{{ input.name }}_tensor,
             &{{ input.name }}_is_tensor),
             comp
         );
-
     assert({{ input.name }}_is_tensor);
     {%- endfor %}
 
-    // LOCAL variables
     {%- for local in locals %}
 
-    // Create {{ local.nameIn }} tensor
-    OrtValue* {{ local.nameIn }}_tensor;
-
-    // Store the shape of the input tensor
+    // Allocate persistent buffer for {{ local.nameIn }}
     const size_t {{ local.nameIn }}_shape[] = { {{ local.shape|join(", ") }} };
-
-    // Determine the dimensions of the local tensor
     const size_t {{ local.nameIn }}_dim = sizeof({{ local.nameIn }}_shape) / sizeof({{ local.nameIn }}_shape[0]);
     size_t {{ local.nameIn }}_size = 1;
     for (size_t i = 0; i < {{ local.nameIn }}_dim; ++i) {
         {{ local.nameIn }}_size *= {{ local.nameIn }}_shape[i];
     }
-
-    // Store values in the flattened array
-    float* {{ local.nameIn }}_float = (float*)malloc({{ local.nameIn }}_size * sizeof(float));
-    if ({{ local.nameIn }}_float == NULL) {
+    comp->modelBuffers.{{ local.nameIn }}_float = (float*)calloc({{ local.nameIn }}_size, sizeof(float));
+    if (comp->modelBuffers.{{ local.nameIn }}_float == NULL) {
         logError(comp, "Failed to allocate memory for {{ local.nameIn }}_float");
         return Error;
     }
-
-    // Flatten the local array
-    {%- for scalar in local.scalarValues %}
-    {{ local.nameIn }}_float[{{ loop.index0 }}] = (float)M({{ scalar.name }});
-    {%- endfor %}
-
     ORT_ABORT_ON_ERROR(
         comp->g_ort->CreateTensorWithDataAsOrtValue(
-            memory_info,
-            {{ local.nameIn }}_float,
+            comp->modelBuffers.memory_info,
+            comp->modelBuffers.{{ local.nameIn }}_float,
             {{ local.nameIn }}_size * sizeof(float),
             (const int64_t*){{ local.nameIn }}_shape,
             {{ local.nameIn }}_dim,
             ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
-            &{{ local.nameIn }}_tensor
+            &comp->modelBuffers.{{ local.nameIn }}_tensor
         ),
         comp);
 
     int {{ local.nameIn }}_is_tensor;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->IsTensor(
-            {{ local.nameIn }}_tensor,
+            comp->modelBuffers.{{ local.nameIn }}_tensor,
             &{{ local.nameIn }}_is_tensor),
             comp
         );
-
     assert({{ local.nameIn }}_is_tensor);
     {%- endfor %}
 
-    // Release the memory info
-    comp->g_ort->ReleaseMemoryInfo(memory_info);
+    return OK;
+}
 
-    // Create output tensors
+void freeModel(ModelInstance *comp) {
+
+    {%- for input in inputs %}
+    if (comp->modelBuffers.{{ input.name }}_tensor)
+        comp->g_ort->ReleaseValue(comp->modelBuffers.{{ input.name }}_tensor);
+    if (comp->modelBuffers.{{ input.name }}_float)
+        free(comp->modelBuffers.{{ input.name }}_float);
+    {%- endfor %}
+    {%- for local in locals %}
+    if (comp->modelBuffers.{{ local.nameIn }}_tensor)
+        comp->g_ort->ReleaseValue(comp->modelBuffers.{{ local.nameIn }}_tensor);
+    if (comp->modelBuffers.{{ local.nameIn }}_float)
+        free(comp->modelBuffers.{{ local.nameIn }}_float);
+    {%- endfor %}
+    if (comp->modelBuffers.memory_info)
+        comp->g_ort->ReleaseMemoryInfo(comp->modelBuffers.memory_info);
+}
+
+Status calculateValues(ModelInstance *comp) {
+
+    // Update input buffers with current model values
+    {%- for input in inputs %}
+    {%- for scalar in input.scalarValues %}
+    comp->modelBuffers.{{ input.name }}_float[{{ loop.index0 }}] = (float)M({{ scalar.name }});
+    {%- endfor %}
+    {%- endfor %}
+
+    // Update local variable buffers with current model values
+    {%- for local in locals %}
+    {%- for scalar in local.scalarValues %}
+    comp->modelBuffers.{{ local.nameIn }}_float[{{ loop.index0 }}] = (float)M({{ scalar.name }});
+    {%- endfor %}
+    {%- endfor %}
+
+    // Output tensors are allocated by Run() on each call
     {%- for output in outputs %}
     OrtValue* {{ output.name }}_tensor = NULL;
     {%- endfor %}
-    // Create output tensors for local variables
     {%- for local in locals %}
     OrtValue* {{ local.nameOut }}_tensor = NULL;
     {%- endfor %}
-
 
     // Declare input node names
     const char* input_names[] = {
@@ -185,14 +187,14 @@ Status calculateValues(ModelInstance *comp) {
         {%- endfor %}
     };
 
-    // Gather input tensors
+    // Gather persistent input tensors
     const OrtValue* input_tensors[] = {
         {%- for input in inputs %}
-        {{ input.name }}_tensor{% if not loop.last %},{% endif %}
+        comp->modelBuffers.{{ input.name }}_tensor{% if not loop.last %},{% endif %}
         {%- endfor %}
         {%- if locals %},{% endif %}
         {%- for local in locals %}
-        {{ local.nameIn }}_tensor{% if not loop.last %},{% endif %}
+        comp->modelBuffers.{{ local.nameIn }}_tensor{% if not loop.last %},{% endif %}
         {%- endfor %}
     };
 
@@ -323,26 +325,12 @@ Status calculateValues(ModelInstance *comp) {
     {%- endfor %}
     {%- endfor %}
 
-    // Free tensors
+    // Release output tensors (allocated by Run on each call)
     {%- for local in locals %}
     comp->g_ort->ReleaseValue({{ local.nameOut }}_tensor);
     {%- endfor %}
     {%- for output in outputs %}
     comp->g_ort->ReleaseValue({{ output.name }}_tensor);
-    {%- endfor %}
-    {%- for local in locals %}
-    comp->g_ort->ReleaseValue({{ local.nameIn }}_tensor);
-    {%- endfor %}
-    {%- for input in inputs %}
-    comp->g_ort->ReleaseValue({{ input.name }}_tensor);
-    {%- endfor %}
-
-    // Free arrays
-    {%- for local in locals %}
-    free({{ local.nameIn }}_float);
-    {%- endfor %}
-    {%- for input in inputs %}
-    free({{ input.name }}_float);
     {%- endfor %}
 
     return OK;

@@ -61,7 +61,7 @@ else ()
     set(FMI_PLATFORM linux)
   endif ()
 
-  if ("${FMI_ARCHITECTURE}" STREQUAL "x86_64")
+  if ("${FMI_ARCHITECTURE}" STREQUAL "x86_64" OR "${FMI_ARCHITECTURE}" STREQUAL "aarch64")
     set (FMI_PLATFORM ${FMI_PLATFORM}64)
   elseif ("${FMI_ARCHITECTURE}" STREQUAL "x86")
     set (FMI_PLATFORM ${FMI_PLATFORM}32)
@@ -125,7 +125,7 @@ SET(SOURCES
 )
 
 # Manually set the latest release tag
-set (LATEST_RELEASE_TAG "1.20.1" CACHE STRING "Latest ONNX Runtime release tag to download")
+set (LATEST_RELEASE_TAG "1.21.0" CACHE STRING "Latest ONNX Runtime release tag to download")
 
 # Detect the operating system for onnxruntime download
 if (WIN32)
@@ -135,6 +135,9 @@ if (WIN32)
   endif ()
 elseif (APPLE)
   set(ONNXRUNTIME_OS "osx")
+  if (${FMI_ARCHITECTURE} MATCHES "aarch64")
+    set(FMI_ARCHITECTURE "arm64")
+  endif ()
 elseif (UNIX)
   set(ONNXRUNTIME_OS "linux")
   if (${FMI_ARCHITECTURE} MATCHES "AMD64|x86_64")
@@ -176,6 +179,23 @@ else ()
     message(STATUS "ONNX Runtime archive already exists at ${ONNXRUNTIME_ARCHIVE_PATH}")
 endif ()
 
+# A firewall or proxy may silently produce a zero-byte file instead of the real archive.
+# Detect this early, remove the empty file (so the next run re-downloads), and give
+# the user actionable instructions.
+file(SIZE ${ONNXRUNTIME_ARCHIVE_PATH} ONNXRUNTIME_ARCHIVE_SIZE)
+if (ONNXRUNTIME_ARCHIVE_SIZE EQUAL 0)
+    file(REMOVE ${ONNXRUNTIME_ARCHIVE_PATH})
+    message(FATAL_ERROR
+        "ONNX Runtime archive is empty (0 bytes): ${ONNXRUNTIME_ARCHIVE_PATH}\n"
+        "This is usually caused by a firewall or proxy blocking the download.\n"
+        "Please download the archive manually from:\n"
+        "  ${ONNXRUNTIME_URL}\n"
+        "save it to:\n"
+        "  ${ONNXRUNTIME_ARCHIVE_PATH}\n"
+        "and re-run CMake."
+    )
+endif ()
+
 # Extract the ONNX Runtime release
 execute_process(
     COMMAND ${CMAKE_COMMAND} -E tar xzf ${ONNXRUNTIME_ARCHIVE_PATH}
@@ -186,7 +206,15 @@ execute_process(
 if (EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include/onnxruntime_c_api.h")
   message(STATUS "ONNX Runtime extraction successful.")
 else ()
-  message(FATAL_ERROR "ONNX Runtime extraction failed. File not found: ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include/onnxruntime_c_api.h")
+  message(FATAL_ERROR
+      "ONNX Runtime extraction failed — "
+      "${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include/onnxruntime_c_api.h not found.\n"
+      "The archive at ${ONNXRUNTIME_ARCHIVE_PATH} may be corrupt or incomplete.\n"
+      "Delete it and re-run CMake, or download manually from:\n"
+      "  ${ONNXRUNTIME_URL}\n"
+      "and save to:\n"
+      "  ${ONNXRUNTIME_ARCHIVE_PATH}"
+  )
 endif ()
 
 # Include the onnxruntime directory like in https://github.com/microsoft/onnxruntime-inference-examples/blob/main/c_cxx/CMakeLists.txt

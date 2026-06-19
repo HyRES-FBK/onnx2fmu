@@ -1115,7 +1115,7 @@ wheels = [
 
 [[package]]
 name = "onnx2fmu"
-version = "0.2.5"
+version = "0.3.1"
 source = { editable = "." }
 dependencies = [
     { name = "cmake" },
@@ -1127,8 +1127,8 @@ dependencies = [
     { name = "typer" },
 ]
 
-[package.dev-dependencies]
-dev = [
+[package.optional-dependencies]
+extra = [
     { name = "fmpy" },
     { name = "ipykernel" },
     { name = "onnxscript" },
@@ -1141,23 +1141,20 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "cmake" },
+    { name = "fmpy", marker = "extra == 'extra'", specifier = ">=0.3.25" },
+    { name = "ipykernel", marker = "extra == 'extra'", specifier = ">=7.1.0" },
     { name = "jinja2" },
     { name = "loguru" },
     { name = "numpy" },
     { name = "onnx" },
+    { name = "onnxscript", marker = "extra == 'extra'", specifier = ">=0.5.6" },
+    { name = "pandas", marker = "extra == 'extra'", specifier = ">=2.3.3" },
+    { name = "plotly", marker = "extra == 'extra'", specifier = ">=6.5.0" },
+    { name = "pyside6", marker = "extra == 'extra'", specifier = ">=6.10.1" },
+    { name = "torch", marker = "extra == 'extra'", specifier = ">=2.9.1" },
     { name = "typer" },
 ]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "fmpy", specifier = ">=0.3.25" },
-    { name = "ipykernel", specifier = ">=7.1.0" },
-    { name = "onnxscript", specifier = ">=0.5.6" },
-    { name = "pandas", specifier = ">=2.3.3" },
-    { name = "plotly", specifier = ">=6.5.0" },
-    { name = "pyside6", specifier = ">=6.10.1" },
-    { name = "torch", specifier = ">=2.9.1" },
-]
+provides-extras = ["extra"]
 
 [[package]]
 name = "onnxscript"

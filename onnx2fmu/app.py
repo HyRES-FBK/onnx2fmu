@@ -1,3 +1,4 @@
+import re
 import json
 import typer
 import shutil
@@ -184,8 +185,8 @@ def compile(
     with open(model_description_path, "r") as f:
         model_description = json.load(f)
 
-    # Take the model description's name for the model
-    model_name = model_description["name"]
+    # Take the model description's name for the model (sanitized as Model._setName does)
+    model_name = re.sub(r'[^a-zA-Z0-9_]', '', model_description["name"])
 
     if fmi_platform in complete_platform():
         fmi_architecture, fmi_system = fmi_platform.split("-")

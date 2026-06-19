@@ -19,7 +19,8 @@ void initializeOrtApi(ModelInstance* comp) {
     const OrtApi* g_ort = NULL;
     g_ort = OrtGetApiBase()->GetApi(ORT_API_VERSION);
     if (!g_ort) {
-        logError(comp, "Failed to init ONNX Runtime engine.");
+        const char *version = OrtGetApiBase()->GetVersionString();
+        logError(comp, "Failed to init ONNX Runtime engine: get '%s' instead of '%d'", version, ORT_API_VERSION);
         return;
     }
     comp->g_ort = g_ort;

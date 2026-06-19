@@ -108,6 +108,11 @@ ModelInstance *createModelInstance(
 
     // Load the model
     initializeOrtApi(comp);
+    if (!comp->g_ort) {
+        logError(comp, "Failed to initialize ONNX Runtime API.");
+        freeModelInstance(comp);
+        return NULL;
+    }
     createOrtEnv(comp);
     createOrtSessionOptions(comp);
     createOrtSession(comp->env, resourceLocation, comp->session_options, comp);

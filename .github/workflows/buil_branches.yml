@@ -15,7 +15,7 @@ jobs:
       matrix:
         arch: [x86_64]
         os: [windows]
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     runs-on: [self-hosted, Windows]
 
     steps:
@@ -92,7 +92,7 @@ jobs:
       matrix:
         arch: [x86_64]
         os: [linux]
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     runs-on: [self-hosted, Linux]
 
     steps:

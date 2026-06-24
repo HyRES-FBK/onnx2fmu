@@ -171,10 +171,32 @@ endif ()
 # Path to the downloaded ONNX Runtime archive
 set(ONNXRUNTIME_ARCHIVE_PATH "${ONNXRUNTIME_CACHE_DIR}/${ONNXRUNTIME_ARCHIVE}")
 
-# Download the ONNX Runtime release only if the file does not exist
+# Serialize concurrent configures that share the cache directory so two builds
+# cannot download into / read the same archive at the same time. The lock is
+# released automatically when this CMake process ends.
+file(LOCK "${ONNXRUNTIME_CACHE_DIR}/download.lock" GUARD PROCESS TIMEOUT 600)
+
+# Download the ONNX Runtime release only if the file does not exist. Download to
+# a temporary path first and rename into place so that a failed/interrupted
+# download (or a concurrent reader) never sees a half-written archive. The
+# download is bounded by TIMEOUT/INACTIVITY_TIMEOUT so a stalled network fails
+# fast instead of hanging the build indefinitely.
 if (NOT EXISTS ${ONNXRUNTIME_ARCHIVE_PATH})
     message(STATUS "Downloading ONNX Runtime from ${ONNXRUNTIME_URL}")
-    file(DOWNLOAD ${ONNXRUNTIME_URL} ${ONNXRUNTIME_ARCHIVE_PATH})
+    set(ONNXRUNTIME_ARCHIVE_TMP "${ONNXRUNTIME_ARCHIVE_PATH}.tmp")
+    file(DOWNLOAD ${ONNXRUNTIME_URL} ${ONNXRUNTIME_ARCHIVE_TMP}
+        TIMEOUT 300
+        INACTIVITY_TIMEOUT 60
+        STATUS ONNXRUNTIME_DOWNLOAD_STATUS
+        SHOW_PROGRESS
+    )
+    list(GET ONNXRUNTIME_DOWNLOAD_STATUS 0 ONNXRUNTIME_DOWNLOAD_CODE)
+    list(GET ONNXRUNTIME_DOWNLOAD_STATUS 1 ONNXRUNTIME_DOWNLOAD_MSG)
+    if (NOT ONNXRUNTIME_DOWNLOAD_CODE EQUAL 0)
+        file(REMOVE ${ONNXRUNTIME_ARCHIVE_TMP})
+        message(FATAL_ERROR "ONNX Runtime download failed (${ONNXRUNTIME_DOWNLOAD_CODE}): ${ONNXRUNTIME_DOWNLOAD_MSG}")
+    endif ()
+    file(RENAME ${ONNXRUNTIME_ARCHIVE_TMP} ${ONNXRUNTIME_ARCHIVE_PATH})
 else ()
     message(STATUS "ONNX Runtime archive already exists at ${ONNXRUNTIME_ARCHIVE_PATH}")
 endif ()

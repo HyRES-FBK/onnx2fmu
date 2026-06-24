@@ -138,11 +138,17 @@ void freeModelInstance(ModelInstance *comp) {
 
     freeModel(comp);
 
-    if (comp->env) freeOrtEnv(comp->env, comp);
+    // Release ONNX Runtime objects in the reverse order of creation
+    // (session -> session options -> env). The OrtEnv owns the shared thread
+    // pools and logger that the OrtSession depends on and must outlive every
+    // session; releasing the env while a live session still references its
+    // thread pool makes ORT's teardown deadlock (an intermittent hang observed
+    // in fmi2FreeInstance). See createOrtEnv/createOrtSession order above.
+    if (comp->session) freeSession(comp->session, comp);
 
     if (comp->session_options) freeOrtSessionOptions(comp->session_options, comp);
 
-    if (comp->session) freeSession(comp->session, comp);
+    if (comp->env) freeOrtEnv(comp->env, comp);
 
     free(comp);
 }

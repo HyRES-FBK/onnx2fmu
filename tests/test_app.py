@@ -1,10 +1,11 @@
 import json
+import shutil
+import tempfile
 import unittest
 import numpy as np
 import pandas as pd
 from onnx import load
 from pathlib import Path
-from shutil import rmtree
 from fmpy.validation import validate_fmu
 from fmpy.simulation import simulate_fmu
 
@@ -18,9 +19,14 @@ class TestApp(unittest.TestCase):
         self.base_dir = Path(__file__).resolve().parent.parent \
             / "examples" / self.model_name
         self.model_path = self.base_dir / f'{self.model_name}.onnx'
+        # Isolate all filesystem state for this test in a private temp dir so
+        # tests never share build folders / FMU output / the CWD with each
+        # other. The whole directory is removed on cleanup.
+        self.tmpdir = Path(tempfile.mkdtemp(prefix="onnx2fmu_test_"))
+        self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
 
     def test_create_project_structure(self):
-        target_path = Path("test_project_structure_target")
+        target_path = self.tmpdir / "test_project_structure_target"
         _createFMUFolderStructure(target_path, self.model_path, self.model_name)
         self.assertIn(
             "CMakeLists.txt",
@@ -31,7 +37,6 @@ class TestApp(unittest.TestCase):
                 folder,
                 [f.name for f in target_path.iterdir() if not f.is_file()]
             )
-        rmtree(target_path)
 
 
 class TestExample1(unittest.TestCase):
@@ -46,15 +51,13 @@ class TestExample1(unittest.TestCase):
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
-        self.destination = Path(".")
+        self.tmpdir = Path(tempfile.mkdtemp(prefix="onnx2fmu_test_"))
+        self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
+        self.destination = self.tmpdir
         self.fmu_path = self.destination / f"{self.model_description['name']}.fmu"
 
-    def tearDown(self) -> None:
-        if self.fmu_path.exists():
-            self.fmu_path.unlink()
-
     def test_generate_fmi2(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI2"
         files = [
             "model.c",
             "config.h",
@@ -71,11 +74,9 @@ class TestExample1(unittest.TestCase):
                 (target_path / self.model_description['name'] / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
 
     def test_generate_fmi3(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI3"
         files = [
             "model.c",
             "config.h",
@@ -83,7 +84,7 @@ class TestExample1(unittest.TestCase):
             "FMI3.xml",
         ]
         self.model_description["FMIVersion"] = "3.0"
-        temp_model_description_path = Path("modelDescription.json")
+        temp_model_description_path = self.tmpdir / "modelDescription.json"
         with open(temp_model_description_path, "w", encoding="utf-8") as f:
             json.dump(self.model_description, f)
         generate(
@@ -96,12 +97,9 @@ class TestExample1(unittest.TestCase):
                 (target_path / self.model_description['name'] / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
-        temp_model_description_path.unlink()
 
     def test_compile_fmi2(self):
-        target_path = Path(f"test_{self.model_name}_compile_FMI2")
+        target_path = self.tmpdir / f"test_{self.model_name}_compile_FMI2"
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
@@ -118,9 +116,9 @@ class TestExample1(unittest.TestCase):
         self.assertEqual(len(results), 0, results)
 
     def test_compile_fmi3(self):
-        target_path = Path(f"test_{self.model_name}_compile_FMI3")
+        target_path = self.tmpdir / f"test_{self.model_name}_compile_FMI3"
         self.model_description["FMIVersion"] = "3.0"
-        temp_model_description_path = Path("modelDescription.json")
+        temp_model_description_path = self.tmpdir / "modelDescription.json"
         with open(temp_model_description_path, "w", encoding="utf-8") as f:
             json.dump(self.model_description, f)
         generate(
@@ -173,15 +171,13 @@ class TestExample2(unittest.TestCase):
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
-        self.destination = Path(".")
+        self.tmpdir = Path(tempfile.mkdtemp(prefix="onnx2fmu_test_"))
+        self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
+        self.destination = self.tmpdir
         self.fmu_path = self.destination / f"{self.model_name}.fmu"
 
-    def tearDown(self) -> None:
-        if self.fmu_path.exists():
-            self.fmu_path.unlink()
-
     def test_generate_fmi2(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI2"
         files = [
             "model.c",
             "config.h",
@@ -198,11 +194,9 @@ class TestExample2(unittest.TestCase):
                 (target_path / self.model_name / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
 
     def test_generate_fmi3(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI3"
         files = [
             "model.c",
             "config.h",
@@ -210,7 +204,7 @@ class TestExample2(unittest.TestCase):
             "FMI3.xml",
         ]
         self.model_description["FMIVersion"] = "3.0"
-        temp_model_description_path = Path("modelDescription.json")
+        temp_model_description_path = self.tmpdir / "modelDescription.json"
         with open(temp_model_description_path, "w", encoding="utf-8") as f:
             json.dump(self.model_description, f)
         generate(
@@ -223,12 +217,9 @@ class TestExample2(unittest.TestCase):
                 (target_path / self.model_name / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
-        temp_model_description_path.unlink()
 
     def test_compile(self):
-        target_path = Path(f"test_{self.model_name}_compile")
+        target_path = self.tmpdir / f"test_{self.model_name}_compile"
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
@@ -279,15 +270,13 @@ class TestExample3(unittest.TestCase):
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
-        self.destination = Path(".")
+        self.tmpdir = Path(tempfile.mkdtemp(prefix="onnx2fmu_test_"))
+        self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
+        self.destination = self.tmpdir
         self.fmu_path = self.destination / f"{self.model_name}.fmu"
 
-    def tearDown(self) -> None:
-        if self.fmu_path.exists():
-            self.fmu_path.unlink()
-
     def test_generate_fmi2(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI2"
         files = [
             "model.c",
             "config.h",
@@ -304,11 +293,9 @@ class TestExample3(unittest.TestCase):
                 (target_path / self.model_name / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
 
     def test_generate_fmi3(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI3"
         files = [
             "model.c",
             "config.h",
@@ -316,7 +303,7 @@ class TestExample3(unittest.TestCase):
             "FMI3.xml",
         ]
         self.model_description["FMIVersion"] = "3.0"
-        temp_model_description_path = Path("modelDescription.json")
+        temp_model_description_path = self.tmpdir / "modelDescription.json"
         with open(temp_model_description_path, "w", encoding="utf-8") as f:
             json.dump(self.model_description, f)
         generate(
@@ -329,12 +316,9 @@ class TestExample3(unittest.TestCase):
                 (target_path / self.model_name / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
-        temp_model_description_path.unlink()
 
     def test_compile(self):
-        target_path = Path(f"test_{self.model_name}_compile")
+        target_path = self.tmpdir / f"test_{self.model_name}_compile"
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
@@ -363,21 +347,22 @@ class TestExample4(unittest.TestCase):
             self.base_dir / f'{self.model_name}Description.json'
         self.model_description = \
             json.loads(self.model_description_path.read_text())
-        self.destination = Path(".")
-        self.fmu_path = self.destination / f"{self.model_name}.fmu"
-
-    def tearDown(self) -> None:
-        if self.fmu_path.exists():
-            self.fmu_path.unlink()
+        self.tmpdir = Path(tempfile.mkdtemp(prefix="onnx2fmu_test_"))
+        self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
+        self.destination = self.tmpdir
+        # The compiled FMU is named after the description's "name" field, which
+        # for example4 is "example4FMI2" (not the bare model name).
+        self.fmu_path = self.destination / f"{self.model_description['name']}.fmu"
 
     def test_generate_fmi2(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI2")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI2"
         files = [
             "model.c",
             "config.h",
             "buildDescription.xml",
             "FMI2.xml",
         ]
+        model_name = self.model_description['name']
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
@@ -385,14 +370,12 @@ class TestExample4(unittest.TestCase):
         )
         for file in files:
             self.assertTrue(
-                (target_path / self.model_name / file).is_file(),
+                (target_path / model_name / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
 
     def test_generate_fmi3(self):
-        target_path = Path(f"test_{self.model_name}_generate_target_FMI3")
+        target_path = self.tmpdir / f"test_{self.model_name}_generate_target_FMI3"
         files = [
             "model.c",
             "config.h",
@@ -400,7 +383,8 @@ class TestExample4(unittest.TestCase):
             "FMI3.xml",
         ]
         self.model_description["FMIVersion"] = "3.0"
-        temp_model_description_path = Path("modelDescription.json")
+        model_name = self.model_description['name']
+        temp_model_description_path = self.tmpdir / "modelDescription.json"
         with open(temp_model_description_path, "w", encoding="utf-8") as f:
             json.dump(self.model_description, f)
         generate(
@@ -410,15 +394,12 @@ class TestExample4(unittest.TestCase):
         )
         for file in files:
             self.assertTrue(
-                (target_path / self.model_name / file).is_file(),
+                (target_path / model_name / file).is_file(),
                 f"File {file} has not been generated."
             )
-        if target_path.exists():
-            rmtree(target_path)
-        temp_model_description_path.unlink()
 
     def test_compile(self):
-        target_path = Path(f"test_{self.model_name}_compile")
+        target_path = self.tmpdir / f"test_{self.model_name}_compile_FMI2"
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
@@ -435,9 +416,12 @@ class TestExample4(unittest.TestCase):
         self.assertEqual(len(results), 0, results)
 
     def test_compile_fmi3(self):
-        target_path = Path(f"test_{self.model_name}_compile")
+        target_path = self.tmpdir / f"test_{self.model_name}_compile_FMI3"
         # Change the model description path to the file specific for the FMI 3.0
         self.model_description_path = self.base_dir / f"{self.model_name}DescriptionFMI3.json"
+        # This description's "name" is example4FMI3, so the FMU is named accordingly.
+        fmi3_name = json.loads(self.model_description_path.read_text())['name']
+        self.fmu_path = self.destination / f"{fmi3_name}.fmu"
         generate(
             model_path=self.model_path,
             model_description_path=self.model_description_path,
@@ -454,12 +438,12 @@ class TestExample4(unittest.TestCase):
         self.assertEqual(len(results), 0, results)
 
     def test_compile_and_simulate(self):
-        target_path = Path(f"test_{self.model_name}_compile")
+        target_path = self.tmpdir / f"test_{self.model_name}_compile_and_simulate"
         # The test is though without start values, so we set them to None
         for entry in ["inputs", "outputs", "locals"]:
             for variable in self.model_description.get(entry, []):
                 variable["start"] = "0.0"
-        temp_model_description_path = Path("modelDescription.json")
+        temp_model_description_path = self.tmpdir / "modelDescription.json"
         with open(temp_model_description_path, "w", encoding="utf-8") as f:
             json.dump(self.model_description, f)
         build(

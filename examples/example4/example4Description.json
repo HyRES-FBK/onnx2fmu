@@ -1,5 +1,5 @@
 {
-    "name": "example4",
+    "name": "example4FMI2",
     "description": "Example to test FMU with local variables.",
     "FMIVersion": "2.0",
     "inputs": [

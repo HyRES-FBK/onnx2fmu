@@ -145,6 +145,48 @@ def cmake_configurations():
     return ['Debug', 'Release']
 
 
+# Timeouts (seconds) for the cmake subprocesses. The configure step may download
+# ONNX Runtime on first run, so it gets a generous bound; the build step is the
+# C compilation. Bounding them turns a stalled download/hung compiler into a
+# clear failure instead of an indefinite hang (e.g. in the VS Code Testing UI).
+CMAKE_CONFIGURE_TIMEOUT = 600
+CMAKE_BUILD_TIMEOUT = 1800
+
+
+def _run_cmake(args: list, timeout: int) -> None:
+    """Run a cmake command, capturing its output instead of inheriting the
+    parent's stdout/stderr.
+
+    Inheriting the caller's pipe is unsafe when the caller (e.g. the VS Code
+    unittest adapter) is slow to drain it: cmake's verbose configure/build
+    output fills the OS pipe buffer and cmake blocks on write, hanging the
+    test. Capturing the output ourselves keeps the pipe drained. On failure the
+    captured output is logged so errors stay visible.
+    """
+    try:
+        subprocess.run(
+            ['cmake'] + args,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired as exc:
+        output = exc.output or ""
+        if isinstance(output, bytes):
+            output = output.decode(errors="replace")
+        logger.error(f"cmake timed out after {timeout}s: cmake {' '.join(args)}")
+        if output:
+            logger.error(output)
+        raise
+    except subprocess.CalledProcessError as exc:
+        logger.error(f"cmake failed: cmake {' '.join(args)}")
+        if exc.stdout:
+            logger.error(exc.stdout)
+        raise
+
+
 @app.command()
 def compile(
     target_folder: Annotated[
@@ -252,9 +294,9 @@ def compile(
 
     # Run cmake to generate the FMU
     logger.info(f'Call cmake {" ".join(cmake_args)}')
-    subprocess.run(['cmake'] + cmake_args, check=True)
+    _run_cmake(cmake_args, timeout=CMAKE_CONFIGURE_TIMEOUT)
     logger.info(f'CMake build cmake {" ".join(cmake_build_args)}')
-    subprocess.run(['cmake'] + cmake_build_args, check=True)
+    _run_cmake(cmake_build_args, timeout=CMAKE_BUILD_TIMEOUT)
 
     ############################
     # Clean up

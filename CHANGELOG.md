@@ -5,6 +5,19 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- FMU size reduced by ~3× (from ~18 MB to ~6–7 MB) by shipping the ONNX
+  Runtime shared library exactly once instead of three times. The previous
+  CMake packaging dereferenced the version symlinks in the official ORT
+  release (`libonnxruntime.so` and `libonnxruntime.so.1` both point to
+  the real `libonnxruntime.so.1.x.y`), writing three full copies into the
+  FMU archive. The model binary only needs `libonnxruntime.so.MAJOR`, so
+  the build now copies that single file. On Windows, import libraries
+  (`.lib`) and debug symbols (`.pdb`) are also dropped.
+
 ## [0.3.3] - 2026-06-18
 
 ### Fixed

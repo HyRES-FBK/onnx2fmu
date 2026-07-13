@@ -29,6 +29,35 @@ You don't need to install CMake because it will be installed with the Python
 package, but you need to install a C compiler (e.g., Visual Studio in Windows,
 gcc in Linux, etc.).
 
+## 🏗️ Architecture
+
+ONNX2FMU turns an ONNX model plus a JSON model description into a co-simulation
+FMU. The pipeline has a Python code-generation half and a C runtime half:
+
+<p align="center">
+<img src="onnx2fmu_workflow.png" alt="ONNX2FMU workflow: user inputs (ONNX model and model description) are validated and expanded into FMI scalar variables, rendered into C/XML templates by the Python code generator, then compiled and packaged by CMake into a co-simulation FMU." width="500">
+</p>
+
+1. **Validate** — the model description JSON is checked against the ONNX
+   graph: every declared input/output/local `name` must match a graph node,
+   and `local` `nameIn`/`nameOut` node shapes must agree.
+2. **Expand variables** — each tensor input/output/local is expanded into a
+   flat list of FMI scalar variables (one per tensor element), with per-element
+   names, optional labels, and broadcast start values. `local` variables wire
+   an output node back into an input node on the next simulation step, which
+   is how RNN-style stateful models are supported.
+3. **Build context** — the expanded variables are assigned sequential FMI
+   value references, together with a GUID and timestamps, into a single
+   context dictionary.
+4. **Render templates** — the context is rendered through Jinja2 templates to
+   produce the generated C sources (`model.c`, `config.h`) and the FMU
+   descriptors (`buildDescription.xml`, `FMI2.xml`/`FMI3.xml`).
+5. **Compile** — CMake downloads/caches a pinned ONNX Runtime release,
+   compiles the generated `model.c` against the static C runtime
+   (`cosimulation.c`, `ortUtils.c`, `fmi{2,3}Functions.c`), and packages
+   everything — including the original `model.onnx`, loaded at runtime rather
+   than compiled into C — into the final `.fmu` archive.
+
 ## 📝 ONNX model declaration
 
 ONNX2FMU can handle models with multiple inputs, outputs, and local variables.

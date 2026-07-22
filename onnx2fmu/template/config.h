@@ -7,7 +7,12 @@
 #define MODEL_IDENTIFIER {{ name }}
 #define INSTANTIATION_TOKEN "{{ GUID }}"
 
+{%- if coSimulation %}
 #define CO_SIMULATION
+{%- endif %}
+{%- if modelExchange %}
+#define MODEL_EXCHANGE
+{%- endif %}
 
 #define GET_FLOAT64
 #define SET_FLOAT64
@@ -18,6 +23,11 @@
 
 #define FIXED_SOLVER_STEP 1
 #define DEFAULT_STOP_TIME 1
+
+{%- if states %}
+#define HAS_CONTINUOUS_STATES
+#define NX {{ states|length }}
+{%- endif %}
 
 typedef enum {
     // Always include time

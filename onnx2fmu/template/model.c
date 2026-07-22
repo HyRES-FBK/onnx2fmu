@@ -150,6 +150,18 @@ Status calculateValues(ModelInstance *comp) {
     {%- endfor %}
     {%- endfor %}
 
+    // Time inputs carry no FMI scalars of their own (they read the FMI
+    // independent variable), so their buffer is filled explicitly here from
+    // comp->time -- the field kept current by fmi{2,3}SetTime (Model
+    // Exchange) and by the fixed-step Co-Simulation loop. M(time)/vr_time is
+    // legacy scaffolding that nothing in the runtime ever writes to, so it
+    // must not be used as the source of truth for the independent variable.
+    {%- for input in inputs %}
+    {%- if input.isTime %}
+    comp->modelBuffers.{{ input.name }}_float[0] = (float)comp->time;
+    {%- endif %}
+    {%- endfor %}
+
     // Update local variable buffers with current model values
     {%- for local in locals %}
     {%- for scalar in local.scalarValues %}
@@ -494,4 +506,41 @@ Status eventUpdate(ModelInstance *comp) {
 
     return OK;
 }
+
+{%- if states %}
+
+size_t getNumberOfContinuousStates(ModelInstance* comp) {
+    UNUSED(comp);
+    return {{ states|length }};
+}
+
+Status getContinuousStates(ModelInstance *comp, double x[], size_t nx) {
+    UNUSED(nx);
+    {%- for state in states %}
+    x[{{ loop.index0 }}] = M({{ state.stateName }});
+    {%- endfor %}
+    return OK;
+}
+
+Status setContinuousStates(ModelInstance *comp, const double x[], size_t nx) {
+    UNUSED(nx);
+    {%- for state in states %}
+    M({{ state.stateName }}) = x[{{ loop.index0 }}];
+    {%- endfor %}
+    // Defer inference to the next getContinuousStates/getDerivatives call
+    // (both run calculateValues themselves) instead of running it here, so a
+    // solver evaluating the derivatives right after does not trigger it twice.
+    comp->isDirtyValues = true;
+    return OK;
+}
+
+Status getDerivatives(ModelInstance *comp, double dx[], size_t nx) {
+    UNUSED(nx);
+    calculateValues(comp);
+    {%- for state in states %}
+    dx[{{ loop.index0 }}] = M({{ state.derivativeName }});
+    {%- endfor %}
+    return OK;
+}
+{%- endif %}
 

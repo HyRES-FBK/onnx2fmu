@@ -24,7 +24,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-  "onnx",
+  "onnx>=1.22.0",
   "jinja2",
   "cmake",
   "numpy",

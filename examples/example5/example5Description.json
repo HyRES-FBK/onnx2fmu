@@ -1,0 +1,39 @@
+{
+    "name": "example5",
+    "description": "Neural ODE (trained with torchdiffeq) approximating a forced Van der Pol oscillator. dx/dt = f_theta(t, x); the FMU's own Model Exchange solver integrates it.",
+    "FMIVersion": "3.0",
+    "FMUType": [
+        "ModelExchange",
+        "CoSimulation"
+    ],
+    "inputs": [
+        {
+            "name": "x",
+            "description": "State vector [x0, x1].",
+            "labels": [
+                "x0",
+                "x1"
+            ],
+            "start": [
+                2.0,
+                0.0
+            ]
+        },
+        {
+            "name": "t",
+            "description": "Simulation time, fed to the forcing term.",
+            "time": true
+        }
+    ],
+    "outputs": [
+        {
+            "name": "dx",
+            "description": "dx/dt, the learned state derivative.",
+            "labels": [
+                "der_x0",
+                "der_x1"
+            ],
+            "derivativeOf": "x"
+        }
+    ]
+}

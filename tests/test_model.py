@@ -57,5 +57,76 @@ class TestModel(unittest.TestCase):
         self.assertIn("z1_z2", [var["name"] for var in context["locals"]])
 
 
+class TestModelFMUType(unittest.TestCase):
+
+    def test_default_is_co_simulation_only(self):
+        model = Model(name="m")
+        self.assertFalse(model.modelExchange)
+        self.assertTrue(model.coSimulation)
+
+    def test_model_exchange_only(self):
+        model = Model(name="m", fmuType=["ModelExchange"])
+        self.assertTrue(model.modelExchange)
+        self.assertFalse(model.coSimulation)
+
+    def test_both_interfaces(self):
+        model = Model(name="m", fmuType=["ModelExchange", "CoSimulation"])
+        self.assertTrue(model.modelExchange)
+        self.assertTrue(model.coSimulation)
+
+    def test_context_exposes_fmu_type_flags(self):
+        model = Model(name="m", fmuType=["ModelExchange", "CoSimulation"])
+        model.addVariable(Input(name="x", shape=(2, ), start=[2.0, 0.0],
+                                isState=True))
+        model.addVariable(Output(name="dx", shape=(2, ), derivativeOf="x"))
+        context = model.generateContext()
+        self.assertTrue(context["modelExchange"])
+        self.assertTrue(context["coSimulation"])
+
+
+class TestModelStates(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.model = Model(name="vdp", fmuType=["ModelExchange"])
+
+    def test_states_are_paired_with_derivatives(self):
+        self.model.addVariable(
+            Input(name="x", shape=(2, ), start=[2.0, 0.0], isState=True)
+        )
+        self.model.addVariable(
+            Output(name="dx", shape=(2, ), derivativeOf="x")
+        )
+        context = self.model.generateContext()
+        self.assertEqual(context["numberOfContinuousStates"], 2)
+        self.assertEqual(len(context["states"]), 2)
+        state_input = context["inputs"][0]
+        derivative_output = context["outputs"][0]
+        for state_scalar, derivative_scalar, pair in zip(
+                state_input["scalarValues"],
+                derivative_output["scalarValues"],
+                context["states"]):
+            self.assertEqual(pair["stateName"], state_scalar["name"])
+            self.assertEqual(pair["derivativeName"], derivative_scalar["name"])
+            self.assertEqual(
+                derivative_scalar["stateValueReference"],
+                state_scalar["valueReference"]
+            )
+
+    def test_no_states_when_nothing_declared(self):
+        self.model.addVariable(Input(name="x"))
+        self.model.addVariable(Output(name="y"))
+        context = self.model.generateContext()
+        self.assertEqual(context["states"], [])
+        self.assertEqual(context["numberOfContinuousStates"], 0)
+
+    def test_dangling_derivative_reference_raises(self):
+        # "x" is never added as a state (isState=True) input, only as a
+        # plain "y" input -- so the derivativeOf reference cannot resolve.
+        self.model.addVariable(Input(name="y"))
+        self.model.addVariable(Output(name="dx", derivativeOf="x"))
+        with self.assertRaises(ValueError):
+            self.model.generateContext()
+
+
 if __name__ == "__main__":
     unittest.main()

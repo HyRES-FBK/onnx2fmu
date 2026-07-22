@@ -77,6 +77,11 @@ the FMU binaries, which can be either `2.0` or `3.0`;
 ONNX model;
 - `"locals"` are mapping between an input and an output node. Their behavior is
 explained in [A model with local variables](#a-model-with-local-variables).
+- `"FMUType"` (optional) selects which FMI interface(s) to generate: a list
+made of `"CoSimulation"`, `"ModelExchange"`, or both. It defaults to
+`["CoSimulation"]`, so existing model descriptions keep producing the same
+FMU. See [Model Exchange and continuous
+states](#model-exchange-and-continuous-states).
 
 Each entry of the the inputs and output lists is characterized by the following
 schema:
@@ -251,6 +256,83 @@ In the example above, the input `U` is updated with the content of `u` and
 returned by the function with the name `U1` (remember that node names cannot be
 repeated in ONNX). During the next time step, the FMU will take care to pass
 the output to the model as a new, updated input.
+
+### Model Exchange and continuous states
+
+ONNX2FMU can also generate **Model Exchange** (ME) FMUs, for models whose
+outputs are interpreted as state derivatives `dx/dt` (a "neural ODE"): the
+FMU exposes `getContinuousStates`/`setContinuousStates`/`getDerivatives` and
+lets the *importer's own solver* (e.g. CVode) integrate the network, instead
+of ONNX2FMU stepping it internally as in Co-Simulation.
+
+To opt in, set `"FMUType"` to include `"ModelExchange"`, and mark an output
+as the derivative of an input with `"derivativeOf"`:
+
+```json
+{
+    "name": "VanDerPol",
+    "description": "Van der Pol oscillator (mu=1) as a neural-ODE FMU.",
+    "FMIVersion": "3.0",
+    "FMUType": ["ModelExchange", "CoSimulation"],
+    "inputs": [
+        {
+            "name": "x",
+            "description": "State vector [x0, x1].",
+            "start": [2.0, 0.0]
+        }
+    ],
+    "outputs": [
+        {
+            "name": "dx",
+            "description": "dx/dt, the derivative of state x.",
+            "derivativeOf": "x"
+        }
+    ]
+}
+```
+
+A few consequences of declaring a state this way:
+
+- The state input (`"x"` above) is **required** to declare a `"start"`
+value — it is its initial condition — and is emitted in the FMU as an
+`output`-causality variable with `initial="exact"`, not as a regular input.
+This mirrors the FMI specification's own [Van der
+Pol](https://github.com/modelica/Reference-FMUs/tree/main/VanDerPol)
+reference example.
+- The derivative output (`"dx"` above) is emitted as a `local`-causality,
+`initial="calculated"` variable carrying the FMI `derivative` attribute
+that points back at its state.
+- Both the state and its derivative must reference ONNX nodes of the same
+shape.
+- `"FMUType": ["ModelExchange"]` is **not compatible with `"locals"`**:
+discrete feedback variables would otherwise advance at whatever rate the
+ME solver happens to evaluate the model, not once per communication step.
+Declaring both raises a validation error.
+
+For time-dependent (non-autonomous) dynamics `f(t, x)`, an input can be
+flagged `"time": true` instead of receiving its own FMI variable; ONNX2FMU
+feeds it the FMI independent variable (the simulation clock) on every
+evaluation:
+
+```json
+{"name": "t", "time": true}
+```
+
+A model can declare at most one time input, and it must have a single
+element (it cannot itself be a state).
+
+**Co-Simulation of a model with continuous states** is still possible (e.g.
+`"FMUType": ["ModelExchange", "CoSimulation"]`) but integrates internally
+with a fixed-step forward Euler at the hardcoded 1 second step
+(`FIXED_SOLVER_STEP`) — coarser than letting an ME importer's adaptive
+solver drive it. Use plain Model Exchange, or a small Co-Simulation
+communication step, for accuracy-sensitive cases.
+
+[example5](examples/example5/) trains an actual neural ODE with
+[torchdiffeq](https://github.com/rtqichen/torchdiffeq) — a small network
+`f_theta(t, x)` fit, via backpropagation through `torchdiffeq.odeint`, to
+approximate a forced Van der Pol oscillator — and wraps it as a Model
+Exchange FMU using `derivativeOf` and `time` exactly as described above.
 
 ## 🔨 ONNX model generation
 

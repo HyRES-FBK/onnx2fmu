@@ -2,7 +2,7 @@ import unittest
 from onnx import TensorProto
 
 from onnx2fmu.config import FMI2TYPES, FMI3TYPES
-from onnx2fmu.variables import VariableFactory, Input, Local
+from onnx2fmu.variables import VariableFactory, Input, Output, Local
 
 
 class TestVariablesFactory(unittest.TestCase):
@@ -67,6 +67,59 @@ class TestInputVariable(unittest.TestCase):
             "Input(x, continuous)(2.0)",
             v.__str__()
         )
+
+    def test_time_input_has_no_scalars(self):
+        v = Input(name="t", time=True)
+        self.assertTrue(v.isTime)
+        self.assertEqual(v.scalarValues, [])
+
+    def test_regular_input_is_unaffected_by_state_flags(self):
+        v = Input(name="x")
+        self.assertFalse(v.isTime)
+        self.assertFalse(v.isState)
+        self.assertEqual(v.causality, "input")
+        self.assertEqual(v.initial, "")
+
+    def test_state_input_is_reclassified_as_output(self):
+        v = Input(name="x", shape=(2, ), start=[2.0, 0.0], isState=True)
+        self.assertTrue(v.isState)
+        self.assertEqual(v.causality, "output")
+        self.assertEqual(v.initial, "exact")
+        # Continuous states must be Float64 for the fmi{2,3} state API; in
+        # FMI 2.0 both FLOAT and DOUBLE map to "Real", so check via a 3.0
+        # instance where the distinction is visible.
+        v3 = Input(name="x", shape=(2, ), start=[2.0, 0.0], isState=True,
+                   fmiVersion="3.0")
+        self.assertEqual(v3.vType, FMI3TYPES[TensorProto.DOUBLE])
+
+    def test_state_input_context_includes_new_keys(self):
+        v = Input(name="x", isState=True)
+        context = v.generateContext()
+        for key in ["isTime", "isState", "initial"]:
+            self.assertIn(key, context)
+
+
+class TestOutputVariable(unittest.TestCase):
+
+    def test_regular_output_is_unaffected_by_derivative_flag(self):
+        v = Output(name="y")
+        self.assertIsNone(v.derivativeOf)
+        self.assertEqual(v.causality, "output")
+        self.assertEqual(v.initial, "")
+
+    def test_derivative_output_is_reclassified_as_local(self):
+        v = Output(name="dx", derivativeOf="x")
+        self.assertEqual(v.derivativeOf, "x")
+        self.assertEqual(v.causality, "local")
+        self.assertEqual(v.initial, "calculated")
+        v3 = Output(name="dx", derivativeOf="x", fmiVersion="3.0")
+        self.assertEqual(v3.vType, FMI3TYPES[TensorProto.DOUBLE])
+
+    def test_derivative_output_context_includes_new_keys(self):
+        v = Output(name="dx", derivativeOf="x")
+        context = v.generateContext()
+        for key in ["derivativeOf", "initial"]:
+            self.assertIn(key, context)
 
 
 class TestLocalVariable(unittest.TestCase):

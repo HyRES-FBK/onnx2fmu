@@ -1,0 +1,243 @@
+
+pytorch2.9.1+cu128:ƒ}
+‰
+x
+tcatnode_cat"Concat*
+axisÿÿÿÿÿÿÿÿÿ J;
+	namespace.: __main__.DerivativeNet/cat: aten.cat.defaultJP
+pkg.torch.onnx.class_hierarchy.['__main__.DerivativeNet', 'aten.cat.default']Jˆ
+pkg.torch.onnx.fx_noden%cat : [num_users=1] = call_function[target=torch.ops.aten.cat.default](args = ([%x, %view], -1), kwargs = {})J)
+pkg.torch.onnx.name_scopes['', 'cat']J
+pkg.torch.onnx.stack_tracepFile "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+
+cat
+val_3val_4node_MatMul_4"MatMulJ“
+	namespace…: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.0: torch.nn.modules.linear.Linear/linear: aten.linear.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J¤
+pkg.torch.onnx.fx_node‰%linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%cat, %p_net_0_weight, %p_net_0_bias), kwargs = {})J<
+pkg.torch.onnx.name_scopes['', 'net', 'net.0', 'linear']JÇ
+pkg.torch.onnx.stack_trace¨File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+“
+val_4
+
+net.0.biaslinearnode_linear"AddJ“
+	namespace…: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.0: torch.nn.modules.linear.Linear/linear: aten.linear.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J¤
+pkg.torch.onnx.fx_node‰%linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%cat, %p_net_0_weight, %p_net_0_bias), kwargs = {})J<
+pkg.torch.onnx.name_scopes['', 'net', 'net.0', 'linear']JÇ
+pkg.torch.onnx.stack_trace¨File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+Î
+lineartanh	node_tanh"TanhJ‘
+	namespaceƒ: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.1: torch.nn.modules.activation.Tanh/tanh: aten.tanh.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.Tanh', 'aten.tanh.default']Jƒ
+pkg.torch.onnx.fx_nodei%tanh : [num_users=1] = call_function[target=torch.ops.aten.tanh.default](args = (%linear,), kwargs = {})J:
+pkg.torch.onnx.name_scopes['', 'net', 'net.1', 'tanh']Jµ
+pkg.torch.onnx.stack_trace–File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/activation.py", line 430, in forward
+    return torch.tanh(input)
+˜
+tanh
+val_5val_6node_MatMul_6"MatMulJ•
+	namespace‡: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.2: torch.nn.modules.linear.Linear/linear_1: aten.linear.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J§
+pkg.torch.onnx.fx_nodeŒ%linear_1 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh, %p_net_2_weight, %p_net_2_bias), kwargs = {})J>
+pkg.torch.onnx.name_scopes ['', 'net', 'net.2', 'linear_1']JÇ
+pkg.torch.onnx.stack_trace¨File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+
+val_6
+
+net.2.biaslinear_1node_linear_1"AddJ•
+	namespace‡: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.2: torch.nn.modules.linear.Linear/linear_1: aten.linear.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J§
+pkg.torch.onnx.fx_nodeŒ%linear_1 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh, %p_net_2_weight, %p_net_2_bias), kwargs = {})J>
+pkg.torch.onnx.name_scopes ['', 'net', 'net.2', 'linear_1']JÇ
+pkg.torch.onnx.stack_trace¨File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+Ü
+linear_1tanh_1node_tanh_1"TanhJ“
+	namespace…: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.3: torch.nn.modules.activation.Tanh/tanh_1: aten.tanh.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.Tanh', 'aten.tanh.default']J‡
+pkg.torch.onnx.fx_nodem%tanh_1 : [num_users=1] = call_function[target=torch.ops.aten.tanh.default](args = (%linear_1,), kwargs = {})J<
+pkg.torch.onnx.name_scopes['', 'net', 'net.3', 'tanh_1']Jµ
+pkg.torch.onnx.stack_trace–File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/activation.py", line 430, in forward
+    return torch.tanh(input)
+œ
+tanh_1
+val_7val_8node_MatMul_8"MatMulJ•
+	namespace‡: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.4: torch.nn.modules.linear.Linear/linear_2: aten.linear.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J©
+pkg.torch.onnx.fx_node%linear_2 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh_1, %p_net_4_weight, %p_net_4_bias), kwargs = {})J>
+pkg.torch.onnx.name_scopes ['', 'net', 'net.4', 'linear_2']JÇ
+pkg.torch.onnx.stack_trace¨File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+š
+val_8
+
+net.4.biasdxnode_linear_2"AddJ•
+	namespace‡: __main__.DerivativeNet/net: torch.nn.modules.container.Sequential/net.4: torch.nn.modules.linear.Linear/linear_2: aten.linear.defaultJ
+pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J©
+pkg.torch.onnx.fx_node%linear_2 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh_1, %p_net_4_weight, %p_net_4_bias), kwargs = {})J>
+pkg.torch.onnx.name_scopes ['', 'net', 'net.4', 'linear_2']JÇ
+pkg.torch.onnx.stack_trace¨File "/tmp/ipykernel_2522/3421556953.py", line 18, in forward
+    return self.net(torch.cat([x, t_col], dim=-1))
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/michele/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+main_graph*“ B
+net.0.biasJ€üÚ2?0˜>jòW¿¿¬¾Xço?S†<Af¿›{î¾G‘w¿õç>Ñœ¿ƒ3?ÒÇ½Şµ¹>U¿?'Åı¾¤¤»0-·>´}?çt9>da<o]…>îœ=‚¥y½KC½}ò½¾vt6?c!¿{N½Ö¿v˜¾*“ B
+net.2.biasJ€¤W¾-f6=¯×>æÅ«½–½Šşâ=J¾ÜÕ»=p<¾¨=,°½AGñ=ôÄ=7Ì½‘L6=î=¨np¾¡»8¾Å»¼$2=~	&¾ïÌ¾ã–»•$;>fO'½v R½:ß½×½$Û±;q25¾Ò’=\c¾*B
+net.4.biasJÕ:>²Î¼*’ Bval_3J€:x;=yà¾å”\=‹¤=Efs¾a3±>C¾°Ú=´Y¶½CcÄ¾å´ì½ËØÑ¾Rì¾C&À>·=>Cœ‡½î|¼¾¦s?˜±Ò>)½,¿*ö1=şèƒ=H€õ½|@?½Eâ¼*?u&>z?¾…>ê®¿-M¤<'é>mè¶>×í<"Úï>çv‹>ÒÔƒ¾‹ü>Œ~¾Å>wº5>Îğ>¾hc/?gö¾÷?ğ·½ÛM1¿z’?
+oİ=„«?Im®¾bÑ¾­à>sÍ{>‘I¿>
+äæ¾ôš>v;b?'«Ğ»P@#?9b>J„>pœ¦>>#W¿Èz½ïI¼P¯<Ú^ş;6^½¾ı>Æ>üm=.Pœ>ã>€z¾pôK¿¤(¿İ	œ>Ë¢½c=ó¾nÇÇ½chR=‡f¸<Uû½ıL¾{y¼S"‹<N¦hº£ÏÔ;Ş}ó>k$»»‘R>¿
+‡¾½¼Œá¾Ê¶>¾âs¾p *’   Bval_5J€ {Q¾!1c¼Bİ1=	â¾x¡r¾¥ş°=-\¾å-¾v´=”½9Ìé=×.¾0…‰½Q>Ÿ*=•ôù½uÑ™¾ÕAŒ½dúC¾ûğ,=›9Ï¼6l >8ß]½<:Ê>%•;¾$´=ÿCÅ¾óôì=F‰Ñ=™L>3·¼´¹='ÿÂ½lÁ¾=)¢"¾AG¯>]q>ğÒâ½çÔè=Øvú=û Î>ñ–V>E™°¾mÃ¶½zn=®fÆ¼D*¾U¬ß='…Š½é©#<éu=}Æ¾f…ñ½¨OÍ¾äâä=/í½ ¾*U=æ—½À9¾(„/¾M¿¡½è‚Â¾rSŠ¾a‚a¾µó¿d¹=_¸8½š«8¾Z|¾®€ğ½J¬>ÑJù=‡N¹=²†ª>Ø&¿¾Õ§Ú¼0ƒ<…±>¾oo¾^ª¾>õœã>fF>äÅ¼>l¾úŸ½>Ë5Ï¾E§>R=Ü>t’:»Kï—½x³m>ˆ"B=#Ã¿>('õ½ØÃ ¾@Wˆ=mô,¾üŞºÏ@ƒ¾\¾f…>\ş¤»¶û²<Ãµò½ÒY;¡B>o#à=óÀA½¶wÜ=ßIZ>µ°5¾M¢=Eä+>ğpƒ=³§>÷ö¼4_	>Ê #=Rª;¾h?1>ß¾¿¾¾İ  >ù¹=ĞÊ>nÿi>I§?>sb¬¾m­¸=Pr¼®ûæ= Ñ½ûAˆ=ØËz<Ù}Î½ªF<Üß>Uo%>Ø==œvÂ½á‘»¼«¼Áì=^~0¾|Ş½øÍ ½Ÿ¾á2>•¡¾Ş¾{Œ£=óÏÇ¾P)d¾¬tË¾^·=¢­=4J‚¾Èí¾dF×½¤äÔ¼Ë½—	°=ÌÕá½ôÊ=´ïü»¸‡:²KÁ=ùm<×Î!¾#°=vÈ=E‘)=qW>ô=¾£¼N½
+¡æ=ÆÀ·¼|A¼=	ûî½,ŒV=ä\={‡
+½22>ãë>1+=G=u½”¡Ç½ØN>¬ü=Mxì=	.‘½˜‘’>-¬h½ˆY«¾å=ÁSU>÷Ï¾XÑ=V‹½¡Á>ñª>·¥¾*->ğk>°´®¾8“¾Ã<>Å5¾½œ¿>5¦=©¾w¼‡=MzÑ½tëñ=Ôu–¾ŞJ>’‚>ô/Ö>ëN¾7=P¼/Î¾;ò=¾m Ö=u=:¥C½ÃÈÂ¼EÍ{=·¨¿½áİº=iB=EØG¾@F½%>
+å<dòt½ğ‡5¾ge‹¼M­>9Ò9>®¬©¼Ç ô½%)š¼é‹¾9!`½µ>ˆ5"½%?sÖ>IÃ®;@ÖÑ¼zÑ¼mq|>!ë6=Šx
+¾«’>Œ,#¾qğ>ÅŒÛ½İ¾ãˆ>(º=ş|–¾p _¾h@»¼d€	>vÖÏ¼DvÛ½÷›>X…ü¼Nª=¾&>“è”¾GÌ>5—j>{=)cü=nI ¾õ_?je>¿ğJ=Ñ¹$>´¢<ªËH>ç½¦=äJ>Àğ¼Š…ä=úv!>¢%Š>‚7—½;*¦½]Ş½Íı}¾fø½Á¼v½5{Ü=Ç¢™<2–š½õa.½µ†½¿¿²<Œ¦½ĞåN¾¤ÒH¾².…>[b˜¼Qö:»v4l=£Õº½PF¾«¤½±éÕ=@½â©,¼8K½¶j¾ö_!½’sv=ù¯=^m–=S÷o<ı]¾FÁQ>¤¾+tU¾$¾­¾ıâ1=É2ç<í7¾½ÈÙ^>0‹ô=¶>> TÚ=
+Mï¼''µ<9TÅ>G´—>\%º=–û¼hw¾şÁ>´;1>¬%©¼¿JK>72›=˜÷¿>™8q=ğÃc=J‹>˜	=àÔ½†š™½çò'½õ=	º¾9ßñ<T:ç=ÖVÿ½s°<à·=%ÍY¾İ4æ=/¸å=¨y¶<QÕ½DÒ"½ ñµ½õ†°=Ã^½‡Òv¼o,=Àç	¾Öy#½ÊzI½Ëq³=Ö»V»ßgğ<;—3»ˆ[œ<¯ºs>©>ÿé–=ç‰^¾Ã¯>¶«“>âNr¾Ğ’¸>vY‘>6ìÒ>wËV>^½@¾¢<S0õ<Vò½u>»E*½j%>»'>.E!>ß¨¿ºüü ¾+ê<ê†=–’Y>e2>+­_½7ú>/Ë¾Ón
+¾Z+?¼³¿æş½çõ=,É¢=w!˜>§¾(ƒ½µ> MĞ»ßwv=3ÿt¾Í@$¾T¹=ÆÒè½ìş%¾QaÌ=ı¥>†9Æ=†Yï½ŒÌ=¿½ü»O=6u?>Ÿ‰=Ì¾1‰>$=‘¾ƒZ¾“Şß<@X>^†§<ŞWV>›9’>ºñ>šÔ=)l¾¬¾v¢j¾j_ı<Ûªl¾œ=’Ü¨>L³€¾ëj¾w½Ú[G>Æõ'>ˆ¯6=£¼ËÜ½áÒ	=äk=Üê]>A	¾U<áv>İ¥)½	€;¾ÆÓr¼¥q¥½Ù;2¡a¾:Ùi¾§2b½^
+¡>†.¾t›ª½O©=EÇ>Ê»‰=ê]Ÿ¾Õ™S>=³œ¾áf¾js=°®=B\=¡w¾¸Ù0¾4W>‡’ ¼²{c¾‡J¾æŠ¾H	=‘vc=°]=´:'=M^>×C>ƒ?	=h€’¼Äªn¾ÓÜ>¦•>ø ï=õ´µ<äñ=@ÀÁ½âƒ³½î¬x½Á”l>9Ê½çbS½ Ÿ‘> •!º ›>¢²>ñdN¼¡/:¾şz<9ˆ„¾ ¾§÷Ü¼‹¶…=En>ÿ{`>LÙ¾=:G9¾âÂÅ½#/9=™	 ¾•½¯>†Ut½—< >IDÚ½gä/¾Oïg=^xÑ¾ıÙõ½—Ù0¾û¼Q¾?ë\¾‡é}>ü[o>s×­¾È'¼>vºq>îÔ=¯‘±=Mû½‚‡$¾Nò >ƒ›¾Á»_ÇÍ;î8Š>² >6u„=­S½æü•¾/î>%vÚ½b$“={º£¾L d¾÷± >Ai”¾ÖP°½t ¸¾ã¡:D7~¾‡ê$>À½>R¦_½æĞ¾í8¾•wJ>¦m°;Ú%‰¾ÌA×¾`Où¾gps½@`>œõù=M"h½Õûm=x±)>O‰7¾¤—Å½†?¾3ì3½:=‡Ç<æ¡=Ò€ğ½ÖSß:™%ƒ½ë”N½õ»3=S‰å½â…V>š¬>&|>…=Xp½ û=òÔÿ=,¼˜¾IºA>òß=}_Ÿ»ûit>Isµ=u­¨<Î+p>ş¹¼ty>?Ü>¸Í¼à}x<ğ‘+¾7¾Ñ,x>Û5M½.VV>Ò=»û©½äb!>ŠwI»¥_«=ßœA>v‡;'›º‚cb¾tØ¼ù ¾ÜM™¼p…F>&<33½<¹g>¨‹Q¾‡–¾x>½Ïñ½Y{°<†+¾ÓÕS¾´Z<¤Um½0´E¾cEĞ½!ü=±¹W¾cd×=¨Î0>œÖ±>_¾ |>u½´şF=–IH¾ßíW>Èy>D%q¼BŞÖ=j*>õv¨¾¹dª¾ÓD>Ñpq¾şÎ¾!ú	=ZëÆ½­Q•½Œû?¾×§Z¾ÜÀ>öx½-¾”¾’²>¢Û5>—²O¾äKÔ=ñF¹>pAû;TOÂ>¤ùı<¬z>ßº¾ğ¤¶>ğ¨]¼ws‡¾/Û¾zş<é‘/>ÃXº=ÙÅ>G»>k^E¾JR=,>	*S>*šU¾3ÛÙ½˜²½²M,¾g¦I>ãï[>Cƒ>_=bQi¾™>«”>áÙÌ=áA˜=ÔİÔ<”	û=w·='3<Ô†7>FC³=Bæ†>LZ>T¾ çC¾2+><
+R>un>*3™¾;g¾$¾Ûûü=Ø?­>¿——¾÷]G>vVW¾oˆ¢¾?Q™¾Ğs ¿¡B?ßõ=ôIÎ¾Ló‹>Ğ>„#½–¶¾4}¾â)º¾X[>€>I >wY9¾Ûm
+¾Í¶¿=dè,=U/¾á:¾>_M†>ÿâf>'ÊB?ZÙ!>ô1½A¬¡:>¤è½JS…=˜å½}<[/¾3P>úIÅ;d€Ù½h±>ÃV=¢ÂŒ½8±>àA¾c‘=â#N<Æ>>×ë>ñw)¼ß…º=Ï©½CC<ë¦>^ÙÏ>gK¾lö3½ü†>©Û½¢ÿÛ=U›Ú½Sê<^0@>P½ú=xÇ¾œ¼½=†µÍ=•w¾Ã®>®”>í<>õ™¨½RVp¾~mŞº}çG>²X¾·š¾şÕ–>úxU>ö¾ü¿š=hİ„½€’½›:n¾÷“½–¢=q*¿~L¾£o>óş‡¾îê(¾ºñÆ¾Ñ>°¼‡²¾ÏE>¸k(½r¤ş=Uã¾íUÒ½·³·=âQ>‡, >sòè½÷Ë½=¹\<­ùÎ=ÑMk½Wø=9¾š_F=«f”=oB–=uÆO½
+¾Ä½ÿ¹½pì>ùı¡=$½|¾÷x¾Öì>Ô}½É(ô½>•š½s®=Cı½Ğ¢=ò,¾ lW;îjP¾d›=#g>'<ô=Kı»Ñ	>²=/Á>æ}y¾'g‡>Ìw?>4M»Uà=ßèÉ=fRã<-Ì:½òÆ!>*)>Ï%û¼JÕ½&¾S(¹<Â`g½Òz¦=áÌ±=¾)½‡A¾Ç»¾|¿‹¾UX2¾,>ı=—¾e¨=¾=°½h©½MĞ¼…KB¾ñ~C>yÍ½ÔW½¾©_¼ûˆÑ¼ ^A¾²Q =šöÁ¼<À¾÷5&>°=ÓBä½¡Q´>æw½;âº>=Ç<("È½9óƒ>œ‹*<æ³û;Õ±:>õ²> ¶{>¹ÎF>½]>Kdî½ú®ˆ=­hG>n˜>U	>¹T¼ı2>ÖP½zJ>CDš>çÅ!>2¢ç=/w<óz‘½Å k¼°:¾u‚><MÈ=[ˆ=†ğÑ<ØC²½2ë‰=r÷>é'¢»‡|*¾y½xÚØ=F‹v½"Ú> 3£>i¾Vä½Ç«Ï=Mt=éô=Ğ½*¾95H¾6şò=FÍF½$lY=ÑJ¾ú8÷½9>o< ùé½¬æí½‘Ã^=co¢=3¾º?¾QÀ¾cD¾=é)x½0±>› ş=4u™½9*?n:¥=à')=Å6Á¼7©¾ÏŞ‘>YŠ¾;®>æXÂ<²¶->b—<È¾ÜJR=Å€=[ÚZ=À<¾¹L¾©äºñj> nÓ½Û#>g¾Æ¶=4»Ğ¢Â:”»ğ=HV><]Ù=cÖ)¼ÙÉ<]B¾ÿÿ½ÙÓ=ˆ”†>a’=)Ó¨½(¼=¡—G> .ÿ½p * Bval_7J€–¾é>:]¾?ñõ=w%”=zã¾Ä8>æ°ï>xÁº–F ?‰	†¾»ÀÜ¾€íÓ½+ø›>q²D> ]}>‡­>pŠ±>rÇ >&Îà>_yÒ= È¾!DÀ¾Mş9>B8à½£–Ş>ˆ9±» Hİ¾†ê>dA$¾R¡‘¾*—“>ç¬›>IÙ=Õ >7¼ô½gJ>”‘ƒ>ªow=×F¹¾ÇC)¾…h2¾l>c«M¾?ß–¾Ï >#ù³>”ÿ|¾°Y~½‚ ¾E{Ã½…HJ½m¤½ª z>L´N½Q¾#¿Äj>ó1¾²’¾1!¿ÔY°<'^	¿)I4¾‹$¿RMRight-hand side of a forced Van der Pol neural ODE, trained with torchdiffeq.Zµ
+x
+
+
+"=
+/pkg.torch.export.graph_signature.InputSpec.kind
+USER_INPUT"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"&
+!pkg.torch.onnx.original_node_namexZµ
+t
+
+
+"=
+/pkg.torch.export.graph_signature.InputSpec.kind
+USER_INPUT"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"&
+!pkg.torch.onnx.original_node_nametb€
+dx
+
+
+"?
+0pkg.torch.export.graph_signature.OutputSpec.kindUSER_OUTPUT"-
+!pkg.torch.onnx.original_node_namelinear_2jÈ
+
+net.0.bias
+
+
+ "<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"1
+!pkg.torch.onnx.original_node_namep_net_0_biasjÈ
+
+net.2.bias
+
+
+ "<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"1
+!pkg.torch.onnx.original_node_namep_net_2_biasjÈ
+
+net.4.bias
+
+
+"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"1
+!pkg.torch.onnx.original_node_namep_net_4_biasjQ
+val_3
+
+
+ "8
+$pkg.onnxscript.optimizer.folded_from['net.0.weight']jQ
+val_5
+
+ 
+ "8
+$pkg.onnxscript.optimizer.folded_from['net.2.weight']jQ
+val_7
+
+ 
+"8
+$pkg.onnxscript.optimizer.folded_from['net.4.weight']j
+cat
+
+
+j
+val_4
+
+
+ j
+linear
+
+
+ j
+tanh
+
+
+ j
+val_6
+
+
+ j
+linear_1
+
+
+ j
+tanh_1
+
+
+ j
+val_8
+
+
+‚
+0pkg.torch.export.ExportedProgram.graph_signatureÛ
+# inputs
+p_net_0_weight: PARAMETER target='net.0.weight'
+p_net_0_bias: PARAMETER target='net.0.bias'
+p_net_2_weight: PARAMETER target='net.2.weight'
+p_net_2_bias: PARAMETER target='net.2.bias'
+p_net_4_weight: PARAMETER target='net.4.weight'
+p_net_4_bias: PARAMETER target='net.4.bias'
+x: USER_INPUT
+t: USER_INPUT
+
+# outputs
+linear_2: USER_OUTPUT
+‚8
+2pkg.torch.export.ExportedProgram.range_constraints{}B
+ 

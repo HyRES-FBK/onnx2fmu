@@ -117,13 +117,73 @@ class VariableFactory:
 
 class Input(VariableFactory):
 
+    def __init__(self,
+                 name: str,
+                 shape: tuple = (1, ),
+                 description: str = "",
+                 variability: str = CONTINUOUS,
+                 fmiVersion: str = "2.0",
+                 vType: TensorProto.DataType = TensorProto.FLOAT,
+                 labels: None | list[str] = None,
+                 start: Union[str, int, float, list] = "1.0",
+                 time: bool = False,
+                 isState: bool = False
+                 ) -> None:
+        self.isTime = bool(time)
+        self.isState = bool(isState)
+        if self.isState:
+            # Continuous states must be Float64 in FMI 3.0 (the
+            # fmi3{Get,Set}ContinuousStates API works on fmi3Float64).
+            vType = TensorProto.DOUBLE
+        super().__init__(name=name, shape=shape, description=description,
+                         variability=variability, fmiVersion=fmiVersion,
+                         vType=vType, labels=labels, start=start)
+        if self.isTime:
+            # The node is fed with the FMI independent variable (time), so it
+            # is not exposed as an FMI variable.
+            self.scalarValues = []
+        self.initial = ""
+        if self.isState:
+            # Van der Pol reference pattern: states are observable outputs
+            # whose start value is the initial condition.
+            self.causality = "output"
+            self.initial = "exact"
+        self._context_variables += ["isTime", "isState", "initial"]
+
     def __str__(self) -> str:
         return f"{self.__class__.__name__}" + \
             f"({self.name}, {self.variability})({self.startValues[0]})"
 
 
 class Output(VariableFactory):
-    pass
+
+    def __init__(self,
+                 name: str,
+                 shape: tuple = (1, ),
+                 description: str = "",
+                 variability: str = CONTINUOUS,
+                 fmiVersion: str = "2.0",
+                 vType: TensorProto.DataType = TensorProto.FLOAT,
+                 labels: None | list[str] = None,
+                 start: Union[str, int, float, list] = "1.0",
+                 derivativeOf: None | str = None
+                 ) -> None:
+        if derivativeOf:
+            # State derivatives must be Float64 in FMI 3.0, see Input.
+            vType = TensorProto.DOUBLE
+        self.derivativeOf = \
+            self._cleanName(derivativeOf) if derivativeOf else None
+        self.nodeDerivativeOf = derivativeOf
+        super().__init__(name=name, shape=shape, description=description,
+                         variability=variability, fmiVersion=fmiVersion,
+                         vType=vType, labels=labels, start=start)
+        self.initial = ""
+        if self.derivativeOf:
+            # Van der Pol reference pattern: derivatives are calculated
+            # locals carrying the FMI `derivative` attribute.
+            self.causality = "local"
+            self.initial = "calculated"
+        self._context_variables += ["derivativeOf", "initial"]
 
 
 class Local(VariableFactory):

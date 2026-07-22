@@ -8,6 +8,16 @@
   numberOfEventIndicators="0"
   generationDateAndTime="{{ generationDateAndTime }}">
 
+  {%- if modelExchange %}
+  <ModelExchange
+    modelIdentifier="{{ name }}">
+    <SourceFiles>
+      <File name="all.c"/>
+    </SourceFiles>
+  </ModelExchange>
+  {%- endif %}
+
+  {%- if coSimulation %}
   <CoSimulation
     modelIdentifier="{{ name }}"
     canHandleVariableCommunicationStepSize="{{ canHandleVariableCommunicationStepSize|lower }}"
@@ -18,6 +28,7 @@
       <File name="all.c"/>
     </SourceFiles>
   </CoSimulation>
+  {%- endif %}
 
   <LogCategories>
     <Category name="logEvents" description="Log events"/>
@@ -32,15 +43,15 @@
     </ScalarVariable>
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ input.description }}{% endif %}">
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ input.causality }}" variability="{{ input.variability }}"{% if input.initial %} initial="{{ input.initial }}"{% endif %} description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ input.description }}{% endif %}">
       <{{ input.vType.FMIType }} start="{{ scalar.start }}"/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ output.causality }}" variability="{{ output.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ output.description }}{% endif %}">
-      <Real />
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ output.causality }}" variability="{{ output.variability }}"{% if output.initial %} initial="{{ output.initial }}"{% endif %} description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ output.description }}{% endif %}">
+      <Real{% if scalar.stateValueReference is defined %} derivative="{{ scalar.stateValueReference + 1 }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
@@ -56,11 +67,31 @@
   <ModelStructure>
     <Outputs>
     {%- for output in outputs %}
+    {%- if not output.derivativeOf %}
     {%- for scalar in output.scalarValues %}
       <Unknown index="{{ scalar.valueReference + 1 }}"/>
     {%- endfor %}
+    {%- endif %}
+    {%- endfor %}
+    {%- for input in inputs %}
+    {%- if input.isState %}
+    {%- for scalar in input.scalarValues %}
+      <Unknown index="{{ scalar.valueReference + 1 }}"/>
+    {%- endfor %}
+    {%- endif %}
     {%- endfor %}
     </Outputs>
+    {%- if states %}
+    <Derivatives>
+    {%- for output in outputs %}
+    {%- if output.derivativeOf %}
+    {%- for scalar in output.scalarValues %}
+      <Unknown index="{{ scalar.valueReference + 1 }}"/>
+    {%- endfor %}
+    {%- endif %}
+    {%- endfor %}
+    </Derivatives>
+    {%- endif %}
     <InitialUnknowns>
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}

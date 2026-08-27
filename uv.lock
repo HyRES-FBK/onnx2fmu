@@ -2004,6 +2004,9 @@ extra = [
     { name = "pandas" },
     { name = "plotly" },
     { name = "pyside6" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "torch" },
     { name = "torchdiffeq" },
 ]
@@ -2022,6 +2025,7 @@ requires-dist = [
     { name = "pandas", marker = "extra == 'extra'", specifier = ">=2.3.3" },
     { name = "plotly", marker = "extra == 'extra'", specifier = ">=6.5.0" },
     { name = "pyside6", marker = "extra == 'extra'", specifier = ">=6.10.1" },
+    { name = "scipy", marker = "extra == 'extra'", specifier = ">=1.15.3" },
     { name = "torch", marker = "extra == 'extra'", specifier = ">=2.13.0" },
     { name = "torchdiffeq", marker = "extra == 'extra'", specifier = ">=0.2.5" },
     { name = "typer" },

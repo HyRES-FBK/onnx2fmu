@@ -8,7 +8,7 @@
 pkg.torch.onnx.class_hierarchy/['__main__.DerivativeNet', 'aten.view.default']JÖ
 pkg.torch.onnx.fx_nodek%view : [num_users=1] = call_function[target=torch.ops.aten.view.default](args = (%t, [1, 1]), kwargs = {})J*
 pkg.torch.onnx.name_scopes['', 'view']Jy
-pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3787253/415399635.py", line 44, in forward
+pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3898167/415399635.py", line 44, in forward
     z = self.features(x, t)
 ﬁ
 view
@@ -17,7 +17,7 @@
 pkg.torch.onnx.class_hierarchy-['__main__.DerivativeNet', 'aten.mul.Tensor']Já
 pkg.torch.onnx.fx_nodem%mul : [num_users=2] = call_function[target=torch.ops.aten.mul.Tensor](args = (%view, %b_freqs), kwargs = {})J)
 pkg.torch.onnx.name_scopes['', 'mul']Jy
-pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3787253/415399635.py", line 44, in forward
+pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3898167/415399635.py", line 44, in forward
     z = self.features(x, t)
 Œ
 mulsinnode_sin"SinJ;
@@ -25,7 +25,7 @@
 pkg.torch.onnx.class_hierarchy.['__main__.DerivativeNet', 'aten.sin.default']J~
 pkg.torch.onnx.fx_noded%sin : [num_users=1] = call_function[target=torch.ops.aten.sin.default](args = (%mul,), kwargs = {})J)
 pkg.torch.onnx.name_scopes['', 'sin']Jy
-pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3787253/415399635.py", line 44, in forward
+pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3898167/415399635.py", line 44, in forward
     z = self.features(x, t)
 Œ
 mulcosnode_cos"CosJ;
@@ -33,7 +33,7 @@
 pkg.torch.onnx.class_hierarchy.['__main__.DerivativeNet', 'aten.cos.default']J~
 pkg.torch.onnx.fx_noded%cos : [num_users=1] = call_function[target=torch.ops.aten.cos.default](args = (%mul,), kwargs = {})J)
 pkg.torch.onnx.name_scopes['', 'cos']Jy
-pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3787253/415399635.py", line 44, in forward
+pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3898167/415399635.py", line 44, in forward
     z = self.features(x, t)
 ¯
 sin
@@ -43,7 +43,7 @@
 pkg.torch.onnx.class_hierarchy.['__main__.DerivativeNet', 'aten.cat.default']Jâ
 pkg.torch.onnx.fx_nodeo%cat : [num_users=1] = call_function[target=torch.ops.aten.cat.default](args = ([%sin, %cos], -1), kwargs = {})J)
 pkg.torch.onnx.name_scopes['', 'cat']Jy
-pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3787253/415399635.py", line 44, in forward
+pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3898167/415399635.py", line 44, in forward
     z = self.features(x, t)
 É
 cat
@@ -53,7 +53,7 @@
 pkg.torch.onnx.class_hierarchy/['__main__.DerivativeNet', 'aten.view.default']Já
 pkg.torch.onnx.fx_nodem%view_1 : [num_users=1] = call_function[target=torch.ops.aten.view.default](args = (%cat, [-1]), kwargs = {})J,
 pkg.torch.onnx.name_scopes['', 'view_1']Jy
-pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3787253/415399635.py", line 44, in forward
+pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3898167/415399635.py", line 44, in forward
     z = self.features(x, t)
 Ñ
 x
@@ -64,7 +64,7 @@ node_cat_1"Concat*
 pkg.torch.onnx.class_hierarchy.['__main__.DerivativeNet', 'aten.cat.default']Jå
 pkg.torch.onnx.fx_noder%cat_1 : [num_users=2] = call_function[target=torch.ops.aten.cat.default](args = ([%x, %view_1], -1), kwargs = {})J+
 pkg.torch.onnx.name_scopes['', 'cat_1']Jy
-pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3787253/415399635.py", line 44, in forward
+pkg.torch.onnx.stack_trace[File "/tmp/ipykernel_3898167/415399635.py", line 44, in forward
     z = self.features(x, t)
 â
 cat_1
@@ -73,7 +73,7 @@ node_cat_1"Concat*
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J¶
 pkg.torch.onnx.fx_nodeã%linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%cat_1, %p_net_0_weight, %p_net_0_bias), kwargs = {})J<
 pkg.torch.onnx.name_scopes['', 'net', 'net.0', 'linear']Jº
-pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -87,7 +87,7 @@ net.0.biaslinearnode_linear"AddJì
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J¶
 pkg.torch.onnx.fx_nodeã%linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%cat_1, %p_net_0_weight, %p_net_0_bias), kwargs = {})J<
 pkg.torch.onnx.name_scopes['', 'net', 'net.0', 'linear']Jº
-pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -99,7 +99,7 @@ net.0.biaslinearnode_linear"AddJì
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.Tanh', 'aten.tanh.default']JÉ
 pkg.torch.onnx.fx_nodei%tanh : [num_users=1] = call_function[target=torch.ops.aten.tanh.default](args = (%linear,), kwargs = {})J:
 pkg.torch.onnx.name_scopes['', 'net', 'net.1', 'tanh']J™
-pkg.torch.onnx.stack_traceãFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceãFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -112,7 +112,7 @@ net.0.biaslinearnode_linear"AddJì
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']Jß
 pkg.torch.onnx.fx_nodeå%linear_1 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh, %p_net_2_weight, %p_net_2_bias), kwargs = {})J>
 pkg.torch.onnx.name_scopes ['', 'net', 'net.2', 'linear_1']Jº
-pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -126,7 +126,7 @@ net.2.biaslinear_1node_linear_1"AddJï
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']Jß
 pkg.torch.onnx.fx_nodeå%linear_1 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh, %p_net_2_weight, %p_net_2_bias), kwargs = {})J>
 pkg.torch.onnx.name_scopes ['', 'net', 'net.2', 'linear_1']Jº
-pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -138,7 +138,7 @@ net.2.biaslinear_1node_linear_1"AddJï
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.Tanh', 'aten.tanh.default']Já
 pkg.torch.onnx.fx_nodem%tanh_1 : [num_users=1] = call_function[target=torch.ops.aten.tanh.default](args = (%linear_1,), kwargs = {})J<
 pkg.torch.onnx.name_scopes['', 'net', 'net.3', 'tanh_1']J™
-pkg.torch.onnx.stack_traceãFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceãFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -151,7 +151,7 @@ net.2.biaslinear_1node_linear_1"AddJï
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J©
 pkg.torch.onnx.fx_nodeé%linear_2 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh_1, %p_net_4_weight, %p_net_4_bias), kwargs = {})J>
 pkg.torch.onnx.name_scopes ['', 'net', 'net.4', 'linear_2']Jº
-pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -165,7 +165,7 @@ net.4.biaslinear_2node_linear_2"AddJï
 pkg.torch.onnx.class_hierarchy|['__main__.DerivativeNet', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J©
 pkg.torch.onnx.fx_nodeé%linear_2 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%tanh_1, %p_net_4_weight, %p_net_4_bias), kwargs = {})J>
 pkg.torch.onnx.name_scopes ['', 'net', 'net.4', 'linear_2']Jº
-pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceùFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
     input = module(input)
@@ -178,7 +178,7 @@ net.4.biaslinear_2node_linear_2"AddJï
 pkg.torch.onnx.class_hierarchyS['__main__.DerivativeNet', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J¶
 pkg.torch.onnx.fx_nodeã%linear_3 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%cat_1, %p_skip_weight, %p_skip_bias), kwargs = {})J6
 pkg.torch.onnx.name_scopes['', 'skip', 'linear_3']J´
-pkg.torch.onnx.stack_traceåFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceåFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
     return F.linear(input, self.weight, self.bias)
@@ -189,7 +189,7 @@ net.4.biaslinear_2node_linear_2"AddJï
 pkg.torch.onnx.class_hierarchyS['__main__.DerivativeNet', 'torch.nn.modules.linear.Linear', 'aten.linear.default']J¶
 pkg.torch.onnx.fx_nodeã%linear_3 : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%cat_1, %p_skip_weight, %p_skip_bias), kwargs = {})J6
 pkg.torch.onnx.name_scopes['', 'skip', 'linear_3']J´
-pkg.torch.onnx.stack_traceåFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceåFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
   File "/home/murbani/onnx2fmu/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
     return F.linear(input, self.weight, self.bias)
@@ -200,7 +200,7 @@ net.4.biaslinear_2node_linear_2"AddJï
 pkg.torch.onnx.class_hierarchy-['__main__.DerivativeNet', 'aten.add.Tensor']Jå
 pkg.torch.onnx.fx_noder%add : [num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%linear_2, %linear_3), kwargs = {})J)
 pkg.torch.onnx.name_scopes['', 'add']JÉ
-pkg.torch.onnx.stack_traceeFile "/tmp/ipykernel_3787253/415399635.py", line 45, in forward
+pkg.torch.onnx.stack_traceeFile "/tmp/ipykernel_3898167/415399635.py", line 45, in forward
     return self.net(z) + self.skip(z)
 main_graph*ñÄB
 net.0.biasJÄQ®æD(Ωåç=©s<ãec>ã‰◊ΩR-æÄ7Ê>í5•ΩﬁÂÁær˛=∑Ø?>“‰ˆΩæ◊Ôøñ	÷æ'=B>•’$Ω£–Ñ>Ø— ø€âpΩÑèº&>à·ƒ>ÀŒs>v›7>…Iæ?Zàæﬁy¨æhK˚º≤Ù>§îlΩ·@œ<C;<æ.Tú=â•j>åÑæ6ÀYæ‹>û5>}Ø]Ω_Ãb=∆ó8æ“„Öæ∂◊öæØdŒ>ôΩsÔÆΩ©3æ<ÇãæÑ˙^æVDﬂæëx§>…;>>ÜæÃdΩå§L>JÜ|æ⁄©t>ÃwW>∏%Öæ˛ú≤=ÊΩ åÂ>—]æÏd£Ω!u∞>äèìæ7~6>Û>8Èdæì,Œ>)¥>‹œ>Qi<∞<π>X∏ˇΩßñ√Ω˙I©=ıÆí=(◊$>/ÅŸ>e¨ìæÏa>∫Ì—=}+ä>](>ãˆ˙Ω5Àøùx›>MÏEæÓ†ì>›øÅÏm>$[ı=!o˚=?S=»—∂>y\ÚΩ¢B4=ì«ﬁ>ä‰îæòìæ˘¬;‰?“c>>'Uæ£›ùΩ2+Yæ@¥Ç>{Æ>äu‰>ÒÌ≤>gù>¥Ñ>xNŸΩ‡Ú†=KT^æ®°s>ô,=»3Åæ/üæÌêææ•Ëﬁ>7kÔ<;?Ì=Çóé>Á‘uæp *ñÄB

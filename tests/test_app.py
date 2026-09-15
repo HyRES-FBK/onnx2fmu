@@ -2,6 +2,7 @@ import json
 import shutil
 import tempfile
 import unittest
+import zipfile
 import numpy as np
 import pandas as pd
 from onnx import load
@@ -10,6 +11,46 @@ from fmpy.validation import validate_fmu
 from fmpy.simulation import simulate_fmu
 
 from onnx2fmu.app import _createFMUFolderStructure, generate, compile, build
+
+# Generic filenames the bundled ONNX Runtime library must never use: shipping
+# it under its stock name risks colliding with another copy of ONNX Runtime
+# already loaded by the FMI importer or another FMU in the same process. See
+# https://github.com/HyRES-FBK/onnx2fmu/issues/53.
+GENERIC_ORT_LIBRARY_NAMES = {"onnxruntime.dll", "libonnxruntime.so", "libonnxruntime.dylib"}
+
+
+def assert_private_ort_library(test_case, fmu_path):
+    """The bundled ONNX Runtime library must be renamed with the model name,
+    and never shipped under a generic name (issue #53)."""
+    # The compiled FMU is always named "<model_name>.fmu" (see app.py's
+    # `compile`), so the stem is the authoritative model name — the fixture's
+    # own `self.model_name` can differ (e.g. TestExample4 compiles FMUs named
+    # "example4FMI2"/"example4FMI3" from base name "example4").
+    model_name = fmu_path.stem
+    with zipfile.ZipFile(fmu_path) as fmu_zip:
+        binaries = [
+            name for name in fmu_zip.namelist()
+            if name.startswith("binaries/") and "onnxruntime" in name.lower()
+        ]
+
+    test_case.assertTrue(binaries, "No ONNX Runtime library found in binaries/.")
+
+    private_libs = [
+        name for name in binaries
+        if Path(name).stem.endswith(f"{model_name}_onnxruntime")
+    ]
+    test_case.assertTrue(
+        private_libs,
+        f"Expected the bundled ONNX Runtime library to be renamed with the "
+        f"model name ('{model_name}_onnxruntime'), found: {binaries}"
+    )
+
+    for name in binaries:
+        test_case.assertNotIn(
+            Path(name).name, GENERIC_ORT_LIBRARY_NAMES,
+            f"Found a generically-named ONNX Runtime library ({name}) — it "
+            "must be renamed per-model to avoid collisions (issue #53)."
+        )
 
 
 class TestApp(unittest.TestCase):
@@ -114,6 +155,7 @@ class TestExample1(unittest.TestCase):
         self.assertTrue(self.fmu_path.exists())
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
+        assert_private_ort_library(self, self.fmu_path)
 
     def test_compile_fmi3(self):
         target_path = self.tmpdir / f"test_{self.model_name}_compile_FMI3"
@@ -135,6 +177,7 @@ class TestExample1(unittest.TestCase):
         self.assertTrue(self.fmu_path.exists())
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
+        assert_private_ort_library(self, self.fmu_path)
 
     def test_compile_and_simulate(self):
         self.test_compile_fmi2()
@@ -234,6 +277,7 @@ class TestExample2(unittest.TestCase):
         self.assertTrue(self.fmu_path.exists())
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
+        assert_private_ort_library(self, self.fmu_path)
 
     def test_compile_and_simulate(self):
         self.test_compile()
@@ -333,6 +377,7 @@ class TestExample3(unittest.TestCase):
         self.assertTrue(self.fmu_path.exists())
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
+        assert_private_ort_library(self, self.fmu_path)
 
 
 class TestExample4(unittest.TestCase):
@@ -414,6 +459,7 @@ class TestExample4(unittest.TestCase):
         self.assertTrue(self.fmu_path.exists())
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
+        assert_private_ort_library(self, self.fmu_path)
 
     def test_compile_fmi3(self):
         target_path = self.tmpdir / f"test_{self.model_name}_compile_FMI3"
@@ -436,6 +482,7 @@ class TestExample4(unittest.TestCase):
         self.assertTrue(self.fmu_path.exists())
         results = validate_fmu(self.fmu_path)
         self.assertEqual(len(results), 0, results)
+        assert_private_ort_library(self, self.fmu_path)
 
     def test_compile_and_simulate(self):
         target_path = self.tmpdir / f"test_{self.model_name}_compile_and_simulate"

@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- The ONNX Runtime library bundled in each FMU is now renamed with the model
+  name (e.g. `libMyModel_onnxruntime.so`) and loaded explicitly at runtime
+  (`dlopen`/`LoadLibraryEx`) instead of being linked against by its generic
+  name (`onnxruntime`). Previously, two FMUs built by `onnx2fmu` — or an FMU
+  and an FMI importer that itself embeds ONNX Runtime — could each ship a
+  different ONNX Runtime version under the same library filename; loading
+  both into the same process risked the OS module loader resolving to the
+  wrong copy, causing a version mismatch. The model binary's own dependency
+  metadata no longer references ONNX Runtime at all (verified with
+  `ldd`/`otool -L`/`dumpbin /dependents`), so this collision can no longer
+  happen. Fixes #53.
 - FMU size reduced by ~3× (from ~18 MB to ~6–7 MB) by shipping the ONNX
   Runtime shared library exactly once instead of three times. The previous
   CMake packaging dereferenced the version symlinks in the official ORT

@@ -156,6 +156,7 @@ typedef struct {
     double* dx;
 
     // ONNX Runtime
+    void* ortLibraryHandle; // handle to the privately loaded ONNX Runtime library
     const OrtApi* g_ort;
     OrtEnv* env;
     OrtSessionOptions* session_options;

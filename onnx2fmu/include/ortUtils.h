@@ -15,4 +15,6 @@ void freeSession(OrtSession* session, ModelInstance* comp);
 void freeOrtSessionOptions(OrtSessionOptions* session_options, ModelInstance* comp);
 // Release the environment
 void freeOrtEnv(OrtEnv* env, ModelInstance* comp);
+// Unload the privately loaded ONNX Runtime library
+void freeOrtLibrary(ModelInstance* comp);
 

@@ -240,10 +240,14 @@ else ()
 endif ()
 
 # Include the onnxruntime directory like in https://github.com/microsoft/onnxruntime-inference-examples/blob/main/c_cxx/CMakeLists.txt
+# Only the headers are needed at build time: the ONNX Runtime library itself
+# is not linked (see below) but loaded explicitly at runtime by ortUtils.c,
+# from a private, per-model-renamed copy shipped inside the FMU. This keeps
+# the generic "onnxruntime" library name out of this binary's dependency
+# metadata, so it can never collide with another copy of ONNX Runtime already
+# loaded by the FMI importer or another FMU in the same process.
+# See https://github.com/HyRES-FBK/onnx2fmu/issues/53.
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/include)
-
-# Link the onnxruntime library
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/lib)
 
 # Add only the library
 add_library(${TARGET_NAME} SHARED
@@ -252,9 +256,6 @@ add_library(${TARGET_NAME} SHARED
   ${MODEL_NAME}/FMI${FMI_VERSION}${FMI_TYPE}.xml
   ${MODEL_NAME}/buildDescription.xml
 )
-
-# Link the onnxruntime library
-target_link_libraries(${TARGET_NAME} onnxruntime)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fmus)
 
@@ -365,28 +366,46 @@ add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
   "${FMU_BUILD_DIR}/sources/ortUtils.h"
 )
 
-# Copy the ONNX Runtime library into the FMU. The official release ships the
-# library as one real file plus version symlinks (e.g. libonnxruntime.so and
-# libonnxruntime.so.1 -> libonnxruntime.so.1.21.0). Copying every match while
-# dereferencing the symlinks would bundle the ~20 MB library three times, so we
-# ship it exactly once under the name the model binary actually loads.
-string(REGEX MATCH "^[0-9]+" ONNXRUNTIME_MAJOR ${LATEST_RELEASE_TAG})
+# Copy the ONNX Runtime library into the FMU, renamed to embed the model
+# name (e.g. libMyModel_onnxruntime.so), so that this FMU's private copy can
+# never collide with a same-named copy loaded by the FMI importer or another
+# FMU built by onnx2fmu in the same process (see ortUtils.c, which loads this
+# renamed file explicitly by path via dlopen/LoadLibraryEx rather than
+# through the linker). See https://github.com/HyRES-FBK/onnx2fmu/issues/53.
+#
+# The official release ships the library as one real file plus version
+# symlinks (e.g. libonnxruntime.so and libonnxruntime.so.1 ->
+# libonnxruntime.so.1.21.0 on Linux). Copying every match while dereferencing
+# the symlinks would bundle the ~20 MB library three times, so we ship it
+# exactly once, under its new private name.
 set (TEMP_LIB ${CMAKE_CURRENT_BINARY_DIR}/${ONNXRUNTIME}/lib)
 
 if (WIN32)
-  # DLLs are not symlinked; ship only the runtime DLLs and drop the import
-  # library (.lib) and debug symbols (.pdb), which are not needed in the FMU.
-  file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.dll)
-  foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_LIBS})
+  # DLLs are not symlinked; ship the main runtime DLL renamed, and drop the
+  # import library (.lib) and debug symbols (.pdb), which are not needed in
+  # the FMU (nothing links against the DLL anymore).
+  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+    "${TEMP_LIB}/onnxruntime.dll"
+    "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}/${MODEL_NAME}_onnxruntime.dll"
+  )
+  # Copy any additional runtime DLLs (e.g. execution provider plugins) as-is;
+  # only the main entry-point library needs the private name since it's the
+  # only one this FMU's binary loads directly by name.
+  file(GLOB ONNXRUNTIME_EXTRA_LIBS ${TEMP_LIB}/onnxruntime_*.dll)
+  foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_EXTRA_LIBS})
     add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
       ${ONNXRUNTIME_LIB}
       "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}"
     )
   endforeach(ONNXRUNTIME_LIB)
 elseif (APPLE)
-  # Copy only the real dylibs, skipping the version symlinks.
-  file(GLOB ONNXRUNTIME_LIBS ${TEMP_LIB}/*.dylib)
-  foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_LIBS})
+  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+    "${TEMP_LIB}/libonnxruntime.dylib"
+    "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}/lib${MODEL_NAME}_onnxruntime.dylib"
+  )
+  # Copy any additional real provider libraries as-is, skipping symlinks.
+  file(GLOB ONNXRUNTIME_EXTRA_LIBS ${TEMP_LIB}/libonnxruntime_*.dylib)
+  foreach (ONNXRUNTIME_LIB ${ONNXRUNTIME_EXTRA_LIBS})
     if (NOT IS_SYMLINK ${ONNXRUNTIME_LIB})
       add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
         ${ONNXRUNTIME_LIB}
@@ -395,11 +414,12 @@ elseif (APPLE)
     endif ()
   endforeach(ONNXRUNTIME_LIB)
 else ()
-  # Linux / UNIX: the model binary is linked against the SONAME
-  # (libonnxruntime.so.MAJOR), so ship the real library once under that name.
+  # Linux / UNIX: ship the real library once, renamed (no SONAME dance
+  # needed: this file is no longer resolved by the dynamic linker via
+  # DT_NEEDED, only opened explicitly by path).
   add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
     "${TEMP_LIB}/libonnxruntime.so.${LATEST_RELEASE_TAG}"
-    "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}/libonnxruntime.so.${ONNXRUNTIME_MAJOR}"
+    "${FMU_BUILD_DIR}/binaries/${FMI_PLATFORM}/lib${MODEL_NAME}_onnxruntime.so"
   )
   # Copy any additional real provider libraries (e.g.
   # libonnxruntime_providers_shared.so), skipping symlinks.

@@ -155,6 +155,8 @@ void freeModelInstance(ModelInstance *comp) {
 
     if (comp->env) freeOrtEnv(comp->env, comp);
 
+    freeOrtLibrary(comp);
+
     free(comp);
 }
 

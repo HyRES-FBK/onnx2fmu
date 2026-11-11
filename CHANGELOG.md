@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-11-11
+## [0.4.0] - 2026-11-11
 
-First stable release. It adds Model Exchange FMUs, a documentation site, and
-a clearer name for feedback states. Python 3.10 is no longer supported.
+This release adds Model Exchange FMUs, a documentation site, and a clearer
+name for feedback states. Python 3.10 is no longer supported.
+
+The same code was published by mistake as 1.0.0 on the same day. That
+release is withdrawn: use 0.4.0 instead.
 
 ### Added
 
@@ -100,7 +103,7 @@ a clearer name for feedback states. Python 3.10 is no longer supported.
   download, is now detected and removed, and the error message gives the
   URL for a manual download and the expected cache path. Fixes #35.
 
-[1.0.0]: https://github.com/HyRES-FBK/onnx2fmu/compare/v0.3.3...v1.0.0
+[0.4.0]: https://github.com/HyRES-FBK/onnx2fmu/compare/v0.3.3...v0.4.0
 
 ## [0.3.3] - 2026-06-18
 

@@ -8,7 +8,7 @@ provide the following examples:
 - [**Example 1**](example1): Demonstrates basic vector operations. It shows how to handle scalar and vector inputs and combine them to produce an output.
 - [**Example 2**](example2): A simple example showcasing a model with multiple inputs and outputs.
 - [**Example 3**](example3): A more complex example featuring a Recurrent Neural Network (RNN) to predict the temperature on a metallic plate. This highlights how to handle models with internal states and normalization parameters.
-- [**Example 4**](example4): An example of an autoregressive model, which uses its own output as a future input. This is achieved using FMI `local` variables to create a feedback loop.
+- [**Example 4**](example4): An example of an autoregressive model, which uses its own output as a future input. This is achieved using feedback states (the `feedbackStates` section of the model description) to create a feedback loop.
 
 ## Get started with the examples
 

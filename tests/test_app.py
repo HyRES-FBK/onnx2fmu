@@ -487,7 +487,7 @@ class TestExample4(unittest.TestCase):
     def test_compile_and_simulate(self):
         target_path = self.tmpdir / f"test_{self.model_name}_compile_and_simulate"
         # The test is though without start values, so we set them to None
-        for entry in ["inputs", "outputs", "locals"]:
+        for entry in ["inputs", "outputs", "feedbackStates"]:
             for variable in self.model_description.get(entry, []):
                 variable["start"] = "0.0"
         temp_model_description_path = self.tmpdir / "modelDescription.json"

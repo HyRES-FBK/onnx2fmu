@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from typing import Union, Optional
 
-from onnx2fmu.variables import Input, Output, Local
+from onnx2fmu.variables import Input, Output, FeedbackState
 
 
 MODEL_EXCHANGE = "ModelExchange"
@@ -42,7 +42,7 @@ class Model:
         self.GUID = str(uuid.uuid4())
         self.inputs = []
         self.outputs = []
-        self.locals = []
+        self.feedbackStates = []
 
     def _setName(self, name: str) -> None:
         self.name = re.sub(r'[^a-zA-Z0-9_]', '', name)
@@ -52,23 +52,23 @@ class Model:
             scalar["valueReference"] = next(self.vr_generator)
         return context
 
-    def addVariable(self, variable: Union[Input, Output, Local]) -> None:
+    def addVariable(self, variable: Union[Input, Output, FeedbackState]) -> None:
         context = variable.generateContext()
         context = self._assignValueReferences(context=context)
         if isinstance(variable, Input):
             self.inputs.append(context)
         elif isinstance(variable, Output):
             self.outputs.append(context)
-        elif isinstance(variable, Local):
-            self.locals.append(context)
+        elif isinstance(variable, FeedbackState):
+            self.feedbackStates.append(context)
         else:
             raise ValueError(f"{variable} is not an admissible variable.")
 
     def _missingInputOrOutput(self) -> bool:
         return any([len(i) == 0 for i in [self.inputs, self.outputs]])
 
-    def _pairStatesAndDerivatives(self) -> list[dict]:
-        """Pair each state's scalars with its derivative's scalars.
+    def _pairContinuousStatesAndDerivatives(self) -> list[dict]:
+        """Pair each continuous state's scalars with its derivative's scalars.
 
         Called after every variable has been added, so `self.inputs` /
         `self.outputs` already hold the final scalar value references.
@@ -78,7 +78,7 @@ class Model:
         `config.h` (`NX`) and `model.c` (the continuous-state functions).
         """
         state_lookup = {inp["name"]: inp
-                        for inp in self.inputs if inp.get("isState")}
+                        for inp in self.inputs if inp.get("isContinuousState")}
         states = []
         for output in self.outputs:
             state_name = output.get("derivativeOf")
@@ -103,7 +103,7 @@ class Model:
     def generateContext(self) -> dict[str, Union[str, bool, int, list, None]]:
         if self._missingInputOrOutput():
             raise ValueError("Inputs or outputs list is empty.")
-        states = self._pairStatesAndDerivatives()
+        states = self._pairContinuousStatesAndDerivatives()
         return {
             'name': self.name,
             'description': self.description,
@@ -124,11 +124,11 @@ class Model:
             'stopTime': self.stopTime,
             'modelExchange': self.modelExchange,
             'coSimulation': self.coSimulation,
-            'states': states,
+            'continuousStates': states,
             'numberOfContinuousStates': len(states),
             'inputs': self.inputs,
             'outputs': self.outputs,
-            'locals': self.locals
+            'feedbackStates': self.feedbackStates
         }
 
 

@@ -1,13 +1,17 @@
+import warnings
+
 import numpy as np
 from onnx import ModelProto, ValueInfoProto
 
 from onnx2fmu.model import Model
-from onnx2fmu.variables import Input, Output, Local
+from onnx2fmu.variables import Input, Output, FeedbackState
 
 
 INPUTS = "inputs"
 OUTPUTS = "outputs"
-LOCALS = "locals"
+FEEDBACK_STATES = "feedbackStates"
+# Deprecated alias of FEEDBACK_STATES, kept for backward compatibility.
+DEPRECATED_LOCALS = "locals"
 FMU_TYPE = "FMUType"
 MODEL_EXCHANGE = "ModelExchange"
 CO_SIMULATION = "CoSimulation"
@@ -22,11 +26,36 @@ class ModelDescription:
                  ) -> None:
         self.onnx_model = onnx_model
         self.model_description = model_description
+        self._renameDeprecatedLocals()
         self._checkModelDescription()
         self._checkFMUType()
-        self._checkLocalVariableNodesShape()
+        self._checkFeedbackStateNodesShape()
         self._checkTimeInputs()
-        self._checkStateDeclarations()
+        self._checkContinuousStateDeclarations()
+
+    def _renameDeprecatedLocals(self) -> None:
+        """Accept the deprecated `locals` key as an alias of `feedbackStates`.
+
+        The key was renamed because "local" is an FMI causality, which is
+        not what these entries declare.
+        """
+        if DEPRECATED_LOCALS not in self.model_description:
+            return
+        if FEEDBACK_STATES in self.model_description:
+            raise ValueError(
+                f"Model description declares both '{FEEDBACK_STATES}' and "
+                f"the deprecated '{DEPRECATED_LOCALS}'. Move every entry "
+                f"to '{FEEDBACK_STATES}'."
+            )
+        warnings.warn(
+            f"The '{DEPRECATED_LOCALS}' model description key is "
+            f"deprecated and will be removed in a future release; rename "
+            f"it to '{FEEDBACK_STATES}'.",
+            FutureWarning,
+            stacklevel=3,
+        )
+        self.model_description[FEEDBACK_STATES] = \
+            self.model_description.pop(DEPRECATED_LOCALS)
 
     def _checkModelDescription(self) -> None:
         """Check that model description names and size match model nodes."""
@@ -47,31 +76,31 @@ class ModelDescription:
         for output in self.model_description[OUTPUTS]:
             assert output["name"] in output_nodes_names, \
                 f"'{output['name']}' is not one of the model output nodes {output_nodes_names}"
-        for local in self.model_description.get(LOCALS, []):
-            assert local["nameIn"] in input_nodes_names, \
-                f"'{local['nameIn']}' is not one of the model input nodes {input_nodes_names}"
-            assert local["nameOut"] in output_nodes_names, \
-                f"'{local['nameOut']}' is not one of the model output nodes {output_nodes_names}"
+        for feedback_state in self.model_description.get(FEEDBACK_STATES, []):
+            assert feedback_state["nameIn"] in input_nodes_names, \
+                f"'{feedback_state['nameIn']}' is not one of the model input nodes {input_nodes_names}"
+            assert feedback_state["nameOut"] in output_nodes_names, \
+                f"'{feedback_state['nameOut']}' is not one of the model output nodes {output_nodes_names}"
 
-    def _checkLocalVariableNodesShape(self):
-        if self.model_description.get(LOCALS) is None:
+    def _checkFeedbackStateNodesShape(self):
+        if self.model_description.get(FEEDBACK_STATES) is None:
             return
-        for var in self.model_description[LOCALS]:
+        for var in self.model_description[FEEDBACK_STATES]:
             node_in = self._findNode(var["nameIn"])
             node_out = self._findNode(var["nameOut"])
             node_shape_in = self._readNodeShape(node_in)
             node_shape_out = self._readNodeShape(node_out)
             assert node_shape_in == node_shape_out, \
-                f"Local variable {var['nameIn']} shape {node_shape_in} and {var['nameOut']} shape {node_shape_out} are not consistent."
+                f"Feedback state {var['nameIn']} shape {node_shape_in} and {var['nameOut']} shape {node_shape_out} are not consistent."
 
     def _checkFMUType(self) -> None:
         """Validate/normalize the top-level `FMUType` key.
 
         Optional; defaults to Co-Simulation only so descriptions written
         before Model Exchange support was added keep producing identical
-        FMUs. Model Exchange is currently incompatible with `locals`
-        (discrete feedback variables would advance at solver-internal
-        evaluation rate, not once per communication step).
+        FMUs. Model Exchange is currently incompatible with
+        `feedbackStates` (they would advance at solver-internal evaluation
+        rate, not once per communication step).
         """
         fmu_type = self.model_description.get(FMU_TYPE, DEFAULT_FMU_TYPES)
         if not isinstance(fmu_type, list) or len(fmu_type) == 0:
@@ -86,11 +115,11 @@ class ModelDescription:
                     f"types are {FMU_TYPES}."
                 )
         if MODEL_EXCHANGE in fmu_type and \
-                len(self.model_description.get(LOCALS, [])) > 0:
+                len(self.model_description.get(FEEDBACK_STATES, [])) > 0:
             raise ValueError(
-                "Model Exchange is not compatible with 'locals' (stateful "
-                "feedback variables). Remove 'locals' or drop "
-                "'ModelExchange' from FMUType."
+                "Model Exchange is not compatible with 'feedbackStates'. "
+                "Remove 'feedbackStates' or drop 'ModelExchange' from "
+                "FMUType."
             )
         self.model_description[FMU_TYPE] = fmu_type
 
@@ -127,11 +156,11 @@ class ModelDescription:
         if time_input["name"] in derivative_targets:
             raise ValueError(
                 f"Time input '{time_input['name']}' cannot also be a "
-                "'derivativeOf' target (a state)."
+                "'derivativeOf' target (a continuous state)."
             )
 
-    def _checkStateDeclarations(self) -> None:
-        """Validate `derivativeOf` on `outputs` entries.
+    def _checkContinuousStateDeclarations(self) -> None:
+        """Validate `derivativeOf` (continuous state) declarations on `outputs`.
 
         The target must name an `inputs` entry, the ONNX node shapes of
         the state/derivative pair must match, and the state must declare
@@ -197,7 +226,7 @@ class ModelDescription:
         Check that start values are either a scalar or a list of sclart, whose
         shape allows broadcasting to the variable shape.
         """
-        for entry in [INPUTS, OUTPUTS, LOCALS]:
+        for entry in [INPUTS, OUTPUTS, FEEDBACK_STATES]:
             for variable in self.model_description.get(entry, []):
                 if "start" in variable:
                     self._checkStartValuesBroadcastability(variable=variable)
@@ -228,18 +257,18 @@ class ModelDescription:
             out["derivativeOf"] for out in self.model_description.get(OUTPUTS, [])
             if out.get("derivativeOf")
         }
-        entries = zip([INPUTS, OUTPUTS, LOCALS], [Input, Output, Local])
+        entries = zip([INPUTS, OUTPUTS, FEEDBACK_STATES], [Input, Output, FeedbackState])
         for entry, cls in entries:
             for kwargs in self.model_description.get(entry, []):
                 kwargs["fmiVersion"] = self.model_description["FMIVersion"]
-                if cls is Local:
+                if cls is FeedbackState:
                     kwargs["shape"] = shapes[kwargs["nameIn"]]
                 else:
                     kwargs["shape"] = shapes[kwargs["name"]]
                 if cls is Input and kwargs["name"] in state_names:
                     # Derived, not a JSON key: this input is the state
                     # targeted by an output's `derivativeOf`.
-                    kwargs["isState"] = True
+                    kwargs["isContinuousState"] = True
                 self.model.addVariable(cls(**kwargs))
 
     def _initializeModel(self) -> None:

@@ -55,10 +55,10 @@
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
-    {%- for local in locals %}
-    {%- for scalar in local.scalarValues %}
-    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}" initial="{{ local.initial }}">
-      <{{ local.vType.FMIType }} start="{{ scalar.start }}"/>
+    {%- for feedbackState in feedbackStates %}
+    {%- for scalar in feedbackState.scalarValues %}
+    <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ feedbackState.causality }}" variability="{{ feedbackState.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ feedbackState.description }}{% endif %}" initial="{{ feedbackState.initial }}">
+      <{{ feedbackState.vType.FMIType }} start="{{ scalar.start }}"/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
@@ -74,14 +74,14 @@
     {%- endif %}
     {%- endfor %}
     {%- for input in inputs %}
-    {%- if input.isState %}
+    {%- if input.isContinuousState %}
     {%- for scalar in input.scalarValues %}
       <Unknown index="{{ scalar.valueReference + 1 }}"/>
     {%- endfor %}
     {%- endif %}
     {%- endfor %}
     </Outputs>
-    {%- if states %}
+    {%- if continuousStates %}
     <Derivatives>
     {%- for output in outputs %}
     {%- if output.derivativeOf %}

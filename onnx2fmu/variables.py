@@ -127,11 +127,11 @@ class Input(VariableFactory):
                  labels: None | list[str] = None,
                  start: Union[str, int, float, list] = "1.0",
                  time: bool = False,
-                 isState: bool = False
+                 isContinuousState: bool = False
                  ) -> None:
         self.isTime = bool(time)
-        self.isState = bool(isState)
-        if self.isState:
+        self.isContinuousState = bool(isContinuousState)
+        if self.isContinuousState:
             # Continuous states must be Float64 in FMI 3.0 (the
             # fmi3{Get,Set}ContinuousStates API works on fmi3Float64).
             vType = TensorProto.DOUBLE
@@ -143,12 +143,12 @@ class Input(VariableFactory):
             # is not exposed as an FMI variable.
             self.scalarValues = []
         self.initial = ""
-        if self.isState:
+        if self.isContinuousState:
             # Van der Pol reference pattern: states are observable outputs
             # whose start value is the initial condition.
             self.causality = "output"
             self.initial = "exact"
-        self._context_variables += ["isTime", "isState", "initial"]
+        self._context_variables += ["isTime", "isContinuousState", "initial"]
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}" + \
@@ -180,13 +180,20 @@ class Output(VariableFactory):
         self.initial = ""
         if self.derivativeOf:
             # Van der Pol reference pattern: derivatives are calculated
-            # locals carrying the FMI `derivative` attribute.
+            # FMI `local`-causality variables carrying the FMI
+            # `derivative` attribute.
             self.causality = "local"
             self.initial = "calculated"
         self._context_variables += ["derivativeOf", "initial"]
 
 
-class Local(VariableFactory):
+class FeedbackState(VariableFactory):
+    """An output node fed back into an input node on the next step.
+
+    Not to be confused with FMI `local` causality: a feedback state is
+    *emitted* with `causality="local"`, but so are other variables (e.g.
+    Model Exchange state derivatives, see `Output`).
+    """
 
     def __init__(self,
                  nameIn: str,
@@ -208,6 +215,8 @@ class Local(VariableFactory):
         super().__init__(name=name, shape=shape, description=description,
                          variability=variability, fmiVersion=fmiVersion,
                          vType=vType, labels=labels, start=start)
+        # Set explicitly: the default derives causality from the class name.
+        self.causality = "local"
         self.initial = initial
         self._context_variables += ["nameIn", "nameOut", "nodeNameIn",
                                     "nodeNameOut", "initial"]

@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The model description section declaring output→input feedback (used for
+  RNN-style stateful models) is renamed from `"locals"` to
+  `"feedbackStates"`, and the `Local` variable class to `FeedbackState`.
+  "Local" is an FMI causality, not a kind of model description entry, and
+  the old name had become ambiguous. Generated FMUs are unchanged: feedback
+  states are still emitted with `causality="local"` and the same variable
+  names. The README gains a terminology section distinguishing feedback
+  states, continuous states, and FMI `local` causality.
+
+### Deprecated
+
+- The `"locals"` model description key. It is still accepted as an alias of
+  `"feedbackStates"` but emits a `FutureWarning`; declaring both keys is an
+  error.
+
 ### Fixed
 
 - The ONNX Runtime library bundled in each FMU is now renamed with the model

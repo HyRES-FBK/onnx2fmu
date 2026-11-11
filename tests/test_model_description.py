@@ -60,7 +60,7 @@ class TestModelDescription(unittest.TestCase):
                     prod(shapes[node["name"]]),
                     len(node["scalarValues"])
                 )
-        for node in context["locals"]:
+        for node in context["feedbackStates"]:
             self.assertEqual(
                 prod(shapes[node["nameIn"]]),
                 len(node["scalarValues"])
@@ -139,13 +139,30 @@ class TestModelExchangeValidation(unittest.TestCase):
         with self.assertRaises(ValueError):
             ModelDescription(self.onnx_model, description)
 
-    def test_model_exchange_with_locals_raises(self):
+    def test_model_exchange_with_feedback_states_raises(self):
         description = copy.deepcopy(self.base_description)
         description["FMUType"] = ["ModelExchange"]
-        # u (3,) -> y (3,): shapes match, so this is a valid `locals` entry
-        # on its own; it is ME's incompatibility with `locals` that must
-        # raise here, not a shape mismatch.
+        # u (3,) -> y (3,): shapes match, so this is a valid
+        # `feedbackStates` entry on its own; it is ME's incompatibility
+        # with `feedbackStates` that must raise here, not a shape mismatch.
+        description["feedbackStates"] = [{"nameIn": "u", "nameOut": "y"}]
+        with self.assertRaises(ValueError):
+            ModelDescription(self.onnx_model, description)
+
+    def test_deprecated_locals_key_is_an_alias(self):
+        description = copy.deepcopy(self.base_description)
         description["locals"] = [{"nameIn": "u", "nameOut": "y"}]
+        with self.assertWarns(FutureWarning):
+            model_description = ModelDescription(self.onnx_model, description)
+        context = model_description.generateContext()
+        self.assertEqual(
+            [var["name"] for var in context["feedbackStates"]], ["u_y"])
+        self.assertNotIn("locals", context)
+
+    def test_locals_and_feedback_states_together_raise(self):
+        description = copy.deepcopy(self.base_description)
+        description["locals"] = [{"nameIn": "u", "nameOut": "y"}]
+        description["feedbackStates"] = [{"nameIn": "u", "nameOut": "y"}]
         with self.assertRaises(ValueError):
             ModelDescription(self.onnx_model, description)
 

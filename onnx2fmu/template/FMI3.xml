@@ -42,9 +42,9 @@
     <{{ output.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ output.causality }}" variability="{{ output.variability }}"{% if output.initial %} initial="{{ output.initial }}"{% endif %}{% if scalar.stateValueReference is defined %} derivative="{{ scalar.stateValueReference }}"{% endif %} description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ output.description }}{% endif %}"/>
     {%- endfor %}
     {%- endfor %}
-    {%- for local in locals %}
-    {%- for scalar in local.scalarValues %}
-    <{{ local.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ local.causality }}" variability="{{ local.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ local.description }}{% endif %}"/>
+    {%- for feedbackState in feedbackStates %}
+    {%- for scalar in feedbackState.scalarValues %}
+    <{{ feedbackState.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ feedbackState.causality }}" variability="{{ feedbackState.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ feedbackState.description }}{% endif %}"/>
     {%- endfor %}
     {%- endfor %}
   </ModelVariables>
@@ -58,7 +58,7 @@
     {%- endif %}
     {%- endfor %}
     {%- for input in inputs %}
-    {%- if input.isState %}
+    {%- if input.isContinuousState %}
     {%- for scalar in input.scalarValues %}
     <Output valueReference="{{ scalar.valueReference }}"/>
     {%- endfor %}

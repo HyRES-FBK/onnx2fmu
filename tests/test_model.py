@@ -1,7 +1,7 @@
 import unittest
 
 from onnx2fmu.model import Model
-from onnx2fmu.variables import Input, Output, Local
+from onnx2fmu.variables import Input, Output, FeedbackState
 
 
 class TestModel(unittest.TestCase):
@@ -34,14 +34,14 @@ class TestModel(unittest.TestCase):
         v = Output(name="y", shape=(3, 4))
         self.model.addVariable(v)
         self.assertGreaterEqual(len(self.model.outputs), 1)
-        v = Local(nameIn="z1", nameOut="z2", shape=(4, 5))
+        v = FeedbackState(nameIn="z1", nameOut="z2", shape=(4, 5))
         self.model.addVariable(v)
-        self.assertGreaterEqual(len(self.model.locals), 1)
+        self.assertGreaterEqual(len(self.model.feedbackStates), 1)
 
     def test_add_variables(self):
         self.add_example_variables()
         values = []
-        variables = self.model.inputs + self.model.outputs + self.model.locals
+        variables = self.model.inputs + self.model.outputs + self.model.feedbackStates
         for input in variables:
             scalars = input["scalarValues"]
             values += [scalar["valueReference"] for scalar in scalars]
@@ -54,7 +54,7 @@ class TestModel(unittest.TestCase):
         context = self.model.generateContext()
         self.assertIn("x", [var["name"] for var in context["inputs"]])
         self.assertIn("y", [var["name"] for var in context["outputs"]])
-        self.assertIn("z1_z2", [var["name"] for var in context["locals"]])
+        self.assertIn("z1_z2", [var["name"] for var in context["feedbackStates"]])
 
 
 class TestModelFMUType(unittest.TestCase):
@@ -77,34 +77,34 @@ class TestModelFMUType(unittest.TestCase):
     def test_context_exposes_fmu_type_flags(self):
         model = Model(name="m", fmuType=["ModelExchange", "CoSimulation"])
         model.addVariable(Input(name="x", shape=(2, ), start=[2.0, 0.0],
-                                isState=True))
+                                isContinuousState=True))
         model.addVariable(Output(name="dx", shape=(2, ), derivativeOf="x"))
         context = model.generateContext()
         self.assertTrue(context["modelExchange"])
         self.assertTrue(context["coSimulation"])
 
 
-class TestModelStates(unittest.TestCase):
+class TestModelContinuousStates(unittest.TestCase):
 
     def setUp(self) -> None:
         self.model = Model(name="vdp", fmuType=["ModelExchange"])
 
     def test_states_are_paired_with_derivatives(self):
         self.model.addVariable(
-            Input(name="x", shape=(2, ), start=[2.0, 0.0], isState=True)
+            Input(name="x", shape=(2, ), start=[2.0, 0.0], isContinuousState=True)
         )
         self.model.addVariable(
             Output(name="dx", shape=(2, ), derivativeOf="x")
         )
         context = self.model.generateContext()
         self.assertEqual(context["numberOfContinuousStates"], 2)
-        self.assertEqual(len(context["states"]), 2)
+        self.assertEqual(len(context["continuousStates"]), 2)
         state_input = context["inputs"][0]
         derivative_output = context["outputs"][0]
         for state_scalar, derivative_scalar, pair in zip(
                 state_input["scalarValues"],
                 derivative_output["scalarValues"],
-                context["states"]):
+                context["continuousStates"]):
             self.assertEqual(pair["stateName"], state_scalar["name"])
             self.assertEqual(pair["derivativeName"], derivative_scalar["name"])
             self.assertEqual(
@@ -116,11 +116,11 @@ class TestModelStates(unittest.TestCase):
         self.model.addVariable(Input(name="x"))
         self.model.addVariable(Output(name="y"))
         context = self.model.generateContext()
-        self.assertEqual(context["states"], [])
+        self.assertEqual(context["continuousStates"], [])
         self.assertEqual(context["numberOfContinuousStates"], 0)
 
     def test_dangling_derivative_reference_raises(self):
-        # "x" is never added as a state (isState=True) input, only as a
+        # "x" is never added as a state (isContinuousState=True) input, only as a
         # plain "y" input -- so the derivativeOf reference cannot resolve.
         self.model.addVariable(Input(name="y"))
         self.model.addVariable(Output(name="dx", derivativeOf="x"))

@@ -1,6 +1,6 @@
 {
     "name": "example1",
-    "description": "The model defines a simple example model with a scalar input and two vector inputs, one with 'local' variability and one with 'continuous' variability.",
+    "description": "The model defines a simple example model with a scalar input and two vector inputs.",
     "FMIVersion": "2.0",
     "inputs": [
         {
@@ -9,11 +9,11 @@
         },
         {
             "name": "vector_input",
-            "description": "A vector of input variables with variability discrete."
+            "description": "A vector of 4 input variables; variability is continuous by default."
         },
         {
             "name": "vector_input_discrete",
-            "description": "Inputs have variability discrete by default."
+            "description": "A vector of 5 input variables; variability is continuous by default."
         }
     ],
     "outputs": [

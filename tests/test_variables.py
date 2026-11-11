@@ -2,7 +2,7 @@ import unittest
 from onnx import TensorProto
 
 from onnx2fmu.config import FMI2TYPES, FMI3TYPES
-from onnx2fmu.variables import VariableFactory, Input, Output, Local
+from onnx2fmu.variables import VariableFactory, Input, Output, FeedbackState
 
 
 class TestVariablesFactory(unittest.TestCase):
@@ -76,26 +76,26 @@ class TestInputVariable(unittest.TestCase):
     def test_regular_input_is_unaffected_by_state_flags(self):
         v = Input(name="x")
         self.assertFalse(v.isTime)
-        self.assertFalse(v.isState)
+        self.assertFalse(v.isContinuousState)
         self.assertEqual(v.causality, "input")
         self.assertEqual(v.initial, "")
 
     def test_state_input_is_reclassified_as_output(self):
-        v = Input(name="x", shape=(2, ), start=[2.0, 0.0], isState=True)
-        self.assertTrue(v.isState)
+        v = Input(name="x", shape=(2, ), start=[2.0, 0.0], isContinuousState=True)
+        self.assertTrue(v.isContinuousState)
         self.assertEqual(v.causality, "output")
         self.assertEqual(v.initial, "exact")
         # Continuous states must be Float64 for the fmi{2,3} state API; in
         # FMI 2.0 both FLOAT and DOUBLE map to "Real", so check via a 3.0
         # instance where the distinction is visible.
-        v3 = Input(name="x", shape=(2, ), start=[2.0, 0.0], isState=True,
+        v3 = Input(name="x", shape=(2, ), start=[2.0, 0.0], isContinuousState=True,
                    fmiVersion="3.0")
         self.assertEqual(v3.vType, FMI3TYPES[TensorProto.DOUBLE])
 
     def test_state_input_context_includes_new_keys(self):
-        v = Input(name="x", isState=True)
+        v = Input(name="x", isContinuousState=True)
         context = v.generateContext()
-        for key in ["isTime", "isState", "initial"]:
+        for key in ["isTime", "isContinuousState", "initial"]:
             self.assertIn(key, context)
 
 
@@ -122,18 +122,25 @@ class TestOutputVariable(unittest.TestCase):
             self.assertIn(key, context)
 
 
-class TestLocalVariable(unittest.TestCase):
+class TestFeedbackState(unittest.TestCase):
 
     def test_names(self):
-        v = Local(nameIn="X.1", nameOut="X:2")
+        v = FeedbackState(nameIn="X.1", nameOut="X:2")
         self.assertEqual(v.nameIn, "X1")
         self.assertEqual(v.nameOut, "X2")
         self.assertEqual(v.name, "X1_X2")
         self.assertEqual(v.nodeNameIn, "X.1")
         self.assertEqual(v.nodeNameOut, "X:2")
 
+    def test_causality_is_fmi_local(self):
+        # The emitted FMI causality must stay `local`, whatever the class
+        # is called.
+        v = FeedbackState(nameIn="X.1", nameOut="X:2")
+        self.assertEqual(v.causality, "local")
+        self.assertEqual(v.generateContext()["causality"], "local")
+
     def test_generate_context(self):
-        v = Local(nameIn="X.1", nameOut="X:2")
+        v = FeedbackState(nameIn="X.1", nameOut="X:2")
         context = v.generateContext()
         self.assertIn("nameIn", context)
         self.assertIn("nameOut", context)

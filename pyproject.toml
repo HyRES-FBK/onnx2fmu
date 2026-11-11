@@ -38,11 +38,14 @@ dependencies = [
 extra = [
     "fmpy>=0.3.25",
     "ipykernel>=7.1.0",
+    "matplotlib>=3.10.9",
     "onnxscript>=0.5.6",
     "pandas>=2.3.3",
     "plotly>=6.5.0",
     "pyside6>=6.10.1",
+    "scipy>=1.15.3",
     "torch>=2.13.0",
+    "torchdiffeq>=0.2.5",
 ]
 
 [project.scripts]

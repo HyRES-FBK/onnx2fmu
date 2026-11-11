@@ -7,7 +7,12 @@
 #define MODEL_IDENTIFIER {{ name }}
 #define INSTANTIATION_TOKEN "{{ GUID }}"
 
+{%- if coSimulation %}
 #define CO_SIMULATION
+{%- endif %}
+{%- if modelExchange %}
+#define MODEL_EXCHANGE
+{%- endif %}
 
 #define GET_FLOAT64
 #define SET_FLOAT64
@@ -18,6 +23,11 @@
 
 #define FIXED_SOLVER_STEP 1
 #define DEFAULT_STOP_TIME 1
+
+{%- if continuousStates %}
+#define HAS_CONTINUOUS_STATES
+#define NX {{ continuousStates|length }}
+{%- endif %}
 
 typedef enum {
     // Always include time
@@ -32,8 +42,8 @@ typedef enum {
     vr_{{ scalar.name }},
     {%- endfor %}
     {%- endfor %}
-    {%- for local in locals %}
-    {%- for scalar in local.scalarValues %}
+    {%- for feedbackState in feedbackStates %}
+    {%- for scalar in feedbackState.scalarValues %}
     vr_{{ scalar.name }},
     {%- endfor %}
     {%- endfor %}
@@ -52,9 +62,9 @@ typedef struct {
     {{ output.vType.CType }} {{ scalar.name }};
     {%- endfor %}
     {%- endfor %}
-    {%- for local in locals %}
-    {%- for scalar in local.scalarValues %}
-    {{ local.vType.CType }} {{ scalar.name }};
+    {%- for feedbackState in feedbackStates %}
+    {%- for scalar in feedbackState.scalarValues %}
+    {{ feedbackState.vType.CType }} {{ scalar.name }};
     {%- endfor %}
     {%- endfor %}
 } ModelData;
@@ -65,9 +75,9 @@ typedef struct {
     float* {{ input.name }}_float;
     OrtValue* {{ input.name }}_tensor;
     {%- endfor %}
-    {%- for local in locals %}
-    float* {{ local.nameIn }}_float;
-    OrtValue* {{ local.nameIn }}_tensor;
+    {%- for feedbackState in feedbackStates %}
+    float* {{ feedbackState.nameIn }}_float;
+    OrtValue* {{ feedbackState.nameIn }}_tensor;
     {%- endfor %}
 } ModelBuffers;
 

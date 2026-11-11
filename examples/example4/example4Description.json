@@ -1,6 +1,6 @@
 {
     "name": "example4FMI2",
-    "description": "Example to test FMU with local variables.",
+    "description": "Example to test FMU with feedback states.",
     "FMIVersion": "2.0",
     "inputs": [
         {
@@ -21,7 +21,7 @@
             "description": "The state of the system at time t+1."
         }
     ],
-    "locals": [
+    "feedbackStates": [
         {
             "nameIn": "X",
             "nameOut": "X1",

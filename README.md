@@ -39,11 +39,12 @@ FMU. The pipeline has a Python code-generation half and a C runtime half:
 </p>
 
 1. **Validate** — the model description JSON is checked against the ONNX
-   graph: every declared input/output/local `name` must match a graph node,
-   and `local` `nameIn`/`nameOut` node shapes must agree.
-2. **Expand variables** — each tensor input/output/local is expanded into a
-   flat list of FMI scalar variables (one per tensor element), with per-element
-   names, optional labels, and broadcast start values. `local` variables wire
+   graph: every declared input/output `name` and every feedback state
+   `nameIn`/`nameOut` must match a graph node, and the `nameIn`/`nameOut`
+   node shapes of a feedback state must agree.
+2. **Expand variables** — each tensor input, output, and feedback state is
+   expanded into a flat list of FMI scalar variables (one per tensor element), with per-element
+   names, optional labels, and broadcast start values. Feedback states wire
    an output node back into an input node on the next simulation step, which
    is how RNN-style stateful models are supported.
 3. **Build context** — the expanded variables are assigned sequential FMI
@@ -60,7 +61,7 @@ FMU. The pipeline has a Python code-generation half and a C runtime half:
 
 ## 📝 ONNX model declaration
 
-ONNX2FMU can handle models with multiple inputs, outputs, and local variables.
+ONNX2FMU can handle models with multiple inputs, outputs, and feedback states.
 These entries must be listed in the model description JSON file, and their
 names must match the name of a node in the ONNX model graph.
 
@@ -75,8 +76,16 @@ following global items:
 the FMU binaries, which can be either `2.0` or `3.0`;
 - `"inputs"` and `"outputs"` are the lists of inputs and output nodes in the
 ONNX model;
-- `"locals"` are mapping between an input and an output node. Their behavior is
-explained in [A model with local variables](#a-model-with-local-variables).
+- `"feedbackStates"` (optional) are mappings between an output node and the
+input node it is fed back into on the next step. Their behavior is explained
+in [A model with feedback states](#a-model-with-feedback-states). This key was
+previously named `"locals"`; the old name still works but is deprecated and
+emits a warning.
+- `"FMUType"` (optional) selects which FMI interface(s) to generate: a list
+made of `"CoSimulation"`, `"ModelExchange"`, or both. It defaults to
+`["CoSimulation"]`, so existing model descriptions keep producing the same
+FMU. See [Model Exchange and continuous
+states](#model-exchange-and-continuous-states).
 
 Each entry of the the inputs and output lists is characterized by the following
 schema:
@@ -94,7 +103,7 @@ input nodes and one output node.
 ```json
 {
     "name": "example1",
-    "description": "The model defines a simple example model with a scalar input and two vector inputs, one with 'local' variability and one with 'continuous' variability.",
+    "description": "The model defines a simple example model with a scalar input and two vector inputs.",
     "FMIVersion": "2.0",
     "inputs": [
         {
@@ -103,11 +112,11 @@ input nodes and one output node.
         },
         {
             "name": "vector_input",
-            "description": "A vector of input variables with variability discrete."
+            "description": "A vector of 4 input variables; variability is continuous by default."
         },
         {
             "name": "vector_input_discrete",
-            "description": "Inputs have variability discrete by default."
+            "description": "A vector of 5 input variables; variability is continuous by default."
         }
     ],
     "outputs": [
@@ -124,9 +133,23 @@ input nodes and one output node.
 }
 ```
 
+### Terminology
+
+ONNX2FMU and the FMI standard use a few similar-sounding words for different
+things:
+
+| Term | Meaning | How it is declared |
+|---|---|---|
+| **Feedback state** | An output node whose value is fed back into an input node on the next step (e.g. the hidden state of an RNN). An ONNX2FMU concept. | An entry of `"feedbackStates"` with `nameIn`/`nameOut`. |
+| **Continuous state** | A state integrated by the importer's solver in Model Exchange, paired with an output that computes its derivative. An FMI concept. | An input targeted by an output's `"derivativeOf"`. |
+| **FMI `local` causality** | The FMI attribute of a variable that is internal to the FMU and not meant to be connected to other models. | Not declared: it is assigned in the generated `modelDescription.xml`. |
+
+Feedback states and continuous-state derivatives are both *emitted* with FMI
+`local` causality, but `local` is only an attribute of the generated FMU
+variables, not a kind of entry in the model description.
+
 ### Variability of model variables
 
-Allowed variables types are `input`, `output`, and `local`.
 Admissible variabilities are `continuous` and `discrete`;
 the default choice is `continuous` if nothing is specified in the model
 description.
@@ -160,8 +183,8 @@ class ExampleModel(nn.Module):
 
     def forward(self, x1, x2, x3):
         # Input x1 is a scalar
-        # Input x2 is a vector with causality 'local' and 4 elements
-        # Input x3 is a vector with causality 'countinuous' and 5 elements
+        # Input x2 is a vector with 4 elements
+        # Input x3 is a vector with 5 elements
         x4 = x2 + x3[:4]
         x5 = x2 - x3[:4]
         x6 = x1 * x3[-1]
@@ -198,21 +221,21 @@ In this example, the normalization parameters, which do not have to be
 optimized, are stored in the model using the [`register_buffer`](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.register_buffer) method, which
 detaches them from the computational graph.
 
-### A model with local variables
+### A model with feedback states
 
 Recurrent neural network architectures might require to feed the model with the
 output of the model itself in a feedback loop fashion.
-In ONNX2FMU, we realize this functionality through FMI `local` variables.
-Mapping model's input to output is necessary though.
-In [example4](tests/example4/), we show how FMUs with local variables are
+In ONNX2FMU, we realize this functionality through *feedback states*, which
+map an output node of the model to one of its input nodes.
+In [example4](examples/example4/), we show how FMUs with feedback states are
 declared.
-The model description file must present a section named `locals` like the
-following:
+The model description file must present a section named `feedbackStates` like
+the following:
 
 ```json
 {
     ...
-    "locals": [
+    "feedbackStates": [
         {
             "nameIn": "X",
             "nameOut": "X1",
@@ -227,7 +250,7 @@ following:
 }
 ```
 
-Local variables requires two names, i.e., `nameIn` and `nameOut`, which define
+A feedback state requires two names, i.e., `nameIn` and `nameOut`, which define
 an input-output relationship that feeds the `nameIn` input node with the
 output of the `nameOut` output node.
 The user must take care to provide the right output in the `forward` method.
@@ -251,6 +274,86 @@ In the example above, the input `U` is updated with the content of `u` and
 returned by the function with the name `U1` (remember that node names cannot be
 repeated in ONNX). During the next time step, the FMU will take care to pass
 the output to the model as a new, updated input.
+
+In the generated FMU, each feedback state is exposed as a variable named
+`<nameIn>_<nameOut>` with FMI `local` causality.
+
+### Model Exchange and continuous states
+
+ONNX2FMU can also generate **Model Exchange** (ME) FMUs, for models whose
+outputs are interpreted as state derivatives `dx/dt` (a "neural ODE"): the
+FMU exposes `getContinuousStates`/`setContinuousStates`/`getDerivatives` and
+lets the *importer's own solver* (e.g. CVode) integrate the network, instead
+of ONNX2FMU stepping it internally as in Co-Simulation.
+
+To opt in, set `"FMUType"` to include `"ModelExchange"`, and mark an output
+as the derivative of an input with `"derivativeOf"`:
+
+```json
+{
+    "name": "VanDerPol",
+    "description": "Van der Pol oscillator (mu=1) as a neural-ODE FMU.",
+    "FMIVersion": "3.0",
+    "FMUType": ["ModelExchange", "CoSimulation"],
+    "inputs": [
+        {
+            "name": "x",
+            "description": "State vector [x0, x1].",
+            "start": [2.0, 0.0]
+        }
+    ],
+    "outputs": [
+        {
+            "name": "dx",
+            "description": "dx/dt, the derivative of state x.",
+            "derivativeOf": "x"
+        }
+    ]
+}
+```
+
+A few consequences of declaring a state this way:
+
+- The state input (`"x"` above) is **required** to declare a `"start"`
+value — it is its initial condition — and is emitted in the FMU as an
+`output`-causality variable with `initial="exact"`, not as a regular input.
+This mirrors the FMI specification's own [Van der
+Pol](https://github.com/modelica/Reference-FMUs/tree/main/VanDerPol)
+reference example.
+- The derivative output (`"dx"` above) is emitted as a `local`-causality,
+`initial="calculated"` variable carrying the FMI `derivative` attribute
+that points back at its state.
+- Both the state and its derivative must reference ONNX nodes of the same
+shape.
+- `"FMUType": ["ModelExchange"]` is **not compatible with
+`"feedbackStates"`**: feedback states would otherwise advance at whatever rate the
+ME solver happens to evaluate the model, not once per communication step.
+Declaring both raises a validation error.
+
+For time-dependent (non-autonomous) dynamics `f(t, x)`, an input can be
+flagged `"time": true` instead of receiving its own FMI variable; ONNX2FMU
+feeds it the FMI independent variable (the simulation clock) on every
+evaluation:
+
+```json
+{"name": "t", "time": true}
+```
+
+A model can declare at most one time input, and it must have a single
+element (it cannot itself be a state).
+
+**Co-Simulation of a model with continuous states** is still possible (e.g.
+`"FMUType": ["ModelExchange", "CoSimulation"]`) but integrates internally
+with a fixed-step forward Euler at the hardcoded 1 second step
+(`FIXED_SOLVER_STEP`) — coarser than letting an ME importer's adaptive
+solver drive it. Use plain Model Exchange, or a small Co-Simulation
+communication step, for accuracy-sensitive cases.
+
+[example5](examples/example5/) trains an actual neural ODE with
+[torchdiffeq](https://github.com/rtqichen/torchdiffeq) — a small network
+`f_theta(t, x)` fit, via backpropagation through `torchdiffeq.odeint`, to
+approximate a forced Van der Pol oscillator — and wraps it as a Model
+Exchange FMU using `derivativeOf` and `time` exactly as described above.
 
 ## 🔨 ONNX model generation
 

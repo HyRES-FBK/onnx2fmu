@@ -32,10 +32,10 @@ void setStartValues(ModelInstance *comp) {
     M({{ scalar.name }}) = ({{ input.vType.CType }}) {{ scalar.start }};
     {%- endfor %}
     {%- endfor %}
-    // Local variables
-    {%- for local in locals %}
-    {%- for scalar in local.scalarValues %}
-    M({{ scalar.name }}) = ({{ local.vType.CType }}) {{ scalar.start }};
+    // Feedback states
+    {%- for feedbackState in feedbackStates %}
+    {%- for scalar in feedbackState.scalarValues %}
+    M({{ scalar.name }}) = ({{ feedbackState.vType.CType }}) {{ scalar.start }};
     {%- endfor %}
     {%- endfor %}
 }
@@ -84,40 +84,40 @@ Status initModel(ModelInstance *comp) {
     assert({{ input.name }}_is_tensor);
     {%- endfor %}
 
-    {%- for local in locals %}
+    {%- for feedbackState in feedbackStates %}
 
-    // Allocate persistent buffer for {{ local.nameIn }}
-    const size_t {{ local.nameIn }}_shape[] = { {{ local.shape|join(", ") }} };
-    const size_t {{ local.nameIn }}_dim = sizeof({{ local.nameIn }}_shape) / sizeof({{ local.nameIn }}_shape[0]);
-    size_t {{ local.nameIn }}_size = 1;
-    for (size_t i = 0; i < {{ local.nameIn }}_dim; ++i) {
-        {{ local.nameIn }}_size *= {{ local.nameIn }}_shape[i];
+    // Allocate persistent buffer for {{ feedbackState.nameIn }}
+    const size_t {{ feedbackState.nameIn }}_shape[] = { {{ feedbackState.shape|join(", ") }} };
+    const size_t {{ feedbackState.nameIn }}_dim = sizeof({{ feedbackState.nameIn }}_shape) / sizeof({{ feedbackState.nameIn }}_shape[0]);
+    size_t {{ feedbackState.nameIn }}_size = 1;
+    for (size_t i = 0; i < {{ feedbackState.nameIn }}_dim; ++i) {
+        {{ feedbackState.nameIn }}_size *= {{ feedbackState.nameIn }}_shape[i];
     }
-    comp->modelBuffers.{{ local.nameIn }}_float = (float*)calloc({{ local.nameIn }}_size, sizeof(float));
-    if (comp->modelBuffers.{{ local.nameIn }}_float == NULL) {
-        logError(comp, "Failed to allocate memory for {{ local.nameIn }}_float");
+    comp->modelBuffers.{{ feedbackState.nameIn }}_float = (float*)calloc({{ feedbackState.nameIn }}_size, sizeof(float));
+    if (comp->modelBuffers.{{ feedbackState.nameIn }}_float == NULL) {
+        logError(comp, "Failed to allocate memory for {{ feedbackState.nameIn }}_float");
         return Error;
     }
     ORT_ABORT_ON_ERROR(
         comp->g_ort->CreateTensorWithDataAsOrtValue(
             comp->modelBuffers.memory_info,
-            comp->modelBuffers.{{ local.nameIn }}_float,
-            {{ local.nameIn }}_size * sizeof(float),
-            (const int64_t*){{ local.nameIn }}_shape,
-            {{ local.nameIn }}_dim,
+            comp->modelBuffers.{{ feedbackState.nameIn }}_float,
+            {{ feedbackState.nameIn }}_size * sizeof(float),
+            (const int64_t*){{ feedbackState.nameIn }}_shape,
+            {{ feedbackState.nameIn }}_dim,
             ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
-            &comp->modelBuffers.{{ local.nameIn }}_tensor
+            &comp->modelBuffers.{{ feedbackState.nameIn }}_tensor
         ),
         comp);
 
-    int {{ local.nameIn }}_is_tensor;
+    int {{ feedbackState.nameIn }}_is_tensor;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->IsTensor(
-            comp->modelBuffers.{{ local.nameIn }}_tensor,
-            &{{ local.nameIn }}_is_tensor),
+            comp->modelBuffers.{{ feedbackState.nameIn }}_tensor,
+            &{{ feedbackState.nameIn }}_is_tensor),
             comp
         );
-    assert({{ local.nameIn }}_is_tensor);
+    assert({{ feedbackState.nameIn }}_is_tensor);
     {%- endfor %}
 
     return OK;
@@ -131,11 +131,11 @@ void freeModel(ModelInstance *comp) {
     if (comp->modelBuffers.{{ input.name }}_float)
         free(comp->modelBuffers.{{ input.name }}_float);
     {%- endfor %}
-    {%- for local in locals %}
-    if (comp->modelBuffers.{{ local.nameIn }}_tensor)
-        comp->g_ort->ReleaseValue(comp->modelBuffers.{{ local.nameIn }}_tensor);
-    if (comp->modelBuffers.{{ local.nameIn }}_float)
-        free(comp->modelBuffers.{{ local.nameIn }}_float);
+    {%- for feedbackState in feedbackStates %}
+    if (comp->modelBuffers.{{ feedbackState.nameIn }}_tensor)
+        comp->g_ort->ReleaseValue(comp->modelBuffers.{{ feedbackState.nameIn }}_tensor);
+    if (comp->modelBuffers.{{ feedbackState.nameIn }}_float)
+        free(comp->modelBuffers.{{ feedbackState.nameIn }}_float);
     {%- endfor %}
     if (comp->modelBuffers.memory_info)
         comp->g_ort->ReleaseMemoryInfo(comp->modelBuffers.memory_info);
@@ -150,10 +150,22 @@ Status calculateValues(ModelInstance *comp) {
     {%- endfor %}
     {%- endfor %}
 
-    // Update local variable buffers with current model values
-    {%- for local in locals %}
-    {%- for scalar in local.scalarValues %}
-    comp->modelBuffers.{{ local.nameIn }}_float[{{ loop.index0 }}] = (float)M({{ scalar.name }});
+    // Time inputs carry no FMI scalars of their own (they read the FMI
+    // independent variable), so their buffer is filled explicitly here from
+    // comp->time -- the field kept current by fmi{2,3}SetTime (Model
+    // Exchange) and by the fixed-step Co-Simulation loop. M(time)/vr_time is
+    // legacy scaffolding that nothing in the runtime ever writes to, so it
+    // must not be used as the source of truth for the independent variable.
+    {%- for input in inputs %}
+    {%- if input.isTime %}
+    comp->modelBuffers.{{ input.name }}_float[0] = (float)comp->time;
+    {%- endif %}
+    {%- endfor %}
+
+    // Update feedback state buffers with current model values
+    {%- for feedbackState in feedbackStates %}
+    {%- for scalar in feedbackState.scalarValues %}
+    comp->modelBuffers.{{ feedbackState.nameIn }}_float[{{ loop.index0 }}] = (float)M({{ scalar.name }});
     {%- endfor %}
     {%- endfor %}
 
@@ -161,8 +173,8 @@ Status calculateValues(ModelInstance *comp) {
     {%- for output in outputs %}
     OrtValue* {{ output.name }}_tensor = NULL;
     {%- endfor %}
-    {%- for local in locals %}
-    OrtValue* {{ local.nameOut }}_tensor = NULL;
+    {%- for feedbackState in feedbackStates %}
+    OrtValue* {{ feedbackState.nameOut }}_tensor = NULL;
     {%- endfor %}
 
     // Declare input node names
@@ -170,9 +182,9 @@ Status calculateValues(ModelInstance *comp) {
         {%- for input in inputs %}
         "{{ input.name }}"{% if not loop.last %},{% endif %}
         {%- endfor %}
-        {%- if locals %},{% endif %}
-        {%- for local in locals %}
-        "{{ local.nameIn }}"{% if not loop.last %},{% endif %}
+        {%- if feedbackStates %},{% endif %}
+        {%- for feedbackState in feedbackStates %}
+        "{{ feedbackState.nameIn }}"{% if not loop.last %},{% endif %}
         {%- endfor %}
     };
 
@@ -181,9 +193,9 @@ Status calculateValues(ModelInstance *comp) {
         {%- for output in outputs %}
         "{{ output.name }}"{% if not loop.last %},{% endif %}
         {%- endfor %}
-        {%- if locals %},{% endif %}
-        {%- for local in locals %}
-        "{{ local.nameOut }}"{% if not loop.last %},{% endif %}
+        {%- if feedbackStates %},{% endif %}
+        {%- for feedbackState in feedbackStates %}
+        "{{ feedbackState.nameOut }}"{% if not loop.last %},{% endif %}
         {%- endfor %}
     };
 
@@ -192,9 +204,9 @@ Status calculateValues(ModelInstance *comp) {
         {%- for input in inputs %}
         comp->modelBuffers.{{ input.name }}_tensor{% if not loop.last %},{% endif %}
         {%- endfor %}
-        {%- if locals %},{% endif %}
-        {%- for local in locals %}
-        comp->modelBuffers.{{ local.nameIn }}_tensor{% if not loop.last %},{% endif %}
+        {%- if feedbackStates %},{% endif %}
+        {%- for feedbackState in feedbackStates %}
+        comp->modelBuffers.{{ feedbackState.nameIn }}_tensor{% if not loop.last %},{% endif %}
         {%- endfor %}
     };
 
@@ -203,9 +215,9 @@ Status calculateValues(ModelInstance *comp) {
         {%- for output in outputs %}
         {{ output.name }}_tensor{% if not loop.last %},{% endif %}
         {%- endfor %}
-        {%- if locals %},{% endif %}
-        {%- for local in locals %}
-        {{ local.nameOut }}_tensor{% if not loop.last %},{% endif %}
+        {%- if feedbackStates %},{% endif %}
+        {%- for feedbackState in feedbackStates %}
+        {{ feedbackState.nameOut }}_tensor{% if not loop.last %},{% endif %}
         {%- endfor %}
     };
 
@@ -216,9 +228,9 @@ Status calculateValues(ModelInstance *comp) {
             NULL,
             input_names,
             input_tensors,
-            {{ inputs|length + locals|length }},
+            {{ inputs|length + feedbackStates|length }},
             output_names,
-            {{ outputs|length + locals|length }},
+            {{ outputs|length + feedbackStates|length }},
             output_tensors
         ),
         comp
@@ -236,16 +248,16 @@ Status calculateValues(ModelInstance *comp) {
     assert ({{ output.name }}_is_tensor);
     {%- endfor %}
 
-    // Check local output tensors to be tensors
-    {%- for local in locals %}
-    int {{ local.nameOut }}_is_tensor;
+    // Check feedback state output tensors to be tensors
+    {%- for feedbackState in feedbackStates %}
+    int {{ feedbackState.nameOut }}_is_tensor;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->IsTensor(
             output_tensors[{{ loop.index0 + outputs|length }}],
-            &{{ local.nameOut }}_is_tensor),
+            &{{ feedbackState.nameOut }}_is_tensor),
             comp
         );
-    assert ({{ local.nameOut }}_is_tensor);
+    assert ({{ feedbackState.nameOut }}_is_tensor);
 
     {%- endfor %}
 
@@ -287,47 +299,47 @@ Status calculateValues(ModelInstance *comp) {
     {%- endfor %}
     {%- endfor %}
 
-    {%- for local in locals %}
+    {%- for feedbackState in feedbackStates %}
 
-    // Retrieve pointer to the {{ local.nameOut }} tensor
-    float* {{ local.nameOut }}_tensor_data = NULL;
+    // Retrieve pointer to the {{ feedbackState.nameOut }} tensor
+    float* {{ feedbackState.nameOut }}_tensor_data = NULL;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->GetTensorMutableData(
             output_tensors[{{ loop.index0 + outputs|length }}],
-            (void**)&{{ local.nameOut }}_tensor_data
+            (void**)&{{ feedbackState.nameOut }}_tensor_data
         ),
         comp
     );
 
-    // Retrieve {{ local.nameOut }} tensor info
-    OrtTensorTypeAndShapeInfo* {{ local.nameOut }}_info;
+    // Retrieve {{ feedbackState.nameOut }} tensor info
+    OrtTensorTypeAndShapeInfo* {{ feedbackState.nameOut }}_info;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->GetTensorTypeAndShape(
             output_tensors[{{ loop.index0 + outputs|length }}],
-            &{{ local.nameOut }}_info
+            &{{ feedbackState.nameOut }}_info
         ),
         comp
     );
 
-    // Retrieve {{ local.name }} tensor shape
-    size_t {{ local.nameOut }}_dims;
+    // Retrieve {{ feedbackState.name }} tensor shape
+    size_t {{ feedbackState.nameOut }}_dims;
     ORT_ABORT_ON_ERROR(
         comp->g_ort->GetDimensionsCount(
-            {{ local.nameOut }}_info,
-            &{{ local.nameOut }}_dims
+            {{ feedbackState.nameOut }}_info,
+            &{{ feedbackState.nameOut }}_dims
         ),
         comp
     );
 
-    // Set {{ local.nameOut }} tensor data to model
-    {%- for scalar in local.scalarValues %}
-    M({{ scalar.name }}) = {{ local.nameOut }}_tensor_data[{{ loop.index0 }}];
+    // Set {{ feedbackState.nameOut }} tensor data to model
+    {%- for scalar in feedbackState.scalarValues %}
+    M({{ scalar.name }}) = {{ feedbackState.nameOut }}_tensor_data[{{ loop.index0 }}];
     {%- endfor %}
     {%- endfor %}
 
     // Release output tensors (allocated by Run on each call)
-    {%- for local in locals %}
-    comp->g_ort->ReleaseValue({{ local.nameOut }}_tensor);
+    {%- for feedbackState in feedbackStates %}
+    comp->g_ort->ReleaseValue({{ feedbackState.nameOut }}_tensor);
     {%- endfor %}
     {%- for output in outputs %}
     comp->g_ort->ReleaseValue({{ output.name }}_tensor);
@@ -363,9 +375,9 @@ Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Locals
-        {%- for local in locals %}
-        {%- for scalar in local.scalarValues %}
+        // Feedback states
+        {%- for feedbackState in feedbackStates %}
+        {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
             values[(*index)++] = M({{ scalar.name }});
@@ -398,9 +410,9 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Locals
-        {%- for local in locals %}
-        {%- for scalar in local.scalarValues %}
+        // Feedback states
+        {%- for feedbackState in feedbackStates %}
+        {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
             M({{ scalar.name }}) = (float)values[(*index)++];
@@ -438,9 +450,9 @@ Status getFloat32(ModelInstance *comp, ValueReference vr, float values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Locals
-        {%- for local in locals %}
-        {%- for scalar in local.scalarValues %}
+        // Feedback states
+        {%- for feedbackState in feedbackStates %}
+        {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
             values[(*index)++] = M({{ scalar.name }});
@@ -468,9 +480,9 @@ Status setFloat32(ModelInstance *comp, ValueReference vr, const float values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Locals
-        {%- for local in locals %}
-        {%- for scalar in local.scalarValues %}
+        // Feedback states
+        {%- for feedbackState in feedbackStates %}
+        {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
             M({{ scalar.name }}) = values[(*index)++];
@@ -494,4 +506,41 @@ Status eventUpdate(ModelInstance *comp) {
 
     return OK;
 }
+
+{%- if continuousStates %}
+
+size_t getNumberOfContinuousStates(ModelInstance* comp) {
+    UNUSED(comp);
+    return {{ continuousStates|length }};
+}
+
+Status getContinuousStates(ModelInstance *comp, double x[], size_t nx) {
+    UNUSED(nx);
+    {%- for state in continuousStates %}
+    x[{{ loop.index0 }}] = M({{ state.stateName }});
+    {%- endfor %}
+    return OK;
+}
+
+Status setContinuousStates(ModelInstance *comp, const double x[], size_t nx) {
+    UNUSED(nx);
+    {%- for state in continuousStates %}
+    M({{ state.stateName }}) = x[{{ loop.index0 }}];
+    {%- endfor %}
+    // Defer inference to the next getContinuousStates/getDerivatives call
+    // (both run calculateValues themselves) instead of running it here, so a
+    // solver evaluating the derivatives right after does not trigger it twice.
+    comp->isDirtyValues = true;
+    return OK;
+}
+
+Status getDerivatives(ModelInstance *comp, double dx[], size_t nx) {
+    UNUSED(nx);
+    calculateValues(comp);
+    {%- for state in continuousStates %}
+    dx[{{ loop.index0 }}] = M({{ state.derivativeName }});
+    {%- endfor %}
+    return OK;
+}
+{%- endif %}
 

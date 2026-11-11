@@ -19,7 +19,7 @@ which is why the exported network also takes the simulation time `t` as an
 input (declared with `"time": true` in the model description) -- the forcing
 term makes the system non-autonomous.
 
-This is the script form of `generate-example-model.ipynb`; see the notebook
+This is the script form of `example5.ipynb`; see the notebook
 for why the network encodes time as Fourier features, why it carries a
 linear skip path, and why training scores short and long integration windows
 at the same time.

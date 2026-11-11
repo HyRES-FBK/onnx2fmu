@@ -34,6 +34,18 @@ onnx2fmu compile <target_folder> <modelDescription.json> [--fmi-platform ...]
 onnx2fmu version
 ```
 
+## Documentation
+
+The documentation is a Jupyter Book 2 (MyST) site configured in `docs/myst.yml` and published to GitHub Pages by `.github/workflows/docs.yml` on every push to `master`. The hand-written pages live in `docs/`; the tutorials are the example notebooks themselves (`examples/exampleN/exampleN.ipynb`), rendered with their **committed outputs** — the docs build never executes them. After changing a notebook, re-run it and commit the outputs. Re-running rewrites the `.onnx`, `.fmu`, JSON and CSV files next to it, which the tests read: do not commit those unless the change is intended.
+
+Build locally (needs Node.js):
+
+```bash
+uv sync --all-extras
+cd docs && uv run jupyter book start   # live preview
+cd docs && uv run jupyter book build --html
+```
+
 ## Architecture
 
 ONNX2FMU turns an ONNX model + a JSON model description into a co-simulation FMU. The pipeline has a **Python code-generation half** and a **C runtime half**.
@@ -58,4 +70,4 @@ These are static C sources (derived from the Modelica Reference-FMUs project) co
 
 ### Model description JSON
 
-Top-level keys: `name` (also the FMU name), `description`, `FMIVersion` (`"2.0"` or `"3.0"`), `inputs`, `outputs`, and optional `feedbackStates`. Each input/output entry needs a `name` matching an ONNX graph node, plus optional `labels`, `description`, `variability` (`continuous` default, or `discrete`), and `start`. `feedbackStates` entries use `nameIn`/`nameOut` to define output→input feedback (used for RNN-style stateful models). See `README.md` and `examples/example1`–`example4` for worked cases, including PyTorch model declarations in the `generate-example-model.ipynb` notebooks.
+Top-level keys: `name` (also the FMU name), `description`, `FMIVersion` (`"2.0"` or `"3.0"`), `inputs`, `outputs`, and optional `feedbackStates`. Each input/output entry needs a `name` matching an ONNX graph node, plus optional `labels`, `description`, `variability` (`continuous` default, or `discrete`), and `start`. `feedbackStates` entries use `nameIn`/`nameOut` to define output→input feedback (used for RNN-style stateful models). See `README.md` and `examples/example1`–`example5` for worked cases, including PyTorch model declarations in the `exampleN.ipynb` notebooks.

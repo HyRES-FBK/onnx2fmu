@@ -11,6 +11,8 @@
 **What do ONNX2FMU do?** It wraps [ONNX](https://onnx.ai/) models into
 co-simulation FMUs.
 
+📖 **Documentation and tutorials:** <https://hyres-fbk.github.io/onnx2fmu/>
+
 ## 🚀 Get started
 
 - Python 3.11+

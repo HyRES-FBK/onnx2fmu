@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-11
+
+First stable release. It adds Model Exchange FMUs, a documentation site, and
+a clearer name for feedback states. Python 3.10 is no longer supported.
+
+### Added
+
+- **Model Exchange FMUs.** A network whose outputs are time derivatives
+  (a "neural ODE") can be exported as a Model Exchange FMU, so that the
+  importing tool integrates it with its own solver. Three model description
+  keys support this: the top-level `"FMUType"` (a list with
+  `"CoSimulation"`, `"ModelExchange"`, or both; defaults to
+  `["CoSimulation"]`, so existing descriptions produce the same FMU),
+  `"derivativeOf"` on an output to declare it the derivative of an input
+  (which becomes a continuous state and must declare `"start"`), and
+  `"time": true` on an input to feed it the simulation time. Model Exchange
+  cannot be combined with `"feedbackStates"`.
+- `examples/example5`: a neural ODE trained with torchdiffeq on a forced
+  Van der Pol oscillator and exported as a Model Exchange FMU.
+- **Documentation site** at <https://hyres-fbk.github.io/onnx2fmu/>, built
+  with Jupyter Book 2 from `docs/` and published to GitHub Pages by the new
+  `docs.yml` workflow. It contains a quickstart, the five examples as
+  tutorials, a guide to the concepts and the pipeline, and reference pages
+  for the command line, the Python API and the model description.
+- A `docs` optional dependency group with the tools needed to build the
+  documentation.
+- Python 3.13 support.
+
 ### Changed
 
 - The model description section declaring output→input feedback (used for
@@ -17,12 +45,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   states are still emitted with `causality="local"` and the same variable
   names. The README gains a terminology section distinguishing feedback
   states, continuous states, and FMI `local` causality.
+- The example notebooks are renamed from `generate-example-model.ipynb` to
+  `exampleN.ipynb` and rewritten as step-by-step tutorials. Each one now
+  builds the FMU, simulates it with FMPy and compares the result with the
+  PyTorch model. Example 3 loads its trained weights by default instead of
+  retraining.
+- cmake output is captured instead of printed, and shown only when a build
+  fails. The configure and build steps are bounded by timeouts (10 and 30
+  minutes), so a stalled download or compiler fails instead of hanging.
+- The ONNX Runtime download is bounded by a timeout and safe to run from
+  several builds at once.
+- Development dependencies updated to fix security alerts (among them
+  torch, onnx, protobuf, tornado, filelock and setuptools). The minimum
+  `onnxscript` in the `extra` group is raised to 0.7.2, which the ONNX
+  exporter of the pinned torch release requires.
 
 ### Deprecated
 
 - The `"locals"` model description key. It is still accepted as an alias of
   `"feedbackStates"` but emits a `FutureWarning`; declaring both keys is an
   error.
+
+### Removed
+
+- Python 3.10 support. ONNX2FMU now requires Python 3.11 or newer.
 
 ### Fixed
 
@@ -45,6 +91,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   FMU archive. The model binary only needs `libonnxruntime.so.MAJOR`, so
   the build now copies that single file. On Windows, import libraries
   (`.lib`) and debug symbols (`.pdb`) are also dropped.
+- An intermittent deadlock when an FMU instance was freed. The ONNX Runtime
+  objects were released in the wrong order; they are now released session
+  first and environment last.
+- CMake architecture detection on Apple Silicon. A build without
+  `--fmi-platform` failed with "Unknown System Architecture: arm64".
+- An empty ONNX Runtime archive, left behind when a firewall intercepts the
+  download, is now detected and removed, and the error message gives the
+  URL for a manual download and the expected cache path. Fixes #35.
+
+[1.0.0]: https://github.com/HyRES-FBK/onnx2fmu/compare/v0.3.3...v1.0.0
 
 ## [0.3.3] - 2026-06-18
 

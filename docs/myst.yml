@@ -1,0 +1,46 @@
+# Jupyter Book 2 (MyST) configuration for the ONNX2FMU documentation.
+# Build locally with:  cd docs && jupyter book start
+version: 1
+project:
+  title: ONNX2FMU
+  description: Wrap ONNX models in Functional Mock-up Units (FMUs).
+  keywords:
+    - ONNX
+    - FMI
+    - FMU
+    - co-simulation
+    - model exchange
+    - machine learning
+  github: https://github.com/HyRES-FBK/onnx2fmu
+  license: MIT
+  # The tutorials are the example notebooks themselves: they live in
+  # `examples/` (where the tests also read their models from) and are
+  # rendered with the outputs committed in the notebook files. Nothing is
+  # executed when the book is built.
+  toc:
+    - file: index.md
+    - title: Tutorials
+      children:
+        - file: ../examples/example1/example1.ipynb
+        - file: ../examples/example2/example2.ipynb
+        - file: ../examples/example3/example3.ipynb
+        - file: ../examples/example4/example4.ipynb
+        - file: ../examples/example5/example5.ipynb
+    - title: Guide
+      children:
+        - file: concepts.md
+        - file: how-it-works.md
+    - title: Reference
+      children:
+        - file: reference/cli.md
+        - file: reference/python-api.md
+        - file: reference/model-description.md
+site:
+  template: book-theme
+  options:
+    logo: ../logos/onn2fmu-logo-black-transparent.png
+    logo_dark: ../logos/onnx2fmu-logo-white-transparent.png
+    logo_text: ONNX2FMU
+    # The breadcrumb's home link is rendered with the base URL twice when the
+    # site is served from a sub-path (as on GitHub Pages), so it is hidden.
+    hide_breadcrumbs: true

@@ -13,7 +13,7 @@ co-simulation FMUs.
 
 ## 🚀 Get started
 
-- Python 3.10+
+- Python 3.11+
 - CMake 3.22+
 - A code compiler for the host platform, which could be one of Linux, Windows
 or MacOS.

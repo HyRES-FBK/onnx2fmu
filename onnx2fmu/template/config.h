@@ -21,8 +21,10 @@
 #define SET_FLOAT32
 #endif
 
-#define FIXED_SOLVER_STEP 1
-#define DEFAULT_STOP_TIME 1
+// Step of the internal time grid: Co-Simulation runs the network once per
+// internal step (see doFixedStep)
+#define FIXED_SOLVER_STEP ((double){{ fixedInternalStepSize }})
+#define DEFAULT_STOP_TIME {{ stopTime }}
 
 {%- if continuousStates %}
 #define HAS_CONTINUOUS_STATES
@@ -67,6 +69,10 @@ typedef struct {
     {{ feedbackState.vType.CType }} {{ scalar.name }};
     {%- endfor %}
     {%- endfor %}
+    // Co-Simulation: the inputs as they were when the pending internal step
+    // started, which that step runs the network on (see recordStepInputs).
+    // Kept here so that it is part of the FMU state.
+    double inputsAtStepStart[{{ [numberOfStepInputs, 1]|max }}];
 } ModelData;
 
 typedef struct {

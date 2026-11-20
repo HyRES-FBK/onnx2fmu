@@ -660,11 +660,17 @@ Status setFMUState(ModelInstance* comp, void* FMUState) {
 
 Status doFixedStep(ModelInstance *comp, bool* stateEvent, bool* timeEvent) {
 
+    // One internal step runs the network exactly once, at the time the step
+    // starts (comp->time is advanced below). Co-Simulation runs the network
+    // nowhere else: see calculateValues.
+    bool networkEvaluated = false;
+
 #ifdef HAS_CONTINUOUS_STATES
     if (comp->nx > 0) {
 
         CALL(getContinuousStates(comp, comp->x, comp->nx));
-        CALL(getDerivatives(comp, comp->dx, comp->nx));
+        CALL(getDerivatives(comp, comp->dx, comp->nx));  // runs the network
+        networkEvaluated = true;
 
         // forward Euler step
         for (size_t i = 0; i < comp->nx; i++) {
@@ -675,9 +681,18 @@ Status doFixedStep(ModelInstance *comp, bool* stateEvent, bool* timeEvent) {
     }
 #endif
 
+    if (!networkEvaluated) {
+        CALL(evaluateNetwork(comp));
+    }
+
     comp->nSteps++;
 
     comp->time = comp->startTime + comp->nSteps * FIXED_SOLVER_STEP;
+
+    // The next internal step starts now, on the inputs held over this
+    // communication step. If it starts exactly at the next communication
+    // point, the doStep that begins there records the inputs again.
+    recordStepInputs(comp);
 
     // state event
     *stateEvent = false;

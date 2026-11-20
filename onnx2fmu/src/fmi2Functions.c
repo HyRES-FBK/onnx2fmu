@@ -645,6 +645,12 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
         CALL(Error);
     }
 
+    // The pending internal step starts at this communication point, so it
+    // runs on the inputs the importer has set for it.
+    if (isClose(currentCommunicationPoint, S->time)) {
+        recordStepInputs(S);
+    }
+
     while (true) {
 
         const double nextSolverStepTime = S->time + FIXED_SOLVER_STEP;

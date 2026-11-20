@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **A memory leak on every network run**
+  ([#62](https://github.com/HyRES-FBK/onnx2fmu/issues/62)). The generated
+  FMU never released the output tensors that ONNX Runtime allocates on each
+  run: it released copies of their pointers, which were still `NULL`. It
+  also never released a tensor shape object per output, which it did not
+  use. An FMU lost about 0.7 KB per output and feedback state on every run,
+  about 2.3 KB per step for example 4, so long simulations ran out of
+  memory. The FMU now releases both.
+
 ## [0.4.0] - 2026-11-11
 
 This release adds Model Exchange FMUs, a documentation site, and a clearer

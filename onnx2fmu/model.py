@@ -9,6 +9,9 @@ from onnx2fmu.variables import Input, Output, FeedbackState
 MODEL_EXCHANGE = "ModelExchange"
 CO_SIMULATION = "CoSimulation"
 DEFAULT_FMU_TYPES = [CO_SIMULATION]
+DEFAULT_FIXED_INTERNAL_STEP_SIZE = 1
+DEFAULT_START_TIME = 0
+DEFAULT_STOP_TIME = 1
 
 
 class Model:
@@ -22,19 +25,32 @@ class Model:
     canHandleVariableCommunicationStepSize = True
     providesIntermediateUpdate = True
     canReturnEarlyAfterIntermediateUpdate = True
-    fixedInternalStepSize = 1
-    startTime = 0
-    stopTime = 1
 
     def __init__(self,
                  name: str,
                  fmiVersion: Optional[str] = "2.0",
                  description: Optional[str] = "",
                  fmuType: Optional[list[str]] = None,
+                 fixedInternalStepSize: Optional[float] = None,
+                 stepSize: Optional[float] = None,
+                 startTime: Optional[float] = None,
+                 stopTime: Optional[float] = None,
                  ) -> None:
+        """
+        `fixedInternalStepSize` is the step of the FMU's internal time grid:
+        Co-Simulation runs the network once per internal step. `stepSize`,
+        `startTime` and `stopTime` are the FMI `DefaultExperiment`
+        attributes; `stepSize` defaults to the internal step.
+        """
         self._setName(name)
         self.fmiVersion = fmiVersion
         self.description = description
+        self.fixedInternalStepSize = DEFAULT_FIXED_INTERNAL_STEP_SIZE \
+            if fixedInternalStepSize is None else fixedInternalStepSize
+        self.stepSize = self.fixedInternalStepSize \
+            if stepSize is None else stepSize
+        self.startTime = DEFAULT_START_TIME if startTime is None else startTime
+        self.stopTime = DEFAULT_STOP_TIME if stopTime is None else stopTime
         self.fmuType = fmuType if fmuType else list(DEFAULT_FMU_TYPES)
         self.modelExchange = MODEL_EXCHANGE in self.fmuType
         self.coSimulation = CO_SIMULATION in self.fmuType
@@ -120,12 +136,18 @@ class Model:
             'canReturnEarlyAfterIntermediateUpdate': \
                 self.canReturnEarlyAfterIntermediateUpdate,
             'fixedInternalStepSize': self.fixedInternalStepSize,
+            'stepSize': self.stepSize,
             'startTime': self.startTime,
             'stopTime': self.stopTime,
             'modelExchange': self.modelExchange,
             'coSimulation': self.coSimulation,
             'continuousStates': states,
             'numberOfContinuousStates': len(states),
+            # Inputs set by the importer (time inputs have no scalars), which
+            # Co-Simulation records when an internal step starts.
+            'numberOfStepInputs': sum(
+                len(inp["scalarValues"]) for inp in self.inputs
+                if not inp.get("isContinuousState")),
             'inputs': self.inputs,
             'outputs': self.outputs,
             'feedbackStates': self.feedbackStates

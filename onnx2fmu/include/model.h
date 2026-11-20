@@ -187,6 +187,14 @@ void   freeModel(ModelInstance *comp);
 
 Status calculateValues(ModelInstance *comp);
 
+// Runs the network once on the current time, inputs and feedback states,
+// and stores its outputs and the next feedback states.
+Status evaluateNetwork(ModelInstance *comp);
+
+// Co-Simulation: records the current inputs as those of the internal step
+// that starts now.
+void recordStepInputs(ModelInstance *comp);
+
 Status getFloat32 (ModelInstance* comp, ValueReference vr, float       values[], size_t nValues, size_t *index);
 Status getFloat64 (ModelInstance* comp, ValueReference vr, double      values[], size_t nValues, size_t *index);
 Status getInt8    (ModelInstance* comp, ValueReference vr, int8_t      values[], size_t nValues, size_t *index);

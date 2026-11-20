@@ -165,7 +165,8 @@ class Output(VariableFactory):
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT,
                  labels: None | list[str] = None,
-                 start: Union[str, int, float, list] = "1.0",
+                 # What a Co-Simulation FMU reports before its first step.
+                 start: Union[str, int, float, list] = "0.0",
                  derivativeOf: None | str = None
                  ) -> None:
         if derivativeOf:

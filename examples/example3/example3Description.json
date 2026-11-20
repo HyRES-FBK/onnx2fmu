@@ -11,7 +11,8 @@
     "outputs": [
         {
             "name": "output",
-            "description": "The output array."
+            "description": "The output array.",
+            "start": 0.0
         }
     ]
 }

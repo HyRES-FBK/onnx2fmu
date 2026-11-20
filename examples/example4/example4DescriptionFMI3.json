@@ -18,7 +18,12 @@
     "outputs": [
         {
             "name": "x",
-            "description": "The state of the system at time t+1."
+            "description": "The state of the system at time t+1.",
+            "start": [
+                0.0,
+                0.0,
+                0.0
+            ]
         }
     ],
     "feedbackStates": [
@@ -30,7 +35,7 @@
         {
             "nameIn": "U",
             "nameOut": "U1",
-            "description": "The history of control variables frmo t-N to t-1.",
+            "description": "The history of control variables from t-N to t-1.",
             "start": [
                 0.0,
                 0.0,

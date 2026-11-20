@@ -121,15 +121,21 @@ ONNX Runtime versions can run in the same simulation without clashing.
 
 Every time the model is evaluated, the FMU:
 
-1. copies the current values of the FMI input variables, and of the feedback
-   states, into 32-bit float buffers;
-2. fills the time input, if there is one, with the current simulation time;
+1. copies the FMI input variables, and the feedback states, into 32-bit
+   float buffers;
+2. fills the time input, if there is one, with the simulation time;
 3. runs the ONNX Runtime session;
 4. copies the results into the FMI output variables, and stores the feedback
    outputs for the next step.
 
-In Co-Simulation this happens once per internal step. In Model Exchange it
-happens whenever the solver asks for the derivatives.
+In Co-Simulation this happens once per internal step, inside `doStep`
+(`doFixedStep` in `cosimulation.c` calls `evaluateNetwork` in `model.c`), and
+nowhere else. The inputs and the time are those at the start of the internal
+step: the FMU records the inputs when a step starts, so a step that ends in a
+later `doStep` still uses them. Reading an output returns the result of the
+last internal step. In Model Exchange the evaluation happens whenever the
+solver asks for the derivatives, or reads an output after changing an input,
+on the current values.
 
 ## Customising the generated code
 

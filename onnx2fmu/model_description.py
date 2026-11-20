@@ -1,9 +1,10 @@
+import math
 import warnings
 
 import numpy as np
 from onnx import ModelProto, ValueInfoProto
 
-from onnx2fmu.model import Model
+from onnx2fmu.model import Model, DEFAULT_START_TIME, DEFAULT_STOP_TIME
 from onnx2fmu.variables import Input, Output, FeedbackState
 
 
@@ -17,6 +18,16 @@ MODEL_EXCHANGE = "ModelExchange"
 CO_SIMULATION = "CoSimulation"
 FMU_TYPES = [MODEL_EXCHANGE, CO_SIMULATION]
 DEFAULT_FMU_TYPES = [CO_SIMULATION]
+DEFAULT_EXPERIMENT = "defaultExperiment"
+DEFAULT_EXPERIMENT_KEYS = ["startTime", "stopTime", "stepSize"]
+# FMI 3.0 only: FMI 2.0 has no such attribute.
+FIXED_INTERNAL_STEP_SIZE = "fixedInternalStepSize"
+
+
+def _isNumber(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) \
+        and math.isfinite(value)
+
 
 class ModelDescription:
 
@@ -29,9 +40,12 @@ class ModelDescription:
         self._renameDeprecatedLocals()
         self._checkModelDescription()
         self._checkFMUType()
+        self._checkOutputStartValues()
         self._checkFeedbackStateNodesShape()
+        self._checkStartValueShapes()
         self._checkTimeInputs()
         self._checkContinuousStateDeclarations()
+        self._checkStepSize()
 
     def _renameDeprecatedLocals(self) -> None:
         """Accept the deprecated `locals` key as an alias of `feedbackStates`.
@@ -123,6 +137,31 @@ class ModelDescription:
             )
         self.model_description[FMU_TYPE] = fmu_type
 
+    def _checkOutputStartValues(self) -> None:
+        """Warn about Co-Simulation outputs that declare no `start` value.
+
+        Co-Simulation runs the network only inside doStep, so an output
+        reports its start value from the initialization until the first
+        step. Model Exchange computes outputs at initialization, and state
+        derivatives (`derivativeOf`) are not FMI outputs.
+        """
+        if CO_SIMULATION not in self.model_description[FMU_TYPE]:
+            return
+        missing = [
+            out["name"] for out in self.model_description[OUTPUTS]
+            if "start" not in out and not out.get("derivativeOf")
+        ]
+        if missing:
+            warnings.warn(
+                f"Outputs {missing} declare no 'start' value. A "
+                "Co-Simulation FMU reports an output's start value from "
+                "the initialization until its first step, and the default "
+                "is 0.0. Declaring 'start' for every output will be "
+                "required in a future release.",
+                FutureWarning,
+                stacklevel=3,
+            )
+
     def _checkTimeInputs(self) -> None:
         """Validate the optional `"time": true` flag on `inputs` entries.
 
@@ -194,42 +233,103 @@ class ModelDescription:
                     f"State '{state_input['name']}' must declare a "
                     "'start' value (its initial condition)."
                 )
-
-    def _checkStartValuesBroadcastability(self, variable: dict) -> None:
-        if isinstance(variable["start"], (str, int, float)):
-            return
-        elif isinstance(variable["start"], list):
-            start = np.array(variable["start"])
-            node = self._findNode(variable["name"])
-            node_shape = self._readNodeShape(node)
-            if len(start.shape) > len(node_shape):
+            if len(self.model_description.get(FEEDBACK_STATES, [])) > 0:
+                # In Co-Simulation one internal step would have to drive
+                # both the forward Euler update and the feedback commit.
                 raise ValueError(
-                    f"Start values for entry {variable['name']} "
-                    f"have shape {start.shape}, but node shape is "
-                    f"{node_shape}. Start values must be "
-                    "broadcastable to the node shape."
+                    f"Output '{out['name']}' declares derivativeOf, which "
+                    f"cannot be combined with '{FEEDBACK_STATES}'. Remove "
+                    f"'{FEEDBACK_STATES}' or the continuous states."
                 )
-            else:
-                start_shape = \
-                    (1, ) * (len(node_shape) - len(start.shape)) + \
-                        start.shape
-                np.broadcast_shapes(start_shape, node_shape)
-        else:
+
+    def _checkStepSize(self) -> None:
+        """Validate `defaultExperiment` and `fixedInternalStepSize`.
+
+        Both mirror FMI attributes. `defaultExperiment` is the FMI
+        `DefaultExperiment` element, defined in FMI 2.0 and 3.0; its
+        `stepSize` is the preferred communication step size.
+        `fixedInternalStepSize` is an attribute of the FMI 3.0
+        `<CoSimulation>` element that FMI 2.0 does not define, so FMI 2.0
+        descriptions declare the step with `defaultExperiment.stepSize`.
+        """
+        experiment = self.model_description.get(DEFAULT_EXPERIMENT, {})
+        if not isinstance(experiment, dict):
+            raise ValueError(
+                f"'{DEFAULT_EXPERIMENT}' must be an object with any of the "
+                f"keys {DEFAULT_EXPERIMENT_KEYS}."
+            )
+        for key, value in experiment.items():
+            if key not in DEFAULT_EXPERIMENT_KEYS:
+                raise ValueError(
+                    f"'{key}' is not a '{DEFAULT_EXPERIMENT}' key. Admissible "
+                    f"keys are {DEFAULT_EXPERIMENT_KEYS}."
+                )
+            if not _isNumber(value):
+                raise ValueError(
+                    f"'{DEFAULT_EXPERIMENT}.{key}' must be a number, not "
+                    f"{value!r}."
+                )
+        if "stepSize" in experiment and experiment["stepSize"] <= 0:
+            raise ValueError(
+                f"'{DEFAULT_EXPERIMENT}.stepSize' must be positive, not "
+                f"{experiment['stepSize']}."
+            )
+        start_time = experiment.get("startTime", DEFAULT_START_TIME)
+        stop_time = experiment.get("stopTime", DEFAULT_STOP_TIME)
+        if stop_time <= start_time:
+            raise ValueError(
+                f"'{DEFAULT_EXPERIMENT}.stopTime' ({stop_time}) must be "
+                f"greater than its startTime ({start_time})."
+            )
+        if FIXED_INTERNAL_STEP_SIZE not in self.model_description:
+            return
+        if self.model_description["FMIVersion"] != "3.0":
+            raise ValueError(
+                f"'{FIXED_INTERNAL_STEP_SIZE}' is an FMI 3.0 attribute and "
+                "cannot be used in an FMI 2.0 model description. Declare the "
+                f"step with '{DEFAULT_EXPERIMENT}': {{\"stepSize\": ...}} "
+                "instead."
+            )
+        step = self.model_description[FIXED_INTERNAL_STEP_SIZE]
+        if not _isNumber(step) or step <= 0:
+            raise ValueError(
+                f"'{FIXED_INTERNAL_STEP_SIZE}' must be a positive number, "
+                f"not {step!r}."
+            )
+
+    def _checkStartValuesBroadcastability(self, start, node_name: str) -> None:
+        if isinstance(start, (str, int, float)):
+            return
+        if not isinstance(start, list):
             raise TypeError(
-                f"Start values for variable {variable['name']} must be "
-                "a string, int, float or a list, not "
-                f"{type(variable['start'])}."
+                f"Start values of '{node_name}' must be a string, int, "
+                f"float or a list, not {type(start)}."
+            )
+        # Dynamic dimensions (0) become 1, as in VariableFactory._setShape.
+        node_shape = tuple(
+            1 if dim == 0 else dim
+            for dim in self._readNodeShape(self._findNode(node_name))
+        )
+        try:
+            start_shape = np.array(start, dtype=np.float32).shape
+            broadcast_shape = np.broadcast_shapes(start_shape, node_shape)
+        except ValueError:
+            start_shape, broadcast_shape = None, None
+        if broadcast_shape != node_shape:
+            raise ValueError(
+                f"Start values of '{node_name}' have shape {start_shape}, "
+                f"which does not broadcast to the node shape {node_shape}."
             )
 
     def _checkStartValueShapes(self) -> None:
-        """
-        Check that start values are either a scalar or a list of sclart, whose
-        shape allows broadcasting to the variable shape.
-        """
-        for entry in [INPUTS, OUTPUTS, FEEDBACK_STATES]:
+        """Check that every start value is a scalar or a list that
+        broadcasts to the shape of its node."""
+        for entry, key in [(INPUTS, "name"), (OUTPUTS, "name"),
+                           (FEEDBACK_STATES, "nameIn")]:
             for variable in self.model_description.get(entry, []):
                 if "start" in variable:
-                    self._checkStartValuesBroadcastability(variable=variable)
+                    self._checkStartValuesBroadcastability(
+                        variable["start"], variable[key])
 
     def _findNode(self, nodeName: str) -> ValueInfoProto:
         entries = ["input", "output"]
@@ -272,11 +372,20 @@ class ModelDescription:
                 self.model.addVariable(cls(**kwargs))
 
     def _initializeModel(self) -> None:
+        experiment = self.model_description.get(DEFAULT_EXPERIMENT, {})
+        step_size = experiment.get("stepSize")
         self.model = Model(
             name=self.model_description["name"],
             description=self.model_description["description"],
             fmiVersion=self.model_description["FMIVersion"],
-            fmuType=self.model_description[FMU_TYPE]
+            fmuType=self.model_description[FMU_TYPE],
+            # FMI 3.0 may declare an internal step that differs from the
+            # preferred communication step; otherwise they coincide.
+            fixedInternalStepSize=self.model_description.get(
+                FIXED_INTERNAL_STEP_SIZE, step_size),
+            stepSize=step_size,
+            startTime=experiment.get("startTime"),
+            stopTime=experiment.get("stopTime"),
         )
 
     def generateContext(self) -> dict:

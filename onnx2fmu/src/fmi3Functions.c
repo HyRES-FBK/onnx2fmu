@@ -1377,6 +1377,12 @@ fmi3Status fmi3DoStep(fmi3Instance instance,
     *terminateSimulation = fmi3False;
     *earlyReturn         = fmi3False;
 
+    // The pending internal step starts at this communication point, so it
+    // runs on the inputs the importer has set for it.
+    if (isClose(currentCommunicationPoint, S->time)) {
+        recordStepInputs(S);
+    }
+
     while (true) {
 
         const fmi3Float64 nextSolverStepTime = S->time + FIXED_SOLVER_STEP;

@@ -20,7 +20,7 @@
     canHandleVariableCommunicationStepSize="{{ canHandleVariableCommunicationStepSize|lower }}"
     providesIntermediateUpdate="{{ providesIntermediateUpdate|lower }}"
     canReturnEarlyAfterIntermediateUpdate="{{ canReturnEarlyAfterIntermediateUpdate|lower }}"
-    fixedInternalStepSize="1"/>
+    fixedInternalStepSize="{{ fixedInternalStepSize }}"/>
   {%- endif %}
 
   <LogCategories>
@@ -28,7 +28,7 @@
     <Category name="logStatusError" description="Log error messages"/>
   </LogCategories>
 
-  <DefaultExperiment startTime="{{ startTime }}" stopTime="{{ stopTime }}"/>
+  <DefaultExperiment startTime="{{ startTime }}" stopTime="{{ stopTime }}" stepSize="{{ stepSize }}"/>
 
   <ModelVariables>
     <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
@@ -49,18 +49,24 @@
     {%- endfor %}
   </ModelVariables>
 
+  {#- Co-Simulation runs the network only inside fmi3DoStep, so at a
+      communication point its outputs depend on none of the knowns. An FMU
+      that also supports Model Exchange keeps the default (no attribute,
+      which means all knowns), because Model Exchange outputs depend on the
+      inputs. #}
+  {%- set dependencies = ' dependencies=""' if coSimulation and not modelExchange else '' %}
   <ModelStructure>
     {%- for output in outputs %}
     {%- if not output.derivativeOf %}
     {%- for scalar in output.scalarValues %}
-    <Output valueReference="{{ scalar.valueReference }}"/>
+    <Output valueReference="{{ scalar.valueReference }}"{{ dependencies }}/>
     {%- endfor %}
     {%- endif %}
     {%- endfor %}
     {%- for input in inputs %}
     {%- if input.isContinuousState %}
     {%- for scalar in input.scalarValues %}
-    <Output valueReference="{{ scalar.valueReference }}"/>
+    <Output valueReference="{{ scalar.valueReference }}"{{ dependencies }}/>
     {%- endfor %}
     {%- endif %}
     {%- endfor %}
@@ -73,7 +79,7 @@
     {%- endfor %}
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-    <InitialUnknown valueReference="{{ scalar.valueReference }}"/>
+    <InitialUnknown valueReference="{{ scalar.valueReference }}"{{ dependencies }}/>
     {%- endfor %}
     {%- endfor %}
   </ModelStructure>

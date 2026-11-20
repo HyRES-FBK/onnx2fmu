@@ -19,7 +19,8 @@
     "outputs": [
         {
             "name": "y",
-            "description": "The output array."
+            "description": "The output array.",
+            "start": 0.0
         }
     ]
 }

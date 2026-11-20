@@ -18,6 +18,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   about 2.3 KB per step for example 4, so long simulations ran out of
   memory. The FMU now releases both.
 
+- **Co-Simulation FMUs with feedback states advance once per step, in
+  `doStep` only** ([#59](https://github.com/HyRES-FBK/onnx2fmu/issues/59)).
+  The network used to run, and feedback states to advance, when the importer
+  read an output or left initialization, so results depended on the order
+  of the importer's calls. Under `fmpy.simulate_fmu` a stateful FMU ran one
+  step ahead. Depending on the importer, the state could also advance twice
+  in one step, or not at all.
+
+### Changed
+
+- In Co-Simulation the network runs only inside `doStep`, once per internal
+  step, on the time and inputs at the start of the step. Setting inputs,
+  reading outputs and initialization never run it, also in FMUs without
+  feedback states. An output read after a step holds what that step
+  computed, and before the first step it holds its `start` value. Model
+  Exchange still evaluates the network on demand.
+- An FMU that offers only Co-Simulation declares `dependencies=""` on its
+  outputs and initial unknowns, telling importers that its outputs have no
+  direct feedthrough from the inputs.
+- `start` values are checked against the shape of their ONNX node before
+  any code is generated.
+- A description that combines `"feedbackStates"` with `"derivativeOf"` is
+  rejected for every `"FMUType"`, not only for Model Exchange.
+
+### Added
+
+- `"defaultExperiment"` in the model description, mirroring the FMI
+  `DefaultExperiment` element (`startTime`, `stopTime`, `stepSize`). Its
+  `stepSize` sets the internal step of a Co-Simulation FMU, which was fixed
+  at 1.
+- `"fixedInternalStepSize"` for FMI 3.0 descriptions. It sets the internal
+  step on its own and is written to the `<CoSimulation>` attribute of the
+  same name. FMI 2.0 has no such attribute, so FMI 2.0 descriptions that use
+  it are rejected.
+
+### Deprecated
+
+- Co-Simulation outputs without a `start` value. They now report `start`
+  until the first step, default to `0.0` and raise a `FutureWarning`. A
+  future release will require `start` on every output.
+
 ## [0.4.0] - 2026-11-11
 
 This release adds Model Exchange FMUs, a documentation site, and a clearer

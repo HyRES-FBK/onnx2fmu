@@ -88,6 +88,14 @@ made of `"CoSimulation"`, `"ModelExchange"`, or both. It defaults to
 `["CoSimulation"]`, so existing model descriptions keep producing the same
 FMU. See [Model Exchange and continuous
 states](#model-exchange-and-continuous-states).
+- `"defaultExperiment"` (optional) mirrors the FMI `DefaultExperiment`
+element: `startTime`, `stopTime` and `stepSize`. A Co-Simulation FMU runs the
+network once per internal step, and `stepSize` sets that step (1 by default).
+- `"fixedInternalStepSize"` (optional, FMI 3.0 only) sets the internal step
+separately from the preferred communication step, and is written to the FMI
+3.0 `<CoSimulation>` attribute of the same name. FMI 2.0 has no such
+attribute, so FMI 2.0 descriptions declare the step with
+`"defaultExperiment"`.
 
 Each entry of the the inputs and output lists is characterized by the following
 schema:
@@ -98,6 +106,10 @@ The number of names in the `"labels"` list must match the number of elements of
 a given entry.
 - `"description"` allows the user to attach a description to each of the
 arrays.
+- `"start"` is the start value, a number or a list that broadcasts to the node
+shape. For an output, it is the value a Co-Simulation FMU reports before its
+first step; outputs without it start at `0.0` and trigger a deprecation
+warning.
 
 The following is an example of a model description for a model with three
 input nodes and one output node.
@@ -129,7 +141,8 @@ input nodes and one output node.
                 "Class1",
                 "Class2",
                 ...
-            ]
+            ],
+            "start": 0.0
         }
     ]
 }
@@ -277,6 +290,13 @@ returned by the function with the name `U1` (remember that node names cannot be
 repeated in ONNX). During the next time step, the FMU will take care to pass
 the output to the model as a new, updated input.
 
+In Co-Simulation, the FMU runs the network only inside `doStep`, once per
+internal step, on the inputs and feedback states at the start of the step.
+Setting inputs, reading outputs and initialization never run it, so the
+feedback states advance exactly once per step whatever the order of the
+importer's calls. The outputs read after a step are the ones that step
+computed. Before the first step they hold their `start` values.
+
 In the generated FMU, each feedback state is exposed as a variable named
 `<nameIn>_<nameOut>` with FMI `local` causality.
 
@@ -330,7 +350,8 @@ shape.
 - `"FMUType": ["ModelExchange"]` is **not compatible with
 `"feedbackStates"`**: feedback states would otherwise advance at whatever rate the
 ME solver happens to evaluate the model, not once per communication step.
-Declaring both raises a validation error.
+Declaring both raises a validation error. For the same reason,
+`"feedbackStates"` cannot be combined with `"derivativeOf"` in any FMU type.
 
 For time-dependent (non-autonomous) dynamics `f(t, x)`, an input can be
 flagged `"time": true` instead of receiving its own FMI variable; ONNX2FMU
@@ -346,10 +367,10 @@ element (it cannot itself be a state).
 
 **Co-Simulation of a model with continuous states** is still possible (e.g.
 `"FMUType": ["ModelExchange", "CoSimulation"]`) but integrates internally
-with a fixed-step forward Euler at the hardcoded 1 second step
-(`FIXED_SOLVER_STEP`) — coarser than letting an ME importer's adaptive
-solver drive it. Use plain Model Exchange, or a small Co-Simulation
-communication step, for accuracy-sensitive cases.
+with a fixed-step forward Euler on the internal step (1 by default, set with
+`"defaultExperiment"` or, in FMI 3.0, `"fixedInternalStepSize"`) — coarser
+than letting an ME importer's adaptive solver drive it. Use plain Model
+Exchange, or a small internal step, for accuracy-sensitive cases.
 
 [example5](examples/example5/) trains an actual neural ODE with
 [torchdiffeq](https://github.com/rtqichen/torchdiffeq) — a small network

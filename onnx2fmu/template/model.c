@@ -169,14 +169,6 @@ Status calculateValues(ModelInstance *comp) {
     {%- endfor %}
     {%- endfor %}
 
-    // Output tensors are allocated by Run() on each call
-    {%- for output in outputs %}
-    OrtValue* {{ output.name }}_tensor = NULL;
-    {%- endfor %}
-    {%- for feedbackState in feedbackStates %}
-    OrtValue* {{ feedbackState.nameOut }}_tensor = NULL;
-    {%- endfor %}
-
     // Declare input node names
     const char* input_names[] = {
         {%- for input in inputs %}
@@ -210,16 +202,9 @@ Status calculateValues(ModelInstance *comp) {
         {%- endfor %}
     };
 
-    // Gather output tensors
-    OrtValue* output_tensors[] = {
-        {%- for output in outputs %}
-        {{ output.name }}_tensor{% if not loop.last %},{% endif %}
-        {%- endfor %}
-        {%- if feedbackStates %},{% endif %}
-        {%- for feedbackState in feedbackStates %}
-        {{ feedbackState.nameOut }}_tensor{% if not loop.last %},{% endif %}
-        {%- endfor %}
-    };
+    // Run() allocates the output tensors on each call and stores them here,
+    // in the order of output_names. They are released at the end.
+    OrtValue* output_tensors[{{ outputs|length + feedbackStates|length }}] = { NULL };
 
     // Run inference
     ORT_ABORT_ON_ERROR(
@@ -273,26 +258,6 @@ Status calculateValues(ModelInstance *comp) {
         comp
     );
 
-    // Retrieve {{ output.name }} tensor info
-    OrtTensorTypeAndShapeInfo* {{ output.name }}_info;
-    ORT_ABORT_ON_ERROR(
-        comp->g_ort->GetTensorTypeAndShape(
-            output_tensors[{{ loop.index0 }}],
-            &{{ output.name }}_info
-        ),
-        comp
-    );
-
-    // Retrieve {{ output.name }} tensor shape
-    size_t {{ output.name }}_dims;
-    ORT_ABORT_ON_ERROR(
-        comp->g_ort->GetDimensionsCount(
-            {{ output.name }}_info,
-            &{{ output.name }}_dims
-        ),
-        comp
-    );
-
     // Set {{ output.name }} tensor data to model
     {%- for scalar in output.scalarValues %}
     M({{ scalar.name }}) = {{ output.name }}_tensor_data[{{ loop.index0 }}];
@@ -311,39 +276,16 @@ Status calculateValues(ModelInstance *comp) {
         comp
     );
 
-    // Retrieve {{ feedbackState.nameOut }} tensor info
-    OrtTensorTypeAndShapeInfo* {{ feedbackState.nameOut }}_info;
-    ORT_ABORT_ON_ERROR(
-        comp->g_ort->GetTensorTypeAndShape(
-            output_tensors[{{ loop.index0 + outputs|length }}],
-            &{{ feedbackState.nameOut }}_info
-        ),
-        comp
-    );
-
-    // Retrieve {{ feedbackState.name }} tensor shape
-    size_t {{ feedbackState.nameOut }}_dims;
-    ORT_ABORT_ON_ERROR(
-        comp->g_ort->GetDimensionsCount(
-            {{ feedbackState.nameOut }}_info,
-            &{{ feedbackState.nameOut }}_dims
-        ),
-        comp
-    );
-
     // Set {{ feedbackState.nameOut }} tensor data to model
     {%- for scalar in feedbackState.scalarValues %}
     M({{ scalar.name }}) = {{ feedbackState.nameOut }}_tensor_data[{{ loop.index0 }}];
     {%- endfor %}
     {%- endfor %}
 
-    // Release output tensors (allocated by Run on each call)
-    {%- for feedbackState in feedbackStates %}
-    comp->g_ort->ReleaseValue({{ feedbackState.nameOut }}_tensor);
-    {%- endfor %}
-    {%- for output in outputs %}
-    comp->g_ort->ReleaseValue({{ output.name }}_tensor);
-    {%- endfor %}
+    // Release the output tensors allocated by Run()
+    for (size_t i = 0; i < {{ outputs|length + feedbackStates|length }}; i++) {
+        comp->g_ort->ReleaseValue(output_tensors[i]);
+    }
 
     return OK;
 }

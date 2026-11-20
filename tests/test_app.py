@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 from onnx import TensorProto, helper as onnx_helper, load, save as onnx_save
 from pathlib import Path
+from fmpy import extract, read_model_description
+from fmpy.fmi2 import FMU2Slave
 from fmpy.validation import validate_fmu
 from fmpy.simulation import simulate_fmu
 
@@ -17,6 +19,17 @@ from onnx2fmu.app import _createFMUFolderStructure, generate, compile, build
 # already loaded by the FMI importer or another FMU in the same process. See
 # https://github.com/HyRES-FBK/onnx2fmu/issues/53.
 GENERIC_ORT_LIBRARY_NAMES = {"onnxruntime.dll", "libonnxruntime.so", "libonnxruntime.dylib"}
+
+PROC_STATUS = Path("/proc/self/status")
+
+
+def resident_memory_bytes():
+    """Resident memory of this process, read from /proc (Linux only)."""
+    with open(PROC_STATUS) as status:
+        for line in status:
+            if line.startswith("VmRSS:"):
+                return int(line.split()[1]) * 1024
+    raise RuntimeError(f"VmRSS not found in {PROC_STATUS}")
 
 
 def assert_private_ort_library(test_case, fmu_path):
@@ -519,6 +532,60 @@ class TestExample4(unittest.TestCase):
         real_output = pd.read_csv(self.base_dir / "Example4_ref.csv",
                                   index_col='time')
         self.assertTrue(np.array_equal(results, real_output.values))
+
+    @unittest.skipUnless(PROC_STATUS.exists(),
+                         "reads the process memory from /proc (Linux)")
+    def test_network_runs_do_not_leak_memory(self):
+        # Each network run gets one ONNX Runtime value per output and
+        # feedback state from Run(), which the FMU must release (issue #62).
+        build(
+            model_path=self.model_path,
+            model_description_path=self.model_description_path,
+            target_folder=self.tmpdir / f"test_{self.model_name}_memory",
+            cmake_config="Debug",
+            destination=self.destination
+        )
+        model_description = read_model_description(self.fmu_path)
+        fmu = FMU2Slave(
+            guid=model_description.guid,
+            unzipDirectory=extract(self.fmu_path,
+                                   unzipdir=str(self.tmpdir / "unzipped")),
+            modelIdentifier=model_description.coSimulation.modelIdentifier,
+            instanceName="instance",
+        )
+        variables = model_description.modelVariables
+        inputs = [v.valueReference for v in variables if v.causality == "input"]
+        outputs = [v.valueReference for v in variables
+                   if v.causality == "output"]
+        fmu.instantiate()
+        try:
+            fmu.setupExperiment(startTime=0.0)
+            fmu.enterInitializationMode()
+            fmu.exitInitializationMode()
+            time = 0.0
+
+            def run(steps):
+                # Drive the FMU as a simulator does: set the inputs, step,
+                # read the outputs. This runs the network once per step.
+                nonlocal time
+                for _ in range(steps):
+                    fmu.setReal(inputs, [time % 2] * len(inputs))
+                    fmu.doStep(currentCommunicationPoint=time,
+                               communicationStepSize=1.0)
+                    fmu.getReal(outputs)
+                    time += 1.0
+
+            run(2_000)  # warm-up: allocators settle
+            before = resident_memory_bytes()
+            steps = 20_000
+            run(steps)
+            growth = resident_memory_bytes() - before
+        finally:
+            fmu.terminate()
+            fmu.freeInstance()
+        # A leak of the three output values per run grows by tens of MB.
+        self.assertLess(growth, 2 * 2**20,
+                        f"memory grew by {growth / steps:.0f} bytes per step")
 
 
 def _build_van_der_pol_onnx():

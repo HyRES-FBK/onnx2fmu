@@ -94,6 +94,7 @@ Each entry of `feedbackStates` connects an output node back to an input node.
 | `labels` | no | List of texts, one per element. |
 | `variability` | no | `"continuous"` (default) or `"discrete"`. |
 | `start` | no | Value of the state at the first step. Defaults to `1.0`. |
+| `initial` | no | The FMI `initial` attribute: `"calculated"` (default) or `"exact"`. A `"calculated"` state is internal: no tool can set it. A tool may set an `"exact"` state before the end of initialization, to start a run from another state. See [Who may set a feedback state](#feedback-state-initial). |
 
 Nodes used in a feedback state must not be repeated under `inputs` or
 `outputs`.
@@ -197,6 +198,7 @@ generates any code. The most common messages are:
 | `'…' is not one of the model input nodes […]` | A `name` or `nameIn` does not match a graph input. The message lists the valid names. |
 | `'…' is not one of the model output nodes […]` | Same, for outputs and `nameOut`. |
 | `Feedback state … shape … and … shape … are not consistent.` | `nameIn` and `nameOut` have different shapes. |
+| `Feedback state '…' declares initial=…` | `initial` is not `"exact"` or `"calculated"`. |
 | `Model Exchange is not compatible with 'feedbackStates'.` | Remove one of the two. |
 | `Output '…' declares derivativeOf, which cannot be combined with 'feedbackStates'.` | Remove the feedback states or the continuous states. |
 | `State '…' must declare a 'start' value` | A continuous state has no initial condition. |

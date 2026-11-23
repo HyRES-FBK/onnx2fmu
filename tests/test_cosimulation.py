@@ -19,6 +19,7 @@ from xml.etree import ElementTree
 
 import numpy as np
 from fmpy import extract, read_model_description, simulate_fmu
+from fmpy.fmi1 import FMICallException
 from fmpy.fmi2 import FMU2Slave
 from fmpy.fmi3 import FMU3Slave
 from onnx import TensorProto, helper, save
@@ -153,7 +154,11 @@ class Slave:
             self.fmu.freeFMUstate(state)
 
     def close(self) -> None:
-        self.fmu.terminate()
+        try:
+            self.fmu.terminate()
+        except FMICallException:
+            # A call that returned fmi*Error already terminated the instance.
+            pass
         self.fmu.freeInstance()
 
 
@@ -376,6 +381,181 @@ class TestOutputDependencies(unittest.TestCase):
                     self.dependencies(fmi_version,
                                       ["ModelExchange", "CoSimulation"]),
                     [None] * 4)
+
+
+class TestFeedbackStateInitialXML(unittest.TestCase):
+    """A feedback state is emitted as an FMI `local` with its `initial`.
+    Only `exact` states carry a `start`: FMI forbids it on `calculated`
+    variables (FMI 2.0.4 section 2.2.7, FMI 3.0.2 section 2.4.7). Uses
+    `generate` only, no compiler."""
+
+    def setUp(self):
+        self.tmpdir = Path(tempfile.mkdtemp(prefix="onnx2fmu_test_init_"))
+        self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
+        self.model_path = self.tmpdir / "counter.onnx"
+        save(_build_onnx(stateful=True), self.model_path)
+
+    def feedback_state(self, fmi_version: str, **keys) -> ElementTree.Element:
+        """The generated XML element of the feedback state `count_in`."""
+        name = f"Counter{fmi_version[0]}{len(keys)}"
+        description_path = self.tmpdir / f"{name}.json"
+        description_path.write_text(json.dumps({
+            "name": name,
+            "description": "",
+            "FMIVersion": fmi_version,
+            "inputs": [{"name": "u"}, {"name": "t", "time": True}],
+            "outputs": [{"name": "u_seen", "start": 0.0},
+                        {"name": "t_seen", "start": 0.0},
+                        {"name": "evals", "start": 0.0}],
+            "feedbackStates": [{"nameIn": "count_in", "nameOut": "count_out",
+                                "start": 3.0, **keys}],
+        }))
+        target = self.tmpdir / f"target_{name}"
+        generate(model_path=self.model_path,
+                 model_description_path=description_path,
+                 target_folder=target)
+        xml = target / name / f"FMI{fmi_version[0]}.xml"
+        root = ElementTree.parse(xml).getroot()
+        if fmi_version == "2.0":
+            elements = root.findall("ModelVariables/ScalarVariable")
+        else:
+            elements = list(root.find("ModelVariables"))
+        [element] = [e for e in elements
+                     if e.get("name") == "count_in_count_out_0"]
+        return element
+
+    def start(self, fmi_version: str, element: ElementTree.Element):
+        if fmi_version == "2.0":
+            return element.find("Real").get("start")
+        return element.get("start")
+
+    def test_default_is_calculated_without_start(self):
+        for fmi_version in ["2.0", "3.0"]:
+            with self.subTest(fmi_version=fmi_version):
+                element = self.feedback_state(fmi_version)
+                self.assertEqual(element.get("causality"), "local")
+                self.assertEqual(element.get("initial"), "calculated")
+                self.assertIsNone(self.start(fmi_version, element))
+
+    def test_exact_carries_its_start(self):
+        for fmi_version in ["2.0", "3.0"]:
+            with self.subTest(fmi_version=fmi_version):
+                element = self.feedback_state(fmi_version, initial="exact")
+                self.assertEqual(element.get("causality"), "local")
+                self.assertEqual(element.get("initial"), "exact")
+                self.assertEqual(
+                    float(self.start(fmi_version, element)), 3.0)
+
+
+class FeedbackStateInitialization:
+    """Who may write a feedback state, and when (issue #60). Subclasses
+    set `fmi_version`.
+
+    An `exact` feedback state can be set in Instantiated and Initialization
+    Mode, which gives each run its own initial state. A `calculated` one
+    can never be set. Nothing may write a feedback state after
+    initialization: only `doStep` moves it forward.
+    """
+
+    fmi_version = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmpdir = Path(tempfile.mkdtemp(prefix="onnx2fmu_test_fs_"))
+        version = cls.fmi_version[0]
+        cls.internal = _build_fmu(
+            cls.tmpdir, f"Internal{version}", cls.fmi_version)
+        cls.settable = _build_fmu(
+            cls.tmpdir, f"Settable{version}", cls.fmi_version,
+            feedbackStates=[{"nameIn": "count_in", "nameOut": "count_out",
+                             "start": 0.0, "initial": "exact"}])
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmpdir, ignore_errors=True)
+
+    def slave(self, fmu_path: Path) -> Slave:
+        unzipdir = extract(fmu_path)
+        self.addCleanup(shutil.rmtree, unzipdir, ignore_errors=True)
+        slave = Slave(fmu_path, unzipdir)
+        self.addCleanup(slave.close)
+        return slave
+
+    def test_model_descriptions_are_valid(self):
+        for fmu_path in [self.internal, self.settable]:
+            with self.subTest(fmu=fmu_path.name):
+                read_model_description(fmu_path, validate=True)
+
+    def test_exact_state_set_when_instantiated(self):
+        fmu = self.slave(self.settable)
+        fmu.set("count_in_count_out_0", 10.0)
+        fmu.initialize()
+        self.assertEqual(fmu.get("count_in_count_out_0"), 10)
+        fmu.step(0.0, 1.0)
+        self.assertEqual(fmu.get("evals_0"), 11)
+        self.assertEqual(fmu.get("count_in_count_out_0"), 11)
+
+    def test_exact_state_set_in_initialization_mode(self):
+        fmu = self.slave(self.settable)
+        fmu.initialize(count_in_count_out_0=20.0)
+        fmu.step(0.0, 1.0)
+        self.assertEqual(fmu.get("evals_0"), 21)
+
+    def test_exact_state_cannot_be_set_after_initialization(self):
+        fmu = self.slave(self.settable)
+        fmu.initialize()
+        fmu.step(0.0, 1.0)
+        with self.assertRaises(FMICallException):
+            fmu.set("count_in_count_out_0", 10.0)
+        # The refused set leaves the state unchanged. After fmi*Error the
+        # simulation must not continue, but the state can still be read.
+        self.assertEqual(fmu.get("count_in_count_out_0"), 1)
+
+    def test_exact_state_reset_restores_its_start(self):
+        fmu = self.slave(self.settable)
+        fmu.set("count_in_count_out_0", 10.0)
+        fmu.initialize()
+        fmu.fmu.reset()
+        fmu.initialize()
+        fmu.step(0.0, 1.0)
+        self.assertEqual(fmu.get("evals_0"), 1)
+
+    def test_calculated_state_cannot_be_set_when_instantiated(self):
+        fmu = self.slave(self.internal)
+        with self.assertRaises(FMICallException):
+            fmu.set("count_in_count_out_0", 10.0)
+
+    def test_calculated_state_cannot_be_set_in_initialization_mode(self):
+        fmu = self.slave(self.internal)
+        with self.assertRaises(FMICallException):
+            fmu.initialize(count_in_count_out_0=10.0)
+
+    def test_calculated_state_cannot_be_set_after_initialization(self):
+        fmu = self.slave(self.internal)
+        fmu.initialize()
+        fmu.step(0.0, 1.0)
+        with self.assertRaises(FMICallException):
+            fmu.set("count_in_count_out_0", 10.0)
+        self.assertEqual(fmu.get("count_in_count_out_0"), 1)
+
+    def test_calculated_state_starts_from_its_start_value(self):
+        fmu = self.slave(self.internal)
+        fmu.initialize()
+        # It can be read, though not set.
+        self.assertEqual(fmu.get("count_in_count_out_0"), 0)
+        fmu.step(0.0, 1.0)
+        self.assertEqual(fmu.get("count_in_count_out_0"), 1)
+        self.assertEqual(fmu.get("evals_0"), 1)
+
+
+class TestFeedbackStateInitializationFMI2(FeedbackStateInitialization,
+                                         unittest.TestCase):
+    fmi_version = "2.0"
+
+
+class TestFeedbackStateInitializationFMI3(FeedbackStateInitialization,
+                                         unittest.TestCase):
+    fmi_version = "3.0"
 
 
 class TestCoSimulationFMI2(CoSimulationSemantics, unittest.TestCase):

@@ -146,7 +146,25 @@ class TestFeedbackState(unittest.TestCase):
         self.assertIn("nameOut", context)
         self.assertIn("nodeNameIn", context)
         self.assertIn("nodeNameOut", context)
+        self.assertIn("initial", context)
         self.assertEqual(context["name"], "X1_X2")
+
+    def test_initial_defaults_to_calculated(self):
+        # A feedback state is internal unless declared settable: it may
+        # have no physical meaning (e.g. an RNN context vector).
+        v = FeedbackState(nameIn="X.1", nameOut="X:2")
+        self.assertEqual(v.initial, "calculated")
+
+    def test_initial_exact(self):
+        v = FeedbackState(nameIn="X.1", nameOut="X:2", initial="exact")
+        self.assertEqual(v.initial, "exact")
+
+    def test_invalid_initial_raises(self):
+        for initial in ["approx", "Exact", "", None]:
+            with self.subTest(initial=initial):
+                with self.assertRaisesRegex(ValueError, "X1_X2"):
+                    FeedbackState(nameIn="X.1", nameOut="X:2",
+                                  initial=initial)
 
 
 if __name__ == "__main__":

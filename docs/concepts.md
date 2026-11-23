@@ -131,6 +131,63 @@ In the FMU, a feedback state appears as variables named
 `<nameIn>_<nameOut>_<index>`, for example `h_h_next_0`. They are visible, so
 you can plot them, but they are not meant to be connected to other models.
 
+(feedback-state-initial)=
+### Who may set a feedback state
+
+The `start` value of a feedback state is fixed when you build the FMU. The
+optional key `initial` decides whether a tool that runs the FMU may replace
+it, for example to start every run from a different measured state:
+
+```json
+"feedbackStates": [
+    {"nameIn": "X", "nameOut": "X1", "start": 0.0, "initial": "exact"},
+    {"nameIn": "h", "nameOut": "h_next", "start": 0.0}
+]
+```
+
+`initial` is the FMI attribute of the same name, and it means the same in
+FMI 2.0 and FMI 3.0:
+
+- `"calculated"`, the default: the state is **internal** to the FMU. Every
+  run starts from its `start` value, and no tool can overwrite it.
+- `"exact"`: the state starts from its `start` value, but a tool may set a
+  different one **before the end of initialization**.
+
+| `initial` | The network updates it at every step | A tool sets it before or during initialization | A tool sets it during the simulation |
+|---|---|---|---|
+| `"calculated"` (default) | yes | no | no |
+| `"exact"` | yes | yes | no |
+
+Keep the default for a state with no physical meaning, such as the hidden
+state or context vector of a recurrent network. Its values are whatever the
+network learned to use, so a value written from outside would put the model in
+a state it was never trained on. Declare `"exact"` only for a state whose
+values a user can know, such as a history of past measurements or controls.
+
+No state can be set during the simulation, whatever its `initial`. Once the
+FMU is initialized, only the network moves a feedback state forward, once per
+step. If a model needs a value from outside at every step, for example a
+measurement that corrects its prediction, that value must be a network
+**input**, and the graph decides how to combine it with the memory.
+
+These rules come from the FMI standard. For the `initial` values, FMI 2.0.4
+(section 2.2.7) says that with `exact` "The variable is initialized with the
+start value", and with `calculated` "The variable is calculated from other
+variables during initialization. It is not allowed to provide a `"start"`
+value." So in the generated `modelDescription.xml`, only `exact` states
+carry a `start` attribute. FMI 3.0.2 (section 2.3.2, State: Instantiated)
+allows a tool to set a value before initialization only "for variables with
+variability ≠ constant and with initial = exact or approx", and in
+Initialization Mode (section 2.3.3) only "with initial = exact". In Step
+Mode (section 4.2.1) it may set only variables with "causality = input" or
+"causality = parameter and variability = tunable". FMI 2.0.4 has the same
+rules (sections 3.2.3 and 4.2.4). ONNX2FMU does not accept `"approx"`, which
+marks the starting guess of an iteration the FMU does not have.
+
+A tool that tries a set FMI does not allow gets an error status
+(`fmi2Error`/`fmi3Error`) and a log message naming the state. As FMI
+requires, the simulation cannot continue after that error.
+
 [Example 4](../examples/example4/example4.ipynb) builds a model with two
 feedback states step by step.
 
@@ -277,7 +334,7 @@ when accuracy matters.
 |---|---|---|
 | **Feedback state** | An output that is fed back into an input at the next step. An ONNX2FMU concept. | An entry of `feedbackStates`. |
 | **Continuous state** | A quantity integrated by the importing tool's solver. An FMI Model Exchange concept. | An input that an output points to with `derivativeOf`. |
-| **`local` causality** | The FMI label for a variable that is internal to the FMU. | You do not declare it. ONNX2FMU assigns it to feedback states and to state derivatives. |
+| **`local` causality** | The FMI label for a variable that is internal to the FMU. | You do not declare it. ONNX2FMU assigns it to feedback states and to state derivatives. Whether a tool may set a feedback state before initialization is decided by its [`initial`](#feedback-state-initial). |
 
 Older model descriptions use the key `locals` for feedback states. It still
 works, but it prints a deprecation warning. Rename it to `feedbackStates`.

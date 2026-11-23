@@ -55,10 +55,13 @@
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
+    {#- Only an initial="exact" feedback state, which an importer may set before
+        the end of initialization, carries a start: FMI 2.0 forbids it on
+        initial="calculated" variables. #}
     {%- for feedbackState in feedbackStates %}
     {%- for scalar in feedbackState.scalarValues %}
     <ScalarVariable name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ feedbackState.causality }}" variability="{{ feedbackState.variability }}" description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ feedbackState.description }}{% endif %}" initial="{{ feedbackState.initial }}">
-      <{{ feedbackState.vType.FMIType }} start="{{ scalar.start }}"/>
+      <{{ feedbackState.vType.FMIType }}{% if feedbackState.initial == "exact" %} start="{{ scalar.start }}"{% endif %}/>
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}

@@ -8,6 +8,9 @@ from onnx2fmu.config import FMI2TYPES, FMI3TYPES, FMI_VERSIONS
 
 CONTINUOUS = "continuous"
 DISCRETE = "discrete"
+# Values of the FMI `initial` attribute.
+EXACT = "exact"
+CALCULATED = "calculated"
 
 class VariableFactory:
 
@@ -194,7 +197,16 @@ class FeedbackState(VariableFactory):
     Not to be confused with FMI `local` causality: a feedback state is
     *emitted* with `causality="local"`, but so are other variables (e.g.
     Model Exchange state derivatives, see `Output`).
+
+    `initial` is the FMI attribute of the same name. With `"exact"` an
+    importer may set the state before the end of initialization, so each run
+    can start from its own state. With `"calculated"`, the default, the
+    state is internal: it always starts from `start`, and no importer can
+    write it. Use it for states without a physical meaning, such as the
+    context vector of an RNN.
     """
+
+    INITIAL_VALUES = (EXACT, CALCULATED)
 
     def __init__(self,
                  nameIn: str,
@@ -205,7 +217,7 @@ class FeedbackState(VariableFactory):
                  fmiVersion: str = "2.0",
                  vType: TensorProto.DataType = TensorProto.FLOAT,
                  labels: None | list[str] = None,
-                 initial: str = "exact",
+                 initial: str = CALCULATED,
                  start: Union[str, int, float, list] = "1.0"
                  ) -> None:
         self.nameIn = self._cleanName(name=nameIn)
@@ -218,6 +230,13 @@ class FeedbackState(VariableFactory):
                          vType=vType, labels=labels, start=start)
         # Set explicitly: the default derives causality from the class name.
         self.causality = "local"
+        if initial not in self.INITIAL_VALUES:
+            raise ValueError(
+                f"Feedback state '{self.name}' declares initial={initial!r}. "
+                f"Admissible values are {list(self.INITIAL_VALUES)}: "
+                f"'{EXACT}' lets an importer set the state before the end of "
+                f"initialization, '{CALCULATED}' keeps it internal."
+            )
         self.initial = initial
         self._context_variables += ["nameIn", "nameOut", "nodeNameIn",
                                     "nodeNameOut", "initial"]

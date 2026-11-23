@@ -254,12 +254,14 @@ the following:
         {
             "nameIn": "X",
             "nameOut": "X1",
-            "description": "The history of states from t-N to t."
+            "description": "The history of states from t-N to t.",
+            "initial": "exact"
         },
         {
             "nameIn": "U",
             "nameOut": "U1",
-            "description": "The history of control variables frmo t-N to t-1."
+            "description": "The history of control variables from t-N to t-1.",
+            "initial": "exact"
         }
     ]
 }
@@ -299,6 +301,22 @@ computed. Before the first step they hold their `start` values.
 
 In the generated FMU, each feedback state is exposed as a variable named
 `<nameIn>_<nameOut>` with FMI `local` causality.
+
+The optional `initial` key is the FMI attribute of the same name, and decides
+whether the importer may replace the `start` value of a feedback state:
+
+- `"calculated"` (the default): the state is internal. Every run starts from
+  its `start` value and the importer cannot set it. Keep this for states with
+  no physical meaning, such as the hidden state or context vector of an RNN:
+  a value written from outside would put the network in a state it was never
+  trained on.
+- `"exact"`: the importer may set the state before the end of initialization,
+  so that each run starts from its own state. Use it for states with a
+  physical meaning, such as the histories of example 4.
+
+No importer can set a feedback state during the simulation: as FMI requires
+for `local` variables, only the FMU moves it forward, once per step. A value
+that must enter the model at every step belongs in a network input.
 
 ### Model Exchange and continuous states
 

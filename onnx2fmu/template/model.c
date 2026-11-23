@@ -334,6 +334,39 @@ Status evaluateNetwork(ModelInstance *comp) {
     return OK;
 }
 
+{%- if feedbackStates %}
+
+// Whether an importer may set the feedback state `vr`. The FMI `initial`
+// attribute decides: a "calculated" feedback state is internal and can never
+// be set, and an "exact" one only before the end of initialization, as FMI
+// allows for `local` variables. Once initialized, only doStep moves a
+// feedback state forward. Returns false, and logs why, for a set FMI does
+// not allow. Any other value reference is not a feedback state: true.
+static bool isFeedbackStateSettable(ModelInstance *comp, ValueReference vr) {
+    switch (vr)
+    {
+    {%- for feedbackState in feedbackStates %}
+    {%- for scalar in feedbackState.scalarValues %}
+    case vr_{{ scalar.name }}:
+    {%- endfor %}
+        {%- if feedbackState.initial == "exact" %}
+        if (comp->state & (Instantiated | InitializationMode)) {
+            return true;
+        }
+        logError(comp, "Feedback state {{ feedbackState.name }} (value reference %u) "
+                 "can only be set before the end of initialization.", (unsigned int)vr);
+        {%- else %}
+        logError(comp, "Feedback state {{ feedbackState.name }} (value reference %u) "
+                 "has initial=\"calculated\" and cannot be set.", (unsigned int)vr);
+        {%- endif %}
+        return false;
+    {%- endfor %}
+    default:
+        return true;
+    }
+}
+{%- endif %}
+
 Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
                   size_t nValues, size_t *index) {
 
@@ -379,6 +412,11 @@ Status getFloat64(ModelInstance *comp, ValueReference vr, double values[],
 
 Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
                   size_t nValues, size_t *index) {
+    {%- if feedbackStates %}
+    if (!isFeedbackStateSettable(comp, vr)) {
+        return Error;
+    }
+    {%- endif %}
     // Switch on the value reference
     switch (vr)
     {
@@ -396,8 +434,8 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Feedback states
-        {%- for feedbackState in feedbackStates %}
+        // Feedback states an importer may set, see isFeedbackStateSettable
+        {%- for feedbackState in feedbackStates if feedbackState.initial == "exact" %}
         {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);
@@ -454,6 +492,11 @@ Status getFloat32(ModelInstance *comp, ValueReference vr, float values[],
 
 Status setFloat32(ModelInstance *comp, ValueReference vr, const float values[],
                   size_t nValues, size_t *index) {
+    {%- if feedbackStates %}
+    if (!isFeedbackStateSettable(comp, vr)) {
+        return Error;
+    }
+    {%- endif %}
     // Switch on the value reference
     switch (vr)
     {
@@ -466,8 +509,8 @@ Status setFloat32(ModelInstance *comp, ValueReference vr, const float values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Feedback states
-        {%- for feedbackState in feedbackStates %}
+        // Feedback states an importer may set, see isFeedbackStateSettable
+        {%- for feedbackState in feedbackStates if feedbackState.initial == "exact" %}
         {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:
             ASSERT_NVALUES(1);

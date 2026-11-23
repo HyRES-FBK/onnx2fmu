@@ -1,6 +1,7 @@
 import copy
 import json
 import unittest
+import warnings
 from math import prod
 from onnx import TensorProto, helper, load
 from pathlib import Path
@@ -106,7 +107,7 @@ class TestModelExchangeValidation(unittest.TestCase):
             ],
             "outputs": [
                 {"name": "dx", "derivativeOf": "x"},
-                {"name": "y"},
+                {"name": "y", "start": 0.0},
             ],
         }
 
@@ -149,8 +150,17 @@ class TestModelExchangeValidation(unittest.TestCase):
         with self.assertRaises(ValueError):
             ModelDescription(self.onnx_model, description)
 
+    def test_co_simulation_with_feedback_and_continuous_states_raises(self):
+        description = copy.deepcopy(self.base_description)
+        description["FMUType"] = ["CoSimulation"]
+        description["feedbackStates"] = [{"nameIn": "u", "nameOut": "y"}]
+        with self.assertRaisesRegex(ValueError, "derivativeOf"):
+            ModelDescription(self.onnx_model, description)
+
     def test_deprecated_locals_key_is_an_alias(self):
         description = copy.deepcopy(self.base_description)
+        # Feedback states cannot be combined with continuous states.
+        description["outputs"] = [{"name": "y", "start": 0.0}]
         description["locals"] = [{"nameIn": "u", "nameOut": "y"}]
         with self.assertWarns(FutureWarning):
             model_description = ModelDescription(self.onnx_model, description)
@@ -202,6 +212,164 @@ class TestModelExchangeValidation(unittest.TestCase):
         description["outputs"].append({"name": "dt", "derivativeOf": "t"})
         with self.assertRaises(ValueError):
             ModelDescription(self.onnx_model, description)
+
+
+class TestOutputStartValues(unittest.TestCase):
+    """A Co-Simulation output reports its start value until the first
+    step, so leaving it out is deprecated."""
+
+    def setUp(self) -> None:
+        self.onnx_model = _build_test_onnx_model()
+        self.description = {
+            "name": "outputs",
+            "description": "test",
+            "FMIVersion": "2.0",
+            "inputs": [{"name": "x", "start": [2.0, 0.0]}, {"name": "u"}],
+            "outputs": [{"name": "y"}],
+        }
+
+    def future_warnings(self, description: dict) -> list:
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            ModelDescription(self.onnx_model, description)
+        return [w for w in caught if w.category is FutureWarning]
+
+    def test_co_simulation_output_without_start_warns(self):
+        description = copy.deepcopy(self.description)
+        with self.assertWarnsRegex(FutureWarning, r"\['y'\].*start"):
+            model_description = ModelDescription(self.onnx_model,
+                                                 description)
+        output = model_description.generateContext()["outputs"][0]
+        self.assertEqual({s["start"] for s in output["scalarValues"]},
+                         {"0.0"})
+
+    def test_output_with_start_does_not_warn(self):
+        description = copy.deepcopy(self.description)
+        description["outputs"][0]["start"] = [1.0, 2.0, 3.0]
+        self.assertEqual(self.future_warnings(description), [])
+
+    def test_model_exchange_output_without_start_does_not_warn(self):
+        description = copy.deepcopy(self.description)
+        description["FMUType"] = ["ModelExchange"]
+        self.assertEqual(self.future_warnings(description), [])
+
+    def test_state_derivative_without_start_does_not_warn(self):
+        description = copy.deepcopy(self.description)
+        description["outputs"] = [{"name": "dx", "derivativeOf": "x"},
+                                  {"name": "y", "start": 0.0}]
+        self.assertEqual(self.future_warnings(description), [])
+
+
+class TestStartValueShapes(unittest.TestCase):
+    """A start list must broadcast to the shape of its ONNX node."""
+
+    def setUp(self) -> None:
+        self.onnx_model = _build_test_onnx_model()
+        self.description = {
+            "name": "shapes",
+            "description": "test",
+            "FMIVersion": "2.0",
+            "inputs": [{"name": "x", "start": 1.0}, {"name": "u"}],
+            "outputs": [{"name": "y", "start": "0.0"}],
+            "feedbackStates": [{"nameIn": "t", "nameOut": "dt"}],
+        }
+
+    def assertInvalidStart(self, entry: str, index: int, start,
+                           name: str) -> None:
+        description = copy.deepcopy(self.description)
+        description[entry][index]["start"] = start
+        with self.assertRaisesRegex(ValueError, f"'{name}'"):
+            ModelDescription(self.onnx_model, description)
+
+    def test_broadcastable_starts_are_valid(self):
+        description = copy.deepcopy(self.description)
+        description["inputs"][0]["start"] = [2.0, 0.0]
+        description["inputs"][1]["start"] = [1.0, 2.0, 3.0]
+        description["outputs"][0]["start"] = [5.0]
+        description["feedbackStates"][0]["start"] = [0.0]
+        ModelDescription(self.onnx_model, description)
+
+    def test_input_start_of_wrong_length(self):
+        self.assertInvalidStart("inputs", 1, [1.0, 2.0], "u")
+
+    def test_output_start_with_too_many_dimensions(self):
+        self.assertInvalidStart("outputs", 0, [[1.0, 2.0, 3.0]] * 2, "y")
+
+    def test_feedback_state_start_of_wrong_length(self):
+        self.assertInvalidStart("feedbackStates", 0, [0.0, 1.0], "t")
+
+
+class TestStepSize(unittest.TestCase):
+    """The internal step comes from `fixedInternalStepSize` (FMI 3.0 only)
+    or from `defaultExperiment.stepSize`, the FMI 2.0 equivalent."""
+
+    def setUp(self) -> None:
+        self.onnx_model = _build_test_onnx_model()
+        self.description = {
+            "name": "stepper",
+            "description": "test",
+            "FMIVersion": "2.0",
+            "inputs": [{"name": "u"}],
+            "outputs": [{"name": "y", "start": 0.0}],
+        }
+
+    def context(self, **keys) -> dict:
+        description = copy.deepcopy(self.description)
+        description.update(keys)
+        return ModelDescription(self.onnx_model, description).generateContext()
+
+    def assertInvalid(self, **keys) -> None:
+        description = copy.deepcopy(self.description)
+        description.update(keys)
+        with self.assertRaises(ValueError):
+            ModelDescription(self.onnx_model, description)
+
+    def test_defaults(self):
+        context = self.context()
+        self.assertEqual(context["fixedInternalStepSize"], 1)
+        self.assertEqual(context["stepSize"], 1)
+        self.assertEqual(context["startTime"], 0)
+        self.assertEqual(context["stopTime"], 1)
+
+    def test_fmi2_internal_step_is_the_default_experiment_step(self):
+        context = self.context(defaultExperiment={
+            "startTime": 10, "stopTime": 1000, "stepSize": 50})
+        self.assertEqual(context["fixedInternalStepSize"], 50)
+        self.assertEqual(context["stepSize"], 50)
+        self.assertEqual(context["startTime"], 10)
+        self.assertEqual(context["stopTime"], 1000)
+
+    def test_fmi2_rejects_fixed_internal_step_size(self):
+        self.assertInvalid(fixedInternalStepSize=50)
+
+    def test_fmi3_fixed_internal_step_size(self):
+        context = self.context(FMIVersion="3.0", fixedInternalStepSize=50)
+        self.assertEqual(context["fixedInternalStepSize"], 50)
+        self.assertEqual(context["stepSize"], 50)
+
+    def test_fmi3_preferred_step_can_differ_from_internal_step(self):
+        context = self.context(FMIVersion="3.0", fixedInternalStepSize=1,
+                               defaultExperiment={"stepSize": 10})
+        self.assertEqual(context["fixedInternalStepSize"], 1)
+        self.assertEqual(context["stepSize"], 10)
+
+    def test_fmi3_internal_step_falls_back_to_default_experiment(self):
+        context = self.context(FMIVersion="3.0",
+                               defaultExperiment={"stepSize": 0.5})
+        self.assertEqual(context["fixedInternalStepSize"], 0.5)
+        self.assertEqual(context["stepSize"], 0.5)
+
+    def test_invalid_values(self):
+        for step in [0, -1, "50", True, None]:
+            with self.subTest(stepSize=step):
+                self.assertInvalid(defaultExperiment={"stepSize": step})
+            with self.subTest(fixedInternalStepSize=step):
+                self.assertInvalid(FMIVersion="3.0",
+                                   fixedInternalStepSize=step)
+        self.assertInvalid(defaultExperiment={"startTime": 5, "stopTime": 5})
+        self.assertInvalid(defaultExperiment={"startTime": "0"})
+        self.assertInvalid(defaultExperiment={"tolerance": 1e-4})
+        self.assertInvalid(defaultExperiment=[50])
 
 
 if __name__ == "__main__":

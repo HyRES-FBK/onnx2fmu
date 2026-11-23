@@ -15,6 +15,7 @@ read [](../concepts.md) first.
     "description": "Predicts the temperature of a heated plate.",
     "FMIVersion": "3.0",
     "FMUType": ["CoSimulation"],
+    "defaultExperiment": {"stopTime": 3600, "stepSize": 60},
     "inputs": [
         {
             "name": "u",
@@ -26,7 +27,8 @@ read [](../concepts.md) first.
     "outputs": [
         {
             "name": "T",
-            "description": "Plate temperature."
+            "description": "Plate temperature.",
+            "start": 20.0
         }
     ],
     "feedbackStates": [
@@ -51,6 +53,8 @@ read [](../concepts.md) first.
 | `outputs` | yes | List of [output entries](#md-inputs-and-outputs). At least one. |
 | `feedbackStates` | no | List of [feedback state entries](#md-feedback-states). |
 | `FMUType` | no | List with `"CoSimulation"`, `"ModelExchange"`, or both. Defaults to `["CoSimulation"]`. |
+| `defaultExperiment` | no | The FMI `DefaultExperiment`: start time, stop time and step size. See [Step size](#md-step-size). |
+| `fixedInternalStepSize` | no | FMI 3.0 only. The internal step of a Co-Simulation FMU. See [Step size](#md-step-size). |
 | `onnxRuntimeVersion` | no | ONNX Runtime release to bundle, for example `"1.21.0"`. Defaults to the release pinned by ONNX2FMU. |
 
 `locals` is a deprecated alias of `feedbackStates`. It still works and prints
@@ -67,7 +71,7 @@ Each entry of `inputs` and `outputs` describes one node of the ONNX graph.
 | `description` | no | both | Free text. Used as the description of every scalar variable that has no label. |
 | `labels` | no | both | List of texts, one per tensor element in row-major order. Each replaces the description of its scalar variable. |
 | `variability` | no | both | `"continuous"` (default) or `"discrete"`. |
-| `start` | no | both | Start value: a number, or a list that can be broadcast to the node shape. Defaults to `1.0`. |
+| `start` | no | both | Start value: a number, or a list that can be broadcast to the node shape. Inputs default to `1.0`. For an output, it is the value a Co-Simulation FMU reports before its first step. Outputs default to `0.0`, and leaving `start` out of a Co-Simulation output is deprecated. |
 | `time` | no | inputs | `true` to feed this input with the simulation time. See [Time inputs](#md-time-inputs). |
 | `derivativeOf` | no | outputs | Name of the input this output is the time derivative of. See [Continuous states](#md-continuous-states). |
 
@@ -117,7 +121,46 @@ Nodes used in a feedback state must not be repeated under `inputs` or
 - `derivativeOf` must name an entry of `inputs`.
 - The state and the derivative nodes must have the same shape.
 - The state must declare `start`.
+- Continuous states cannot be combined with `feedbackStates`.
 - Use it together with `"FMUType": ["ModelExchange"]`, or with both types.
+
+(md-step-size)=
+## Step size
+
+A Co-Simulation FMU runs the network once per internal step, inside
+`doStep` only (see [](#co-simulation-steps)). Two keys set the
+internal step. Both mirror FMI attributes, so each is accepted only where the
+FMI version defines it.
+
+```json
+"defaultExperiment": {"startTime": 0, "stopTime": 3600, "stepSize": 60}
+```
+
+| Key | Meaning | Default |
+|---|---|---|
+| `startTime` | Default start time of a simulation. | `0` |
+| `stopTime` | Default stop time. Must be greater than `startTime`. | `1` |
+| `stepSize` | Preferred communication step. Also the internal step, unless `fixedInternalStepSize` is given. Must be positive. | the internal step |
+
+These keys become the FMI `DefaultExperiment` element, which exists in FMI 2.0
+and 3.0. Importing tools use it as their default settings. FMPy, for example,
+takes `stepSize` as its output interval when you give none.
+
+`fixedInternalStepSize` (a positive number) is an attribute of the FMI 3.0
+`<CoSimulation>` element, which FMI 2.0 does not have. In an FMI 3.0
+description it sets the internal step on its own, so the preferred
+communication step can be a multiple of it:
+
+```json
+"FMIVersion": "3.0",
+"fixedInternalStepSize": 1,
+"defaultExperiment": {"stepSize": 10}
+```
+
+The internal step is `fixedInternalStepSize` if given, otherwise
+`defaultExperiment.stepSize`, otherwise `1`. An FMI 3.0 FMU always declares it
+in `fixedInternalStepSize`. An FMI 2.0 description that uses
+`fixedInternalStepSize` is rejected: use `defaultExperiment.stepSize`.
 
 ## FMUType
 
@@ -155,8 +198,17 @@ generates any code. The most common messages are:
 | `'…' is not one of the model output nodes […]` | Same, for outputs and `nameOut`. |
 | `Feedback state … shape … and … shape … are not consistent.` | `nameIn` and `nameOut` have different shapes. |
 | `Model Exchange is not compatible with 'feedbackStates'.` | Remove one of the two. |
+| `Output '…' declares derivativeOf, which cannot be combined with 'feedbackStates'.` | Remove the feedback states or the continuous states. |
 | `State '…' must declare a 'start' value` | A continuous state has no initial condition. |
+| `Start values of '…' have shape …, which does not broadcast to the node shape …` | A `start` list does not fit its node. |
+| `'fixedInternalStepSize' is an FMI 3.0 attribute …` | Use `defaultExperiment.stepSize` in an FMI 2.0 description. |
+| `'defaultExperiment.…' must be …` | A `defaultExperiment` value is not a number, the step is not positive, or `stopTime` is not after `startTime`. |
 | `Shape is empty.` | A node has no dimensions. Export it with shape `(1,)`. |
+
+One message is a warning, not an error: `Outputs […] declare no 'start'
+value.` It appears for a Co-Simulation FMU whose outputs have no `start`.
+The FMU still builds, with outputs starting at `0.0`, but a future release
+will reject such a description.
 
 A quick way to list the node names of a model:
 

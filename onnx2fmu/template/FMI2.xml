@@ -35,7 +35,7 @@
     <Category name="logStatusError" description="Log error messages"/>
   </LogCategories>
 
-  <DefaultExperiment startTime="{{ startTime }}" stopTime="{{ stopTime }}"/>
+  <DefaultExperiment startTime="{{ startTime }}" stopTime="{{ stopTime }}" stepSize="{{ stepSize }}"/>
 
   <ModelVariables>
     <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
@@ -64,19 +64,29 @@
     {%- endfor %}
   </ModelVariables>
 
+  {#- Co-Simulation runs the network only inside fmi2DoStep, so at a
+      communication point its outputs depend on none of the knowns, and
+      neither do the initial unknowns in Initialization Mode:
+      FMI 2.0.4, section 2.2.8: "If not present, it must be assumed that the
+      `Unknown` depends on all `Knowns`. If present as empty list, the
+      `Unknown` depends on none of the `Knowns`."
+      An FMU that also supports Model Exchange keeps the default (no
+      attribute, so all knowns), because Model Exchange outputs depend on
+      the inputs. #}
+  {%- set dependencies = ' dependencies=""' if coSimulation and not modelExchange else '' %}
   <ModelStructure>
     <Outputs>
     {%- for output in outputs %}
     {%- if not output.derivativeOf %}
     {%- for scalar in output.scalarValues %}
-      <Unknown index="{{ scalar.valueReference + 1 }}"/>
+      <Unknown index="{{ scalar.valueReference + 1 }}"{{ dependencies }}/>
     {%- endfor %}
     {%- endif %}
     {%- endfor %}
     {%- for input in inputs %}
     {%- if input.isContinuousState %}
     {%- for scalar in input.scalarValues %}
-      <Unknown index="{{ scalar.valueReference + 1 }}"/>
+      <Unknown index="{{ scalar.valueReference + 1 }}"{{ dependencies }}/>
     {%- endfor %}
     {%- endif %}
     {%- endfor %}
@@ -95,7 +105,7 @@
     <InitialUnknowns>
     {%- for output in outputs %}
     {%- for scalar in output.scalarValues %}
-      <Unknown index="{{ scalar.valueReference + 1 }}"/>
+      <Unknown index="{{ scalar.valueReference + 1 }}"{{ dependencies }}/>
     {%- endfor %}
     {%- endfor %}
     </InitialUnknowns>

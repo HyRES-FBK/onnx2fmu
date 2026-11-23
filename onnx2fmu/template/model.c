@@ -32,10 +32,29 @@ void setStartValues(ModelInstance *comp) {
     M({{ scalar.name }}) = ({{ input.vType.CType }}) {{ scalar.start }};
     {%- endfor %}
     {%- endfor %}
+    // Outputs: what a Co-Simulation instance reports until its first
+    // internal step runs the network
+    {%- for output in outputs %}
+    {%- for scalar in output.scalarValues %}
+    M({{ scalar.name }}) = ({{ output.vType.CType }}) {{ scalar.start }};
+    {%- endfor %}
+    {%- endfor %}
     // Feedback states
     {%- for feedbackState in feedbackStates %}
     {%- for scalar in feedbackState.scalarValues %}
     M({{ scalar.name }}) = ({{ feedbackState.vType.CType }}) {{ scalar.start }};
+    {%- endfor %}
+    {%- endfor %}
+    recordStepInputs(comp);
+}
+
+void recordStepInputs(ModelInstance *comp) {
+    UNUSED(comp);
+    {%- set step = namespace(index=0) %}
+    {%- for input in inputs if not input.isContinuousState %}
+    {%- for scalar in input.scalarValues %}
+    M(inputsAtStepStart)[{{ step.index }}] = M({{ scalar.name }});
+    {%- set step.index = step.index + 1 %}
     {%- endfor %}
     {%- endfor %}
 }
@@ -142,20 +161,45 @@ void freeModel(ModelInstance *comp) {
 }
 
 Status calculateValues(ModelInstance *comp) {
+    // Called by the FMI functions when a value is requested (fmi*Get*,
+    // fmi*ExitInitializationMode) after an input changed. Model Exchange
+    // runs the network on demand. Co-Simulation runs it only inside doStep,
+    // once per internal step (see doFixedStep), so a request returns the
+    // values computed by the last internal step, or the start values before
+    // the first one.
+    if (comp->type == CoSimulation) {
+        return OK;
+    }
+    return evaluateNetwork(comp);
+}
 
-    // Update input buffers with current model values
+Status evaluateNetwork(ModelInstance *comp) {
+
+    // Update input buffers. Co-Simulation runs each internal step on the
+    // inputs recorded when the step started, Model Exchange on the current
+    // values. Continuous states always use their current values.
+    const bool atStepStart = comp->type == CoSimulation;
+    UNUSED(atStepStart);
+    {%- set step = namespace(index=0) %}
     {%- for input in inputs %}
     {%- for scalar in input.scalarValues %}
+    {%- if input.isContinuousState %}
     comp->modelBuffers.{{ input.name }}_float[{{ loop.index0 }}] = (float)M({{ scalar.name }});
+    {%- else %}
+    comp->modelBuffers.{{ input.name }}_float[{{ loop.index0 }}] = (float)(atStepStart ? M(inputsAtStepStart)[{{ step.index }}] : M({{ scalar.name }}));
+    {%- set step.index = step.index + 1 %}
+    {%- endif %}
     {%- endfor %}
     {%- endfor %}
 
     // Time inputs carry no FMI scalars of their own (they read the FMI
     // independent variable), so their buffer is filled explicitly here from
     // comp->time -- the field kept current by fmi{2,3}SetTime (Model
-    // Exchange) and by the fixed-step Co-Simulation loop. M(time)/vr_time is
-    // legacy scaffolding that nothing in the runtime ever writes to, so it
-    // must not be used as the source of truth for the independent variable.
+    // Exchange) and by the fixed-step Co-Simulation loop, which runs the
+    // network before advancing comp->time, so that a time input sees the
+    // start of the internal step. M(time)/vr_time is legacy scaffolding that
+    // nothing in the runtime ever writes to, so it must not be used as the
+    // source of truth for the independent variable.
     {%- for input in inputs %}
     {%- if input.isTime %}
     comp->modelBuffers.{{ input.name }}_float[0] = (float)comp->time;
@@ -478,7 +522,12 @@ Status setContinuousStates(ModelInstance *comp, const double x[], size_t nx) {
 
 Status getDerivatives(ModelInstance *comp, double dx[], size_t nx) {
     UNUSED(nx);
-    calculateValues(comp);
+    // Runs on every call: in Model Exchange on the solver's request, in
+    // Co-Simulation once per forward Euler step inside doFixedStep.
+    const Status status = evaluateNetwork(comp);
+    if (status > Warning) {
+        return status;
+    }
     {%- for state in continuousStates %}
     dx[{{ loop.index0 }}] = M({{ state.derivativeName }});
     {%- endfor %}

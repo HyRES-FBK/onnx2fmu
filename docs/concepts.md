@@ -54,19 +54,27 @@ your tool's variable browser. The variable *name* stays index-based.
 }
 ```
 
+(start-values)=
 ### Start values
 
-Every variable needs a start value. If you do not give one, ONNX2FMU uses
-`1.0`. You can give a single number, which is applied to every element, or a
-list that NumPy can broadcast to the node shape.
+Every variable needs a start value. You can give a single number, which is
+applied to every element, or a list that NumPy can broadcast to the node
+shape. ONNX2FMU checks the shape before it generates any code.
 
 ```json
 {"name": "u", "start": 0.0}
 {"name": "x", "start": [2.0, 0.0]}
 ```
 
+If an input or a feedback state has no start value, ONNX2FMU uses `1.0`.
 Start values matter most for [feedback states](#feedback-states), where they
 are the content of the model's memory at the first step.
+
+Outputs need a start value too. A Co-Simulation FMU runs the network only
+inside a step (see [](#co-simulation-steps)), so from the initialisation until
+its first step it reports the start values of its outputs. An output without
+`start` gets `0.0` and a deprecation warning: a future release will require
+the key.
 
 ### Data types
 
@@ -97,9 +105,11 @@ two belong together:
 ]
 ```
 
-At every step the FMU runs the network, takes the value of `h_next` and
-stores it. At the following step, that stored value is what the network
-receives as `h`. The user of the FMU never has to wire the loop by hand.
+At every internal step the FMU runs the network, takes the value of `h_next`
+and stores it. At the following step, that stored value is what the network
+receives as `h`. The user of the FMU never has to wire the loop by hand, and
+the memory advances exactly once per step, whatever the importing tool does
+between two steps (see [](#co-simulation-steps)).
 
 ```{mermaid}
 flowchart LR
@@ -141,12 +151,74 @@ only answers the question "given this state and this time, what is
 This is the natural home for a neural ODE.
 [Example 5](../examples/example5/example5.ipynb) is a Model Exchange FMU.
 
-:::{note} Step size in Co-Simulation
-A Co-Simulation FMU evaluates the network on a fixed internal step of one
-time unit. Design your model so that one call corresponds to one unit of
-simulation time, and use a communication step of 1 in the importing tool,
-as the tutorials do.
-:::
+(co-simulation-steps)=
+### How a Co-Simulation FMU steps
+
+A Co-Simulation FMU keeps its own time grid with a fixed **internal step**
+`h`, and runs the network **once per internal step, inside `doStep`, and
+nowhere else**. Setting inputs, reading outputs and initialising the FMU never
+run the network. So the results do not depend on the order in which the
+importing tool calls the FMU, and a feedback state advances exactly once per
+step.
+
+Each internal step `[t, t + h]` runs the network on:
+
+- the time `t` at the start of the step, for a [time input](#time-as-an-input);
+- the inputs as they were at `t`;
+- the feedback states.
+
+It then stores the outputs and the next feedback states. An output read at
+`t + h` therefore holds the network's answer for the inputs at `t`. Before
+the first step, outputs hold their [start values](#start-values).
+
+Design the network so that one call corresponds to one internal step, and
+declare the step in the model description:
+
+```json
+"defaultExperiment": {"stopTime": 3600, "stepSize": 60}
+```
+
+`defaultExperiment` mirrors the FMI `DefaultExperiment` element. Its
+`stepSize` is the FMU's internal step, 1 by default. It is written into the
+FMU as the preferred communication step, and FMPy uses it when you give no
+output interval. FMI 3.0 descriptions can also set the internal step on its
+own, with `"fixedInternalStepSize"`. That attribute exists only in FMI 3.0,
+so an FMI 2.0 description that uses it is rejected.
+
+The importing tool does not have to step with `h`. A `doStep` runs every
+internal step that ends within it. A shorter communication step leaves the
+outputs unchanged until the internal step it falls in is complete. For
+example, FMPy shortens a step when an input changes in the middle of it.
+With `h = 1`, a step from 2 to 2.5 runs nothing. The next step, from 2.5 to
+3, completes the internal step `[2, 3]`, still on the inputs at 2.
+
+Because a Co-Simulation output does not change when an input is set at a
+communication point, an FMU that offers only Co-Simulation declares
+`dependencies=""` on its outputs and initial unknowns in the FMI
+`ModelStructure`. FMI defines the empty list this way, in FMI 2.0.4
+(section 2.2.8, Definition of the Model Structure):
+
+> If not present, it must be assumed that the `Unknown` depends on all
+> `Knowns`. If present as empty list, the `Unknown` depends on none of the
+> `Knowns`.
+
+and in the same words in FMI 3.0.2 (section 2.4.8, Model Structure): "If
+dependencies is present as empty list, the unknown depends on none of the
+knowns." At a communication point, the knowns of an output include its
+inputs, and in Initialization Mode the knowns of an initial unknown include
+the inputs and the start values. FMI 2.0.4 recommends the empty list for
+the latter case: "For standard Co-Simulation FMUs, it is common that no
+algebraic loops over the input/output variables nor over start-values is
+supported. In such a case, all `dependencies` lists for output variables
+under the `InitialUnknowns` element should be defined as empty lists
+defining that the setting of inputs and/or of start values does not
+influence the outputs."
+
+So the importing tool knows that the outputs have no direct feedthrough from
+the inputs, and connecting FMUs in a loop does not create an algebraic loop.
+An FMU that also offers Model Exchange keeps the default, with no attribute
+(every output depends on all knowns), because its Model Exchange outputs do
+follow the inputs.
 
 (continuous-states)=
 ### Continuous states
@@ -169,6 +241,7 @@ follow:
   the solver updates, and the derivative becomes an internal variable linked
   to it.
 
+(time-as-an-input)=
 ### Time as an input
 
 Some dynamics depend on time explicitly, for example a system with a periodic
@@ -178,23 +251,25 @@ forcing term. Mark the corresponding input with `"time": true`:
 {"name": "t", "time": true}
 ```
 
-ONNX2FMU then feeds the simulation clock into that node at every evaluation.
-No FMI variable is created for it. A model can have one time input, and it
-must hold a single element.
+ONNX2FMU then feeds the simulation clock into that node at every evaluation:
+the solver's current time in Model Exchange, the start of the internal step
+in Co-Simulation. No FMI variable is created for it. A model can have one
+time input, and it must hold a single element.
 
 ### What you cannot combine
 
 Model Exchange cannot be combined with feedback states. A solver calls the
 model many times per step, at trial points it may later discard, so a memory
 that advances at every call would lose its meaning. ONNX2FMU refuses such a
-description with an error.
+description with an error. For the same reason, feedback states cannot be
+combined with continuous states in any FMU type.
 
 You *can* ask for both interfaces with
 `"FMUType": ["ModelExchange", "CoSimulation"]`. In that case the
 Co-Simulation side integrates the continuous states itself, with a simple
-forward Euler scheme on the fixed step of one time unit. That is much coarser
-than an adaptive solver, so prefer the Model Exchange interface when accuracy
-matters.
+forward Euler scheme on the [internal step](#co-simulation-steps). That is
+much coarser than an adaptive solver, so prefer the Model Exchange interface
+when accuracy matters.
 
 ## Three words that sound alike
 

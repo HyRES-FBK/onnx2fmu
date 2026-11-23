@@ -198,10 +198,10 @@ class FeedbackState(VariableFactory):
     *emitted* with `causality="local"`, but so are other variables (e.g.
     Model Exchange state derivatives, see `Output`).
 
-    `initial` is the FMI attribute of the same name. With `"exact"` a
-    master may set the state before the end of initialization, so each run
+    `initial` is the FMI attribute of the same name. With `"exact"` an
+    importer may set the state before the end of initialization, so each run
     can start from its own state. With `"calculated"`, the default, the
-    state is internal: it always starts from `start`, and no master can
+    state is internal: it always starts from `start`, and no importer can
     write it. Use it for states without a physical meaning, such as the
     context vector of an RNN.
     """
@@ -234,7 +234,7 @@ class FeedbackState(VariableFactory):
             raise ValueError(
                 f"Feedback state '{self.name}' declares initial={initial!r}. "
                 f"Admissible values are {list(self.INITIAL_VALUES)}: "
-                f"'{EXACT}' lets a master set the state before the end of "
+                f"'{EXACT}' lets an importer set the state before the end of "
                 f"initialization, '{CALCULATED}' keeps it internal."
             )
         self.initial = initial

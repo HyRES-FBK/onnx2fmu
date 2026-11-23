@@ -55,7 +55,7 @@
     </ScalarVariable>
     {%- endfor %}
     {%- endfor %}
-    {#- Only an initial="exact" feedback state, which a master may set before
+    {#- Only an initial="exact" feedback state, which an importer may set before
         the end of initialization, carries a start: FMI 2.0 forbids it on
         initial="calculated" variables. #}
     {%- for feedbackState in feedbackStates %}

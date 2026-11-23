@@ -336,7 +336,7 @@ Status evaluateNetwork(ModelInstance *comp) {
 
 {%- if feedbackStates %}
 
-// Whether a master may set the feedback state `vr`. The FMI `initial`
+// Whether an importer may set the feedback state `vr`. The FMI `initial`
 // attribute decides: a "calculated" feedback state is internal and can never
 // be set, and an "exact" one only before the end of initialization, as FMI
 // allows for `local` variables. Once initialized, only doStep moves a
@@ -434,7 +434,7 @@ Status setFloat64(ModelInstance *comp, ValueReference vr, const double values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Feedback states a master may set, see isFeedbackStateSettable
+        // Feedback states an importer may set, see isFeedbackStateSettable
         {%- for feedbackState in feedbackStates if feedbackState.initial == "exact" %}
         {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:
@@ -509,7 +509,7 @@ Status setFloat32(ModelInstance *comp, ValueReference vr, const float values[],
             return OK;
         {%- endfor %}
         {%- endfor %}
-        // Feedback states a master may set, see isFeedbackStateSettable
+        // Feedback states an importer may set, see isFeedbackStateSettable
         {%- for feedbackState in feedbackStates if feedbackState.initial == "exact" %}
         {%- for scalar in feedbackState.scalarValues %}
         case vr_{{ scalar.name }}:

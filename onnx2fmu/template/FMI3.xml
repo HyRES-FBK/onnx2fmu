@@ -42,7 +42,7 @@
     <{{ output.vType.FMIType }} name="{{ scalar.name }}" valueReference="{{ scalar.valueReference }}" causality="{{ output.causality }}" variability="{{ output.variability }}"{% if output.initial %} initial="{{ output.initial }}"{% endif %}{% if scalar.stateValueReference is defined %} derivative="{{ scalar.stateValueReference }}"{% endif %} description="{%if scalar.label %}{{ scalar.label }}{% else %}{{ output.description }}{% endif %}"/>
     {%- endfor %}
     {%- endfor %}
-    {#- Only an initial="exact" feedback state, which a master may set before
+    {#- Only an initial="exact" feedback state, which an importer may set before
         the end of initialization, carries a start: FMI 3.0 forbids it on
         initial="calculated" variables. #}
     {%- for feedbackState in feedbackStates %}

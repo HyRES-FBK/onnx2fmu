@@ -301,7 +301,7 @@ class TestStartValueShapes(unittest.TestCase):
 
 class TestFeedbackStateInitial(unittest.TestCase):
     """A feedback state's `initial` is the FMI attribute of the same name:
-    `exact` lets a master set the state before the end of initialization,
+    `exact` lets an importer set the state before the end of initialization,
     `calculated` (the default) keeps it internal."""
 
     def context(self, fmi_version: str, **keys) -> dict:

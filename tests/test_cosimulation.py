@@ -222,7 +222,7 @@ class CoSimulationSemantics:
         self.assertEqual(fmu.get("count_in_count_out_0"), 1)
         self.assertEqual(fmu.get("u_seen_0"), 2)
         self.assertEqual(fmu.get("t_seen_0"), 0)
-        # A step in which the master sets nothing also runs it once.
+        # A step in which the importer sets nothing also runs it once.
         fmu.step(1.0, 1.0)
         self.assertEqual(fmu.get("evals_0"), 2)
         self.assertEqual(fmu.get("u_seen_0"), 2)
@@ -293,7 +293,7 @@ class CoSimulationSemantics:
         fmu.step(0.0, 1.0)
         self.assertEqual(fmu.get("u_seen_0"), 4)
         self.assertEqual(fmu.get("t_seen_0"), 0)
-        # A step in which the master sets nothing still sees its own time.
+        # A step in which the importer sets nothing still sees its own time.
         fmu.step(1.0, 1.0)
         self.assertEqual(fmu.get("t_seen_0"), 1)
         # Setting an input does not change the outputs until the next step.

@@ -251,12 +251,31 @@ With `h = 1`, a step from 2 to 2.5 runs nothing. The next step, from 2.5 to
 
 Because a Co-Simulation output does not change when an input is set at a
 communication point, an FMU that offers only Co-Simulation declares
-`dependencies=""` on its outputs in the FMI `ModelStructure`. That tells
-the importing tool that the outputs have no direct feedthrough from the
-inputs, so connecting FMUs in a loop does not create an algebraic loop. An
-FMU that also offers Model Exchange keeps the default declaration (every
-output depends on everything), because its Model Exchange outputs do follow
-the inputs.
+`dependencies=""` on its outputs and initial unknowns in the FMI
+`ModelStructure`. FMI defines the empty list this way, in FMI 2.0.4
+(section 2.2.8, Definition of the Model Structure):
+
+> If not present, it must be assumed that the `Unknown` depends on all
+> `Knowns`. If present as empty list, the `Unknown` depends on none of the
+> `Knowns`.
+
+and in the same words in FMI 3.0.2 (section 2.4.8, Model Structure): "If
+dependencies is present as empty list, the unknown depends on none of the
+knowns." At a communication point, the knowns of an output include its
+inputs, and in Initialization Mode the knowns of an initial unknown include
+the inputs and the start values. FMI 2.0.4 recommends the empty list for
+the latter case: "For standard Co-Simulation FMUs, it is common that no
+algebraic loops over the input/output variables nor over start-values is
+supported. In such a case, all `dependencies` lists for output variables
+under the `InitialUnknowns` element should be defined as empty lists
+defining that the setting of inputs and/or of start values does not
+influence the outputs."
+
+So the importing tool knows that the outputs have no direct feedthrough from
+the inputs, and connecting FMUs in a loop does not create an algebraic loop.
+An FMU that also offers Model Exchange keeps the default, with no attribute
+(every output depends on all knowns), because its Model Exchange outputs do
+follow the inputs.
 
 (continuous-states)=
 ### Continuous states

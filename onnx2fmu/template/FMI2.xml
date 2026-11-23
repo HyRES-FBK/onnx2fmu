@@ -68,10 +68,14 @@
   </ModelVariables>
 
   {#- Co-Simulation runs the network only inside fmi2DoStep, so at a
-      communication point its outputs depend on none of the knowns. An FMU
-      that also supports Model Exchange keeps the default (no attribute,
-      which means all knowns), because Model Exchange outputs depend on the
-      inputs. #}
+      communication point its outputs depend on none of the knowns, and
+      neither do the initial unknowns in Initialization Mode:
+      FMI 2.0.4, section 2.2.8: "If not present, it must be assumed that the
+      `Unknown` depends on all `Knowns`. If present as empty list, the
+      `Unknown` depends on none of the `Knowns`."
+      An FMU that also supports Model Exchange keeps the default (no
+      attribute, so all knowns), because Model Exchange outputs depend on
+      the inputs. #}
   {%- set dependencies = ' dependencies=""' if coSimulation and not modelExchange else '' %}
   <ModelStructure>
     <Outputs>

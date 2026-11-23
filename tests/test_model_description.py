@@ -299,6 +299,42 @@ class TestStartValueShapes(unittest.TestCase):
         self.assertInvalidStart("feedbackStates", 0, [0.0, 1.0], "t")
 
 
+class TestFeedbackStateInitial(unittest.TestCase):
+    """A feedback state's `initial` is the FMI attribute of the same name:
+    `exact` lets a master set the state before the end of initialization,
+    `calculated` (the default) keeps it internal."""
+
+    def context(self, fmi_version: str, **keys) -> dict:
+        description = {
+            "name": "initial",
+            "description": "test",
+            "FMIVersion": fmi_version,
+            "inputs": [{"name": "u"}],
+            "outputs": [{"name": "y", "start": 0.0}],
+            "feedbackStates": [{"nameIn": "t", "nameOut": "dt", **keys}],
+        }
+        return ModelDescription(
+            _build_test_onnx_model(), description).generateContext()
+
+    def test_default_is_calculated(self):
+        for fmi_version in ["2.0", "3.0"]:
+            with self.subTest(fmi_version=fmi_version):
+                context = self.context(fmi_version)
+                self.assertEqual(
+                    context["feedbackStates"][0]["initial"], "calculated")
+
+    def test_exact(self):
+        for fmi_version in ["2.0", "3.0"]:
+            with self.subTest(fmi_version=fmi_version):
+                context = self.context(fmi_version, initial="exact")
+                self.assertEqual(
+                    context["feedbackStates"][0]["initial"], "exact")
+
+    def test_approx_raises(self):
+        with self.assertRaisesRegex(ValueError, "'approx'"):
+            self.context("2.0", initial="approx")
+
+
 class TestStepSize(unittest.TestCase):
     """The internal step comes from `fixedInternalStepSize` (FMI 3.0 only)
     or from `defaultExperiment.stepSize`, the FMI 2.0 equivalent."""

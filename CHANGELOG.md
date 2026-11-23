@@ -41,6 +41,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   any code is generated.
 - A description that combines `"feedbackStates"` with `"derivativeOf"` is
   rejected for every `"FMUType"`, not only for Model Exchange.
+- **Breaking:** feedback states are internal by default
+  ([#60](https://github.com/HyRES-FBK/onnx2fmu/issues/60)). They are
+  emitted with `initial="calculated"` and no `start` attribute, and the FMU
+  refuses to set them. FMI 2.0 FMUs used to emit them with
+  `initial="exact"`, so an importer could overwrite them before
+  initialization. To keep that, add `"initial": "exact"` to the
+  feedback-state entry.
+- No feedback state can be set after initialization, also with
+  `"initial": "exact"`. The FMU used to accept such a set at any time. FMI
+  allows a `local` variable to be set only before the end of
+  initialization, and since #59 only `doStep` moves a feedback state forward.
 
 ### Added
 
@@ -52,6 +63,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   step on its own and is written to the `<CoSimulation>` attribute of the
   same name. FMI 2.0 has no such attribute, so FMI 2.0 descriptions that use
   it are rejected.
+- `"initial"` on feedback states
+  ([#60](https://github.com/HyRES-FBK/onnx2fmu/issues/60)), the FMI
+  attribute of the same name. With `"exact"`, an importer may set the state
+  before the end of initialization, so one FMU can start each run from a
+  different state. With `"calculated"`, the default, the state is internal
+  and always starts from its `start` value. Use the default for states
+  without a physical meaning, such as an RNN context vector. FMI 3.0 FMUs now
+  emit `initial` and, for `"exact"` states, `start` on feedback states.
 
 ### Deprecated
 

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0rc1] - 2026-11-23
+
+Release candidate for 0.5.0. It is published as a GitHub pre-release only,
+not on PyPI: install it from the tagged source, for example
+`pip install git+https://github.com/HyRES-FBK/onnx2fmu@v0.5.0rc1`.
+
 ### Fixed
 
 - **A memory leak on every network run**

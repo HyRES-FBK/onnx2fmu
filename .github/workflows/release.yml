@@ -4,9 +4,12 @@ on:
   push:
     tags:
       - 'v*.*.*'   # Only trigger on version tags
+      - '!v*rc*'   # Release candidates are published to GitHub only, not PyPI
 
 jobs:
   release:
+    # Second guard, in case the tag filter above is ever changed or misread.
+    if: ${{ !contains(github.ref_name, 'rc') }}
     runs-on: ubuntu-latest
 
     steps:
